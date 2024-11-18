@@ -51,12 +51,16 @@ Admin Product-Edit
                                 </div>
                             </div>
                         </div>
+                        {!!Form::close()!!}
+
+                        {!!Form::open(['url'=>'products/videoUrl/update','class'=>'form-horizontal' ,'method'=>'POST','enctype'=>'multipart/form-data'])!!}
+                        <input type="hidden" value="{{$id}}" name="id">
                         <div class="col-md-12 row">
                             <div class="form-group col-md-6">
-                                <label for="Productimage" class="col-form-label">Video URL(Embaded)</label>
+                                <label for="video_url" class="col-form-label">Video URL(Embaded)</label>
                                 <div class="col-sm-12">
-                                    <input type="file" class="form-control" id="Productimage" name="productImage" accept="image/*">
-                                    <span class="text-danger">{{$errors->has('Productimage')?$errors->first('Productimage'):''}}</span>
+                                    <input type="text" class="form-control" id="video_url" name="video_url">
+                                    <span class="text-danger">{{$errors->has('video_url')?$errors->first('video_url'):''}}</span>
                                 </div>
                             </div>
                             
@@ -67,10 +71,7 @@ Admin Product-Edit
                                 </div>
                             </div>
                         </div>
-
-                        
                         {!!Form::close()!!}
-
 
                         <div class="col-md-12 row">
                             <div class="col-md-12 form-group">
