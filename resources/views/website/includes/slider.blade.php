@@ -1,4 +1,4 @@
-<input type="hidden" id="isSlider" value="slider">
+
 <div class="block-slideshow block-slideshow--layout--with-departments block">
                 <div class="container">
                     <div class="row">

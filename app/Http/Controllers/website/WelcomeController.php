@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
 {
-      public function Index(){
+    public function Index(){
         return view('website.pages.home');
       }
-      
+    
       public function aboutus(){
         return view('website.pages.aboutus');
       }
@@ -68,8 +68,8 @@ class WelcomeController extends Controller
       public function product_sidebar(){
         return view('website.pages.product_sidebar');
       }
-      public function cart(){
-        return view('website.pages.cart');
+      public function card(){
+        return view('website.pages.card');
       }
       public function checkoutcard(){
         return view('website.pages.checkoutcard');
