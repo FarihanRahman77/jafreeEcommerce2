@@ -24,18 +24,17 @@ class productController extends Controller {
   protected $name;
   /* function for admin panel*/
   public function productView() {
-        //$products = product::where ('deleted', 'No')->get();
+      
     $products = DB::table('tbl_products')
     ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
-    ->select('tbl_products.id', 
-              'tbl_products.productName', 
-              'tbl_products.productImage',
-              'tbl_products.status',
-              'tbl_products.created_at', 
-              'tbl_category.categoryName')
-    ->where('tbl_products.deleted', 'no')
+    ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+    ->select('tbl_products.id', 'tbl_products.productName', 'tbl_products.productImage','tbl_products.status','tbl_products.created_at','tbl_category.categoryName','tbl_brands.brandName')
+    ->where('tbl_products.deleted', 'No')
+    ->where('tbl_category.deleted', 'No')
+    ->where('tbl_brands.deleted', 'No')
     ->orderBy('tbl_products.id', 'desc')
     ->get();
+   
     return view('admin.home.products.productsView', ['products' => $products]);
   }
   /* //function for admin panel*/
@@ -45,10 +44,10 @@ class productController extends Controller {
       $settings = ShopSetting::find(1);
       $productsData = '';
     $products = DB::table('products')
-    ->join('tbl_category', 'products.tbl_categoryId', '=', 'tbl_category.id')
+    ->join('categories', 'products.tbl_categoryId', '=', 'categories.id')
     ->join('manufacturers', 'products.tbl_manufacturerId', '=', 'manufacturers.id')
-    ->select('products.id', 'products.in_offer', 'products.productName', 'products.productImage', 'products.amount', 'products.created_at', 'tbl_category.categoryName', 'manufacturers.manufacturerName')
-    ->where([['products.deleted', '=', 'no'],['products.availability', '!=', 'off'], ['tbl_category.categoryName', '=', $request->CatName]])
+    ->select('products.id', 'products.in_offer', 'products.productName', 'products.productImage', 'products.amount', 'products.created_at', 'categories.categoryName', 'manufacturers.manufacturerName')
+    ->where([['products.deleted', '=', 'no'],['products.availability', '!=', 'off'], ['categories.categoryName', '=', $request->CatName]])
     ->orderBy('products.id', 'desc')
     ->paginate(12);
     if ($request->ajax()) {
@@ -94,7 +93,7 @@ class productController extends Controller {
         		       $discountPriceData .= '<option value="'.$spec->id.'">'.$spec->specPrice.'</option>';
         		    }
         		}
-        		$productsData .= '<div class="col-md-2 col-xs-6 w31_fresh_margin_top_cat">
+        		$productsData .= '<div class="col-md-2 col-xs-6 w31_fresh_margin_top_sub_cat">
                                 <div class="hover14 column">
                                 <div class="agile_top_brand_left_grid">
                                     <div class="agile_top_brand_left_grid_pos">';
@@ -183,29 +182,29 @@ class productController extends Controller {
       $productsData = '';
 	if($category != ""){
 		$products = DB::table('products')
-		->join('tbl_category', 'products.tbl_categoryId', '=', 'tbl_category.id')
-		->join('tbl_category', 'products.tbl_subCategoryId', '=', 'tbl_category.id')
+		->join('categories', 'products.tbl_categoryId', '=', 'categories.id')
+		->join('sub_categories', 'products.tbl_subCategoryId', '=', 'sub_categories.id')
 		->join('manufacturers', 'products.tbl_manufacturerId', '=', 'manufacturers.id')
 		//->leftJoin('product_special_offers', 'product_special_offers.tbl_productId', '=', 'products.id')
 		//->leftJoin('product_hot_offers', 'product_hot_offers.tbl_productId', '=', 'products.id')
 			// ->whereNull('product_special_offers.tbl_productId')
-		->where('tbl_category.subCategoryName', '=', $category)
-		->where([['tbl_category.deleted','=','No'],['products.deleted', '=' ,'no']])
-		//->select('products.id', 'products.productName', 'products.productImage', 'products.amount', 'products.created_at', 'tbl_category.categoryName', 'tbl_category.subCategoryName', 'manufacturers.manufacturerName','product_special_offers.offerPrice','product_hot_offers.offerPrice')
-		->select('products.id', 'products.productName','products.in_offer', 'products.productImage', 'products.amount', 'products.created_at', 'tbl_category.categoryName', 'tbl_category.subCategoryName', 'manufacturers.manufacturerName')
+		->where('sub_categories.subCategoryName', '=', $category)
+		->where([['sub_categories.deleted','=','No'],['products.deleted', '=' ,'no']])
+		//->select('products.id', 'products.productName', 'products.productImage', 'products.amount', 'products.created_at', 'categories.categoryName', 'sub_categories.subCategoryName', 'manufacturers.manufacturerName','product_special_offers.offerPrice','product_hot_offers.offerPrice')
+		->select('products.id', 'products.productName','products.in_offer', 'products.productImage', 'products.amount', 'products.created_at', 'categories.categoryName', 'sub_categories.subCategoryName', 'manufacturers.manufacturerName')
 		->orderBy('products.id', 'desc')
 		->paginate(12);
 	}else{
 		$products = DB::table('products')
-		->join('tbl_category', 'products.tbl_categoryId', '=', 'tbl_category.id')
-		->join('tbl_category', 'products.tbl_subCategoryId', '=', 'tbl_category.id')
+		->join('categories', 'products.tbl_categoryId', '=', 'categories.id')
+		->join('sub_categories', 'products.tbl_subCategoryId', '=', 'sub_categories.id')
 		->join('manufacturers', 'products.tbl_manufacturerId', '=', 'manufacturers.id')
 		//->leftJoin('product_special_offers', 'product_special_offers.tbl_productId', '=', 'products.id')
 		//->leftJoin('product_hot_offers', 'product_hot_offers.tbl_productId', '=', 'products.id')
 					// ->whereNull('product_special_offers.tbl_productId')
-		->where([['tbl_category.deleted','=','No'],['products.deleted', '=' ,'no']])
-		//->select('products.id', 'products.productName', 'products.productImage', 'products.amount', 'products.created_at', 'tbl_category.categoryName', 'tbl_category.subCategoryName', 'manufacturers.manufacturerName','product_special_offers.offerPrice','product_hot_offers.offerPrice')
-		->select('products.id', 'products.productName', 'products.in_offer', 'products.productImage', 'products.amount', 'products.created_at', 'tbl_category.categoryName', 'tbl_category.subCategoryName', 'manufacturers.manufacturerName')
+		->where([['sub_categories.deleted','=','No'],['products.deleted', '=' ,'no']])
+		//->select('products.id', 'products.productName', 'products.productImage', 'products.amount', 'products.created_at', 'categories.categoryName', 'sub_categories.subCategoryName', 'manufacturers.manufacturerName','product_special_offers.offerPrice','product_hot_offers.offerPrice')
+		->select('products.id', 'products.productName', 'products.in_offer', 'products.productImage', 'products.amount', 'products.created_at', 'categories.categoryName', 'sub_categories.subCategoryName', 'manufacturers.manufacturerName')
 		->orderBy('products.id', 'desc')
 		->paginate(12);
 	}
@@ -254,7 +253,7 @@ class productController extends Controller {
         		    }
         		}
         		
-        		$productsData .= '<div class="col-md-2 col-xs-6 w31_fresh_margin_top_cat">
+        		$productsData .= '<div class="col-md-2 col-xs-6 w31_fresh_margin_top_sub_cat">
                                 <div class="hover14 column">
                                 <div class="agile_top_brand_left_grid">
                                     <div class="agile_top_brand_left_grid_pos">';
@@ -464,6 +463,17 @@ public function updateCart(Request $request){
     }
     return $data;
 }
+public function toggleStatus($id)
+{
+    $productImage = ProductImage::find($id);
+
+    // Toggle the status between 'Active' and 'Inactive'
+    $productImage->status = ($productImage->status == 'Active') ? 'Inactive' : 'Active';
+    $productImage->save();
+
+    // Return back with a message
+    return back()->with('message', 'Product image status updated successfully.');
+}
 /* //function for frontEnd panel*/ 
 public function removeCartProduct(Request $request){
   $id = $request->id;
@@ -620,9 +630,9 @@ public function viewCart(Request $request){
 public function productAdd(Request $request) {
         //$categoryById = $this->productFetchData($request);
     
-  $tbl_category = Category::where('categoryStatus', 'Available')->where('deleted','no')->get();
+  $categories = Category::where('categoryStatus', 'Available')->where('deleted','no')->get();
   $manufacturer = manufacturer::where('manufacturerStatus', 'Available')->where('deleted','no')->orderBy('manufacturerName', 'asc')->get();
-  return view('admin.home.products.createProduct', ['tbl_category' => $tbl_category, 'manufacturers' => $manufacturer]);
+  return view('admin.home.products.createProduct', ['categories' => $categories, 'manufacturers' => $manufacturer]);
 }
 
 public function fetch(Request $request) {
@@ -630,10 +640,10 @@ public function fetch(Request $request) {
         //$dependent = $request->get('dependent');
 
 
-  $data = DB::table('tbl_category')
-  ->join('tbl_category', 'tbl_category.tbl_CategoryID', '=', 'tbl_category.id')
-  ->SELECT('tbl_category.id', 'tbl_category.subCategoryName')
-  ->where('tbl_category.id', $value)
+  $data = DB::table('categories')
+  ->join('sub_categories', 'sub_categories.tbl_CategoryID', '=', 'categories.id')
+  ->SELECT('sub_categories.id', 'sub_categories.subCategoryName')
+  ->where('categories.id', $value)
   ->get();
   $output = '<option value="">~~ Select Sub-Category ~~</option>';
   foreach ($data as $row) {
@@ -797,53 +807,21 @@ public function productSave(Request $request) {
 
       public function productEdit($id) {
 
-        $tbl_category = Category::where('categoryStatus', 'Available')->get();
-        $manufacturer = manufacturer::where('manufacturerStatus', 'Available')->get();
-        $subCategory = subCategory::where('status', 'Active')->get();
-
-        $productById = DB::table('products')
-        ->join('tbl_category', 'products.tbl_categoryId', '=', 'tbl_category.id')
-        ->join('tbl_category', 'products.tbl_subCategoryId', '=', 'tbl_category.id')
-        ->join('manufacturers', 'products.tbl_manufacturerId', '=', 'manufacturers.id')
-
-        ->select('products.id', 'products.tbl_subCategoryId', 'products.productName', 'products.amount', 'products.productQuantity', 'products.productShortDescription', 'products.productLongDescription', 'products.productImage', 'products.productStatus', 'products.tbl_categoryId','products.availability', 'tbl_category.categoryName', 'products.tbl_manufacturerId', 'manufacturers.manufacturerName')
-        ->where('products.id', $id)
+      $productById = DB::table('tbl_products')
+        ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+        ->select('tbl_products.id', 'tbl_products.productName','tbl_products.productImage', 'tbl_products.status','tbl_category.categoryName')
+        ->where('tbl_products.id', $id)
         ->first();
-        
-        $specifications = DB::table('productspecifications')
-        ->leftJoin('product_special_offers', function($join)
-             {
-                 $join->on('productspecifications.id', '=', 'product_special_offers.product_spec_id');
-                 $join->on('product_special_offers.startDate','<=',DB::raw("'".date('Y-m-d')."'"));
-                 $join->on('product_special_offers.endDate','>=',DB::raw("'".date('Y-m-d')."'"));
-             })
-        ->where('tbl_productsId','=',$productById->id)
-		->where('productspecifications.deleted','=','No')
-		->select('productspecifications.*', 'product_special_offers.offerPrice')
-		->orderBy('productspecifications.specPrice', 'asc')
-		->get();
-		$productById->spec = $specifications;
-        $productImages = ProductImage::where('productId',$id)->get();
-
-/*
-        for(var i = 0;i < response.length; i++) {
-            if (response[i] . specificationId != null) {
-                specificationHTML += "<tr><td class='col-sm-6'><input type='hidden' id='edit_spacId' name='edit_spacId[" + i + "]' value = '" + response[i] . specificationId + "' /><input type='text' class='col-sm-6 form-control' name='edit_spacName[" + i + "]' placeholder='Name' value='" + response[i] . specificationName + "' required></td><td class='col-sm-6'><input type='text' class='form-control' name='edit_spacValue[" + i + "]' placeholder='value' value='" + response[i] . specificationValue + "' required></td><td><a href='#' onclick='deleteSpec(" + response[i] . specificationId + ")'><span class=' btn btn-danger btn_remove'>X</span></a></td></tr>";
-            } else {
-                specificationHTML += "<tr><td class='col-sm-6'><input type='hidden' id='edit_spacId' name='edit_spacId[" + i + "]' value = '0' /><input type='text' class='col-sm-6 form-control' name='edit_spacName[" + i + "]' placeholder='Name' value='' required></td><td class='col-sm-6'><input type='text' class='form-control' name='edit_spacValue[" + i + "]' placeholder='value' value='' required></td><td><a href='#' onclick='deleteSpec(" + response[i] . specificationId + ")'><span class=' btn btn-danger btn_remove'>X</span></a></td></tr>";
-            }
-        }
-        $('#itemSpecifications').html(specificationHTML);
-*/
-        return view('admin.home.products.manageProduct', ['tbl_category' => $tbl_category, 'manufacturers' => $manufacturer, 'productById' => $productById, 'subCategory' => $subCategory, 'productImages' => $productImages]);
+      $productImages = ProductImage::where('productId',$id)->get();
+        return view('admin.home.products.manageProduct', ['productById' => $productById,'productImages' => $productImages]);
       }
 
-      public function deleteProductImage($id){
-        $productImage = ProductImage::find($id);
-        unlink($productImage->productImage);
-        $productImage->delete();
-        return redirect()->back()->with('message','Image Deleted Successfully');
-      }
+      // public function deleteProductImage($id){
+      //   $productImage = ProductImage::find($id);
+      //   unlink($productImage->productImage);
+      //   $productImage->delete();
+      //   return redirect()->back()->with('message','Image Deleted Successfully');
+      // }
       public function deleteProductSpec($id){
         $spec = productSpecification::find($id);
         $spec->deleted='Yes';
@@ -854,113 +832,37 @@ public function productSave(Request $request) {
       }
 
       public function productUpdate(Request $request) {
-
-        /*$this->validate($request, [
-          'Productname' => 'required',
-          'CategoryName' => 'required',
-          'subCategoryName' => 'required',
-          'manufactureName' => 'required',
-          //'Productprice' => 'required',
-          //'Productquantity' => 'required',
-          'availability' => 'required',
-        ]);*/
-        $rules=[
-            //'name'=>'required|min:5',
-            //'email'=>'nullable|unique:profile,email',
-            //'phone'=>'required|regex:/(0)[0-9]{9}/|max:15|unique:profile,phone',
-            //'alt_phone'=>'nullable|regex:/(0)[0-9]{9}/|max:15',
-            
-            'CategoryName' => 'required',
-            'subCategoryName' => 'required',
-            'Productname'=>'required|regex:/^[a-zA-Z0-9_\-\.\-\s\,\;\:\/\&\$\%\(\)]*$/|min:5|max:255',
-            'manufactureName' => 'required',
-            'availability' => 'required',
-            'ProductStatus' => 'required',
-            //'in_offer' => 'required',
-            'ProductDefaultimage' => 'nullable|mimes:jpeg,bmp,png',
-            'productSortDescription'=>'nullable|regex:/^[a-zA-Z0-9_\-\.\-\s\,\;\:\/\&\$\%\(\)]*$/|min:5|max:500',
-            'productLongDescription'=>'nullable|regex:/^[a-zA-Z0-9_\-\.\-\s\,\;\:\/\&\$\%\(\)]*$/|min:5|max:1000',
-            
-            //'amount'=>'nullable|regex:/^\d+(\.\d{1,2})?$/|min:2',
-            //'education_info'=>'nullable|min:3|max:255',
-            //'preferable_time'=>'nullable',
-            //'courses'=>'nullable',
-            
-        ];
-        
-        $this->validate($request,$rules);
-        //dd($request->all());
-        $imageUrl = $this->imageExitStatus($request);
-        $products = product:: find($request->id);
-
-
-        $products->productName = $request->Productname;
-        $products->tbl_categoryId = $request->CategoryName;
-        $products->tbl_subCategoryId = $request->subCategoryName;
-        $products->tbl_manufacturerId = $request->manufactureName;
-        $products->amount = $request->Productprice;
-        $products->productQuantity = $request->Productquantity;
-        $products->productShortDescription = $request->productSortDescription;
-        $products->productLongDescription = $request->productLongDescription;
-        $products->productImage = $imageUrl;
-        $products->productStatus = $request->ProductStatus;
-        $products->availability = $request->availability;
-        $products->createdBy = auth()->user()->id;
-        $products->deleted = 'No';
-        $products->in_offer = $request->in_offer;
-        $products->save();
-        
-        $spacName = $request->spacName;
-        $spacValue = $request->spacValue;
-        $spacPrice = $request->spacPrice;
-       // dd($request->spacName);
-        
-            for ($i = 0; $i < count((array)$spacName); $i++) {
-                $spec = new productspecification();
-                $spec->specificationName = $spacName[$i];
-                $spec->specificationValue = $spacValue[$i];
-                $spec->tbl_productsId = $request->id;
-                $prePayment = $spacPrice[$i];
-                $spec->specPrice = str_replace(',', '', $prePayment);
-                $spec->save();
-            }    
-        $multiImage = $request->file('productImage');
-
-        if ($multiImage){
-          foreach ($multiImage as $m){
-            $latestImage = ProductImage::where('productId',$request->id)->orderBy('id','desc')->first();
-            $serialValue = $latestImage->image_serial;
-            $name    = $m->getClientOriginalName();
-            $uploadPath = 'productImage/';
-            $uploadPathThumbnail = 'product-thumbnail-image/';
-            $imageUrl = $uploadPath.$name;
-            $imageThumbnailUrl = $uploadPathThumbnail.$name;
-            Image::make($m)->resize(360,360)->save($imageUrl);
-            Image::make($m)->resize(100,100)->save($imageThumbnailUrl);
-
-
-            $image = new ProductImage();
-            $image->productImage = $imageUrl;
-            $image->productId = $products->id;
-            $image->image_serial = ++$serialValue;
-            $image->createdBy = auth()->user()->id;
-            $image->save();
-
-          }
-        }
-
-
-        return redirect('/products/view')->with('message', 'Products Updated successfully');
+      
+      if($request->hasFile('productImage')){
+        $productimg = $request->file('productImage');
+       $name = $productimg->getClientOriginalName();
+       $uploadPath = 'website\images\products';
+         $imageUrl = $uploadPath.$name;
+       $imageName = time().$name;
+       Image::make($productimg)->resize(360,360)->save($imageUrl);
+      
+        $productimg->move($uploadPath, $imageName);
       }
+    
+    $image = new ProductImage();
+    $image->productImage=$imageName;
+    $image->productId = $request->id;
+    $image->createdBy = auth()->user()->id;
+    $image->created_date = date('Y-m-d');
+    $image->save();
 
-      /* First Image check & new image insert also unlink or previous image insert */
+    return back()->with('message', 'Product updated successfully');
+
+  }
+
+     
 
       private function imageExitStatus($request) {
-         //DB::enableQueryLog();
+         
         $productById = product::where('id', $request->id)->first();
-        //dd(DB::getQueryLog());
+      
         $productImage = $request->file('Productimage');
-        //dd($request->$productImage);
+      
         if ($productImage) {
           if($productImage!='no_image.png'){
               
@@ -997,10 +899,10 @@ public function productSave(Request $request) {
       public function productViewProfile($id) {
 
         $productById = DB::table('products')
-        ->join('tbl_category', 'products.tbl_categoryId', '=', 'tbl_category.id')
-        ->join('tbl_category', 'products.tbl_subCategoryId', '=', 'tbl_category.id')
+        ->join('categories', 'products.tbl_categoryId', '=', 'categories.id')
+        ->join('sub_categories', 'products.tbl_subCategoryId', '=', 'sub_categories.id')
         ->join('manufacturers', 'products.tbl_manufacturerId', '=', 'manufacturers.id')
-        ->select('products.id', 'products.tbl_subCategoryId', 'products.productName', 'products.amount', 'products.productQuantity', 'products.productShortDescription', 'products.productLongDescription', 'products.productImage', 'products.productStatus', 'products.tbl_categoryId', 'tbl_category.categoryName', 'products.tbl_manufacturerId', 'manufacturers.manufacturerName')
+        ->select('products.id', 'products.tbl_subCategoryId', 'products.productName', 'products.amount', 'products.productQuantity', 'products.productShortDescription', 'products.productLongDescription', 'products.productImage', 'products.productStatus', 'products.tbl_categoryId', 'categories.categoryName', 'products.tbl_manufacturerId', 'manufacturers.manufacturerName')
         ->where('products.id', $id)
         ->first();
         return view('admin.home.products.productsViewProfile', ['productById' => $productById]);

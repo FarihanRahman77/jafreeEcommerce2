@@ -111,7 +111,6 @@ public function searchedProducts(Request $request){
         return redirect(route('/'));
     }
 }
-
 public function searchGetProducts($request){
   $query = $request;
     if($query != ""){
@@ -158,8 +157,6 @@ public function searchGetProducts($request){
         return redirect(route('/'));
     }
 }
-
-
 public function catProducts2(){
   return view('frontEnd.home.productsCategory2');
 }

@@ -212,16 +212,16 @@
                                 <p>Manage Category</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="d-none nav-item">
                             <a href="{{url('/sub-category/view')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Manage Sub-Category</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('/brands/view')}}" class="nav-link">
+                            <a href="{{url('brands/view')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
-                                <p>Brands</p>
+                                <p>Manage Brand</p>
                             </a>
                         </li>
                         <li class="nav-item d-none">
@@ -230,32 +230,32 @@
                                 <p>Manage Unit</p>
                             </a>
                         </li>
-                        <li class="nav-item d-none">
+                        <li class="d-none nav-item">
                             <a href="{{url('/manufacturer/view')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Manage Manufacturer</p>
                             </a>
                         </li>
-                        <li class="nav-item d-none">
+                        <li class="d-none nav-item">
                             <a href="{{url('/unit/view/warehouse')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Manage Warehouse</p>
                             </a>
                         </li>
-                        <li class="nav-item d-none">
+                        <li class="nav-item  d-none">
                             <a href="{{url('/unit/view/paymentmethod')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Manage Payment method</p>
                             </a>
                         </li>
-                        <li class="nav-item d-none">
+                        <li class="d-none nav-item">
                             <a href="{{route('manage-carring-cost')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Manage Carring Cost</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('manage-shop-setting')}}" class="nav-link">
+                            <a href="{{route('edit-shop-setting')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Manage Shop Setting</p>
                             </a>

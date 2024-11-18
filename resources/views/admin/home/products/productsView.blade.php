@@ -47,9 +47,8 @@ Admin Products-View
                                         <th>Name</th>
                                         <th>Image</th>
                                         <th>Category Name</th>
-                                        <th>Company Name</th>
+                                        <th>Brand</th>
                                         <th>Status</th>
-                                        <th>Availability</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -60,30 +59,21 @@ Admin Products-View
                                 <tbody>
                                     @foreach($products as $product)
                                     <tr>
-
                                         <td>{{$i++}}</td>
                                         <td>{{$product->productName}}</td>
-                                        <td><img src = "{{ asset('/product-thumbnail-image/'.$product->productImage) }}" width="55" height="55" /></td>
-                                        <td>{{$product->categoryName}}</td>
-                                        <td></td>
+                                        <td><img src = "{{ $settings->erp_baseurl.'/images/products/thumb/'.$product->productImage }}" width="55" height="55" /></td>
+                                        <td>{{@$product->categoryName}}</td>
+                                        <td>{{@$product->brandName}}</td>
                                         <td>{{$product->status}}</td>
-                                        <td>
-                                            {{$product->status}}
-                                        </td>
                                         <td>{{$product->created_at}}</td>
-                                        <td style="width: 12%;">
-                                            {{-- <a href="{{url('/products/edit/'.$product->id)}}" class="btn btn-success btn-sm" data-toggle="tooltip" title="Edit"><i class="fas fa-edit"></i></a>
-                                            <a href="{{url('/products/viewProfile/'.$product->id)}}" class="btn btn-primary btn-sm" data-toggle="tooltip" title="View"><i class="fas fa-eye"></i></a>
-                                            <a href="{{url('/products/delete/'.$product->id)}}" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fas fa-trash"></i></a> --}}
+
                                         
+                                        <td style="width: 12%;">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                                 <i class="fas fa-cog"></i>  <span class="caret"></span></button>
                                                 <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
                                                 <li class="action"><a href="{{url('/products/edit/'.$product->id)}}" class="btn" ><i class="fas fa-edit"></i> Edit </a></li>
-                                                <li class="action" style="display:none;"><a href="{{url('/products/viewProfile/'.$product->id)}}" class="btn" ><i class="fas fa-eye"></i> View </a></li>
-                                                <li class="action"><a href="{{url('/products/delete/'.$product->id)}}" class="btn"  onclick="return confirm('Are you sure you want to delete this item?');"><i class="fas fa-trash"></i> Delete </a></li>
-
                                             </ul>
                                                 </div>
                                         </td>

@@ -1,29 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-
-@include('website.includes.header')	
-<script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'UA-97489509-6');
-    </script>
-<body><!-- quickview-modal -->
-    <div id="quickview-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content"></div>
-        </div>
-    </div><!-- quickview-modal / end --><!-- mobilemenu -->
-  
-    <div class="site"><!-- mobile site__header -->
-                <!-- topnavbars start  -->
-
-                @include('website.includes.topnavbar')	
-              
-              <!-- topnavbars ends -->
+@extends('website.master')
+@section('title')
+Jafree Ecommerce - Blog Classic
+@endsection
+@section('content')
      
         <div class="site__body">
             <div class="page-header">
@@ -349,11 +328,5 @@
                     </div>
                 </div>
             </div>
-        </div><!-- site__body / end -->
-        <!-- site__footer -->
-        @include('website.includes.footer')	
-        <!-- site__footer / end -->
-    </div><!-- site / end -->
-</body>
-
-</html>
+        </div>
+        @endsection

@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-
-@include('website.includes.header')	
-
-<body><!-- quickview-modal -->
-    <div id="quickview-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content"></div>
-        </div>
-    </div><!-- quickview-modal / end --><!-- mobilemenu -->
-
+@extends('website.master')
+@section('title')
+Jafree Ecommerce - Blog Grid
+@endsection
+@section('content')
     <div class="site"><!-- mobile site__header -->
-    @include('website.includes.topnavbar')	
+
         <div class="site__body">
             <div class="page-header">
                 <div class="page-header__container container">
@@ -337,10 +330,4 @@
                 </div>
             </div>
         </div><!-- site__body / end --><!-- site__footer -->
-       <!-- site__footer -->
-       @include('website.includes.footer')	
-        <!-- site__footer / end -->
-    </div><!-- site / end -->
-</body>
-
-</html>
+        @endsection
