@@ -1,7 +1,8 @@
 @extends('admin.master')
 @section('title')
-Admin Product-Add
+{{$settings->website_name}} Edit Setting
 @endsection
+<link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')
 <div class="content-wrapper">
     <section class="content-header">

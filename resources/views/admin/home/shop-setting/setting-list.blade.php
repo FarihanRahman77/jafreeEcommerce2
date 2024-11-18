@@ -1,7 +1,8 @@
 @extends('admin.master')
 @section('title')
-Admin Setting-List
+{{$settings->website_name}} Setting-list
 @endsection
+<link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')
 <div class="content-wrapper">
     <section class="content-header" style="padding: 0px 1.0rem;">
