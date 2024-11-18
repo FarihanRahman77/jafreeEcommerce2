@@ -48,7 +48,7 @@ Admin Product-Add
                                         <label class="col-sm-4 col-form-label">Website Name</label>
 
                                         <div class="col-sm-12">
-                                            <input type="text" class="form-control" name="name" value="{{$setting->name}}" placeholder="Website Name">
+                                            <input type="text" class="form-control" name="name" value="{{$setting->website_name}}" placeholder="Website Name">
                                             <span class="text-danger">{{$errors->has('name')?$errors->first('name'):''}}</span>
                                         </div>
                                     </div>
