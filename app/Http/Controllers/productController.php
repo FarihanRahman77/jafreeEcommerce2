@@ -24,19 +24,37 @@ class productController extends Controller {
   protected $name;
   /* function for admin panel*/
   public function productView() {
-      
-    $products = DB::table('tbl_products')
-    ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
-    ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
-    ->select('tbl_products.id', 'tbl_products.productName', 'tbl_products.productImage','tbl_products.status','tbl_products.created_at','tbl_category.categoryName','tbl_brands.brandName')
-    ->where('tbl_products.deleted', 'No')
-    ->where('tbl_category.deleted', 'No')
-    ->where('tbl_brands.deleted', 'No')
-    ->orderBy('tbl_products.id', 'desc')
-    ->get();
-   
-    return view('admin.home.products.productsView', ['products' => $products]);
-  }
+    $settings=ShopSetting::where('status', 'Active')->first();
+    
+    $products=DB::table('tbl_print_book_product')
+     ->select([
+         'tbl_products.id', 
+         'tbl_products.productName', 
+         'tbl_products.productImage',
+         'tbl_products.status',
+         'tbl_products.created_at',
+         'tbl_brands.brandName',
+         'tbl_category.categoryName'
+     ])
+     ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
+     ->join('tbl_printbook', 'tbl_printbook_category.tbl_printbook_id', '=', 'tbl_printbook.id')
+     ->join('tbl_brands', 'tbl_printbook_category.tbl_brand_id', '=', 'tbl_brands.id')
+     ->join('tbl_category', 'tbl_printbook_category.tbl_category_id', '=', 'tbl_category.id')
+     ->join('tbl_products', 'tbl_print_book_product.tbl_product_id', '=', 'tbl_products.id')
+     ->where('tbl_products.deleted', 'No')
+     ->where('tbl_products.status', 'Active')
+     ->where('tbl_print_book_product.status', 'Active')
+     ->where('tbl_print_book_product.deleted', 'No')
+     ->where('tbl_printbook_category.is_website', 'Yes')
+     ->where('tbl_printbook_category.status', 'Active')
+     ->where('tbl_printbook_category.deleted', 'No')
+     ->where('tbl_printbook.status', 'Active')
+     ->where('tbl_printbook.deleted', 'No')
+     ->distinct()
+     ->get();
+
+  return view('admin.home.products.productsView', ['products' => $products,'settings'=>$settings]);  
+}
   /* //function for admin panel*/
 
   /* function for frontEnd panel*/ 
