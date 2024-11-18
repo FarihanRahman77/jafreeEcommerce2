@@ -33,26 +33,22 @@ class AppServiceProvider extends ServiceProvider
 
         /* start Menue pass in specefic page */
         View::composer('frontEnd.includes.menue', function($view) {
-            $shopSetting = ShopSetting::first();
-            // if (Session::get("currency") == null) {
-            //     session()->put('currency', $shopSetting->currency);
-            // }
+            $shopSetting = ShopSetting::where('status', 'Active')->first();
+            if (Session::get("currency") == null) {
+                session()->put('currency', $shopSetting->currency);
+            }
             $menu_data = '';
-            $publishCategries = Category::where('status', 'Active')->where('deleted', 'No')->get();
-            // foreach ($publishCategries as $publishCategry) {
-            //     $publishSubCategories = subCategory::where(['tbl_categoryId' => $publishCategry->id, 'status' => 'Active', 'deleted' => 'No'])->get();
-            //     $menu_data .= "<li class='sub-menu'><a href='#'>$publishCategry->categoryName<span class='caret'></span></a>
-            //     <ul>  
-            //     ";
-            //     /* foreach($publishSubCategories as $publishSubCategory){
-            //       $menu_data .= "<li>
-            //       <a href='".url("/categoryView/".$publishSubCategory->subCategoryName)."'>$publishSubCategory->subCategoryName</a>
-            //       </li>";
-            //       } */
-            //     $menu_data .="</ul>
-            //     </li>";
-            // }
-            $view->with(['publishCategries' => $publishCategries, 'shopSetting' => $shopSetting]);
+            $publishCategries = Category::where('status', 'Available')->where('deleted', 'No')->get();
+            foreach ($publishCategries as $publishCategry) {
+                $publishSubCategories = subCategory::where(['tbl_categoryId' => $publishCategry->id, 'status' => 'Active', 'deleted' => 'No'])->get();
+                $menu_data .= "<li class='sub-menu'><a href='#'>$publishCategry->categoryName<span class='caret'></span></a>
+                <ul>  
+                ";
+                
+                $menu_data .="</ul>
+                </li>";
+            }
+            $view->with(['publishMenues' => $menu_data, 'publishCategries' => $publishCategries, 'shopSetting' => $shopSetting]);
         });
         /* End local value pass in specefic page */
 
@@ -60,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
         /* start Menue pass in specefic page */
         View::composer('frontEnd.home.bannerLeftCategory', function($view) {
             $menu_data = '';
-            $publishCategries = Category::where('categoryStatus', 'Available')->where('deleted', 'No')->take(10)->get();
+            $publishCategries = Category::where('status', 'Available')->where('deleted', 'No')->take(10)->get();
             foreach ($publishCategries as $publishCategry) {
                 $publishSubCategories = subCategory::where(['tbl_categoryId' => $publishCategry->id, 'status' => 'Active', 'deleted' => 'No'])->get();
                 $menu_data .= "<li class='sub-menu'><a href='#'>$publishCategry->categoryName<span class='caret'></span></a>
@@ -83,7 +79,7 @@ class AppServiceProvider extends ServiceProvider
         /* start Menue pass in specefic page */
         View::composer('frontEnd.home.topLeftCategory', function($view) {
             $menu_data = '';
-            $publishCategries = Category::where('categoryStatus', 'Available')->where('deleted', 'No')->take(10)->get();
+            $publishCategries = Category::where('status', 'Available')->where('deleted', 'No')->take(10)->get();
             foreach ($publishCategries as $publishCategry) {
                 $publishSubCategories = subCategory::where(['tbl_categoryId' => $publishCategry->id, 'status' => 'Active', 'deleted' => 'No'])->get();
                 $menu_data .= "<li class='sub-menu'><a href='#'>$publishCategry->categoryName<span class='caret'></span></a>
@@ -106,7 +102,7 @@ class AppServiceProvider extends ServiceProvider
         /* start Menue pass in specefic page */
         View::composer('frontEnd.home.topMainCategory', function($view) {
             $menu_data = '';
-            $publishCategries = Category::where('categoryStatus', 'Available')->where('deleted', 'No')->take(10)->get();
+            $publishCategries = Category::where('status', 'Available')->where('deleted', 'No')->take(10)->get();
             foreach ($publishCategries as $publishCategry) {
                 $publishSubCategories = subCategory::where(['tbl_categoryId' => $publishCategry->id, 'status' => 'Active', 'deleted' => 'No'])->get();
                 $menu_data .= "<li class='liTopKey'><a href='" . url("/catProducts/" . $publishCategry->categoryName) . "'>$publishCategry->categoryName</a></li>";
@@ -180,10 +176,7 @@ class AppServiceProvider extends ServiceProvider
                     ->get();
 
             foreach ($topProducts as $topProduct) {
-                /* $specifications = productspecification::where('tbl_productsId','=',$topProduct->id)
-                  ->where('deleted','=','No')
-                  ->select('*')
-                  ->get(); */
+               
                 $specifications = DB::table('productspecifications')
                         ->leftJoin('product_special_offers', function($join) {
                             $join->on('productspecifications.id', '=', 'product_special_offers.product_spec_id');
@@ -196,7 +189,7 @@ class AppServiceProvider extends ServiceProvider
                         ->get();
                 $topProduct->spec = $specifications;
             }
-            $settings = ShopSetting::find(1);
+            $settings = ShopSetting::find(0);
             $view->with(['fronEndTopProducts' => $fronEndTopProducts, 'topProducts' => $topProducts, 'currency' => $settings->currency]);
         });
 
@@ -205,12 +198,6 @@ class AppServiceProvider extends ServiceProvider
         /* Banner Offer view in frontEnd page */
         View::composer('frontEnd.home.bestSlidProducts', function($view) {
 
-            /*$deals = DB::table('products')
-                    ->where([['deleted', '=', 'No'], ['in_offer', '=', 'yes']])
-                    ->select('products.*')
-                    ->take(20)
-                    ->get();*/
-                    
             $deals = DB::table('products')
                     ->join('productspecifications','productspecifications.tbl_productsId','=','products.id')
                     ->join('product_special_offers', function($join) {
@@ -224,43 +211,19 @@ class AppServiceProvider extends ServiceProvider
                     ->get();
 
             foreach ($deals as $deal) {
-                /* $specifications = productspecification::where('tbl_productsId','=',$topProduct->id)
-                  ->where('deleted','=','No')
-                  ->select('*')
-                  ->get(); */
-
-                /*$specifications = DB::table('productspecifications')
-                        ->leftJoin('product_special_offers', function($join) {
-                            $join->on('productspecifications.id', '=', 'product_special_offers.product_spec_id');
-                            $join->on('product_special_offers.startDate', '<=', DB::raw("'" . date('Y-m-d') . "'"));
-                            $join->on('product_special_offers.endDate', '>=', DB::raw("'" . date('Y-m-d') . "'"));
-                        })
-                        ->where('tbl_productsId', '=', $deal->id)
-                        ->where('productspecifications.deleted', '=', 'No')
-                        ->select('productspecifications.*', 'product_special_offers.offerPrice')
-                        ->get();
-                $deal->spec = $specifications;*/
+                
                 $deal->id = $deal->id . 'd';
             }
-            $settings = ShopSetting::find(1);
+            $settings = ShopSetting::find(0);
             $view->with(['deals' => $deals, 'currency' => $settings->currency]);
         });
-        /* End Banner Offer view in frontEnd page */
-
-        /* Special Offer pass in specefic page */
-        /* View::composer('frontEnd.home.specialOffers',  function($view){
-          $productSpecialOffer = DB::table('product_special_offers')
-          ->join('products', 'products.id', '=', 'product_special_offers.tbl_productId')
-          ->join('master_offers','master_offers.id','=','product_special_offers.tbl_masterOfferId')
-          ->select('product_special_offers.id','product_special_offers.status','products.productName','products.amount','products.productImage','product_special_offers.tbl_productId','master_offers.master_offerName','product_special_offers.offerPrice','product_special_offers.startDate','product_special_offers.endDate','product_special_offers.created_at')
-          ->where('product_special_offers.status','=','Active')
-          ->where('master_offers.master_offerName','=','Special Offer')
-          ->get();
-          $view->with('productSpecialOffer',$productSpecialOffer);
-
-          }); */
-        /* Special Offer pass in specefic page */
+        
     
+        View::composer('*', function($view) {
+            $settings = ShopSetting::find(0);
+            $view->with(['settings' => $settings]);
+        });
+
 
     }
 }

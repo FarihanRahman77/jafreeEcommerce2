@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ShopSetting extends Model
 {
     use HasFactory;
-    protected $guarded = [];
-    protected $table='shopsettings';
+    // protected $guarded = [];
+    protected $table = 'shopsettings';
 }

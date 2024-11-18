@@ -158,7 +158,6 @@
         // departments
         */
         const CDepartments = function(element) {
-
             const self = this;
 
             element.data('departmentsInstance', self);
@@ -196,7 +195,7 @@
         };
         CDepartments.prototype.clickOnButton = function(event) {
             event.preventDefault();
-            
+
             if (this.element.is('.departments--opened')) {
                 this.close();
             } else {

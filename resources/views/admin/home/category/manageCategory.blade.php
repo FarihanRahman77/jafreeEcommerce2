@@ -1,6 +1,6 @@
 @extends('admin.master')
 @section('title')
-Jafree Ecommerce - Admin Category Edit
+Admin Category-View
 @endsection
 @section('content')
 <div class="content-wrapper">
@@ -31,41 +31,62 @@ Jafree Ecommerce - Admin Category Edit
                         <div class="row">
                             <div class="col-md-2"></div>
                             <div class="col-md-8">
-                                {!!Form::open(['url'=>'category/update','class'=>'form-horizontal' ,'method'=>'POST','name'=>'editCategoryForm'])!!}
-                                <div class="col-xl-3 col-lg-3"></div> 
-
+                                {!!Form::open(['url'=>'category/update','class'=>'form-horizontal' ,'method'=>'POST','enctype'=>'multipart/form-data','name'=>'editCategoryForm'])!!}
+                                <div class="col-xl-3 col-lg-3"></div>
                                 <input type="hidden" value="{{$categoryById->id}}" name="id">
-                                <div class="form-group">
-                                    <label>Category Name</label>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="Categoryname" value="{{$categoryById->categoryName}}" name="Categoryname" placeholder=" Category name " required>
-                                            <span class="text-danger">{{$errors->has('Categoryname')?$errors->first('Categoryname'):''}}</span>
-                                        </div>
+                                <!-- <div class="form-group row">
+                                    <label for="Categoryname" class="col-sm-3 control-label">Category Name</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="Categoryname" value="{{$categoryById->categoryName}}" name="Categoryname" placeholder=" Category name " required>
+                                        <span class="text-danger">{{$errors->has('Categoryname')?$errors->first('Categoryname'):''}}</span>
                                     </div>
-                                </div>
+                                </div> -->
+                                <!-- <div class="form-group row">
+                                    <label for="CategoryStatus" class="col-sm-3 control-label">Status</label>
+                                    
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="CategoryStatus" name="CategoryStatus"  required>
+                                            <option value="">- Select One -</option>
+                                            <option value="Available">Available</option>
+                                            <option value="Not Available">Not Available</option>
+                                        </select>
+                                        <span class="text-danger">{{$errors->has('CategoryStatus')?$errors->first('CategoryStatus'):''}}</span>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="form-group row">
+                                    <label for="comments" class="col-sm-3 control-label">Comments</label>
+
+                                    <div class="col-sm-9">
+                                        <textarea type="text" class="form-control" id="comments" name="comments" placeholder=" Write about category " >{{$categoryById->comments}}</textarea>
+                                    </div>
+                                </div> -->
                                 <div class="form-group row">
-                                    <label>Logo</label>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <input type="file" class="form-control" id="logo" name="logo">
-                                            <span class="text-danger">{{$errors->has('logo')?$errors->first('logo'):''}}</span>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <img src="" alt="">
-                                        </div>
+                                    <div class="col-md-8">
+                                        <label for="">Edit Image</label>
+                                        <input type="file" name="image" id="editImage" class="form-control form-control-sm">
+                                        <span class="text-danger" id="editImageError"></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img id="editShowImage"
+                                            src="{{ !empty($categoryById->image) ? url('website/images/categories/' . $categoryById->image) : url('website/images/categories/no_image.png') }}"
+                                            style="width: 100px;height: 80px; border:1px solid #000000">
                                     </div>
                                 </div>
+
                                 <div class="form-group row">
-                                    <label>Image</label><br>
-                                    <div class="col-sm-6">
-                                        <input type="file" class="form-control" id="image" name="image">
-                                        <span class="text-danger">{{$errors->has('image')?$errors->first('image'):''}}</span>
+                                    <div class="col-md-8">
+                                        <label for="">Edit Logo</label>
+                                        <input type="file" name="logo" id="editlogo" class="form-control form-control-sm">
+                                        <span class="text-danger" id="editlogoError"></span>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <img src="" alt="">
+                                    <div class="col-md-4">
+                                        <img id="editShowlogo"
+                                            src="{{ !empty($categoryById->logo) ? url('website/images/categories/' . $categoryById->logo) : url('website/images/categories/no_image.png') }}"
+                                            style="width: 100px;height: 80px; border:1px solid #000000">
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-flat" name="addCategory"><i class="fa fa-save"></i> Update </button>
                                 </div>
@@ -74,14 +95,40 @@ Jafree Ecommerce - Admin Category Edit
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
     </section>
 </div>
 
+@endsection
+@section('contentJavaScripts')
 <script>
-    //document.form['editCategoryForm'].elements['CategoryStatus'].value="{{$categoryById->categoryStatus}}";
-    //alert("{{$categoryById->categoryStatus}}");
-    document.getElementById("CategoryStatus").value = "{{$categoryById->categoryStatus}}";
+    $(document).ready(function() {
+
+        // For editImage preview
+        $('#editImage').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#editShowImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        });
+
+        // For editlogo preview
+        $('#editlogo').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#editShowlogo').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        })
+
+    });
+
+
+
+    //document.form['editCategoryForm'].elements['CategoryStatus'].value="{{$categoryById->status}}";
+    //alert("{{$categoryById->status}}");
+    document.getElementById("status").value = "{{$categoryById->status}}";
 </script>
 @endsection

@@ -86,8 +86,8 @@
                                         </svg></button>
                                     <div class="topbar-dropdown__body"><!-- .menu -->
                                         <ul class="menu menu--layout--topbar">
-                                            <li><a href="{{ url('/login_register') }}">Login</a></li>
-                                            <li><a href="{{ url('/login_register') }}">Register</a></li>
+                                            <li><a href="{{ url('/login') }}">Login</a></li>
+                                            <li><a href="{{ url('/login') }}">Register</a></li>
                                             <li><a href="#">Orders</a></li>
                                             <li><a href="#">Addresses</a></li>
                                         </ul><!-- .menu / end -->
@@ -179,10 +179,10 @@
                         <div class="nav-panel__container container">
                             <div class="nav-panel__row">
                                 <div class="nav-panel__departments"><!-- .departments -->
-                                    <div class="departments" ><!-- data-departments-fixed-by="" -->
+                                    <div class="departments" data-departments-fixed-by="">
                                         <div class="departments__body">
                                             <div class="departments__links-wrapper">
-                                                <ul class="departments__links" >
+                                                <ul class="departments__links">
                                                     <li class="departments__item"><a href="#">Power Tools <svg
                                                                 class="departments__link-arrow" width="6px"
                                                                 height="9px">
@@ -631,16 +631,13 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                        </div>
-                                        <button class="departments__button">
-                                            <svg class="departments__button-icon" width="18px" height="14px">
+                                        </div><button class="departments__button"><svg class="departments__button-icon"
+                                                width="18px" height="14px">
                                                 <use xlink:href="images/sprite.svg#menu-18x14"></use>
-                                            </svg> 
-                                            Shop By Category 
-                                            <svg class="departments__button-arrow" width="9px" height="6px">
+                                            </svg> Shop By Category <svg class="departments__button-arrow" width="9px"
+                                                height="6px">
                                                 <use xlink:href="images/sprite.svg#arrow-rounded-down-9x6"></use>
-                                            </svg>
-                                        </button>
+                                            </svg></button>
                                     </div><!-- .departments / end -->
                                 </div><!-- .nav-links -->
                                 <div class="nav-panel__nav-links nav-links">
@@ -654,7 +651,7 @@
                                             <div class="nav-links__menu"><!-- .menu -->
                                                 <ul class="menu menu--layout--classic">
                                                     <li><a href="{{ url('/') }}">Home 1</a></li>
-                                                    <li><a href="{{ url('/home2') }}">Home 2</a></li>
+                                                    <!-- <li><a href="{{ url('/home2') }}">Home 2</a></li> -->
                                                 </ul><!-- .menu / end -->
                                             </div>
                                         </li>

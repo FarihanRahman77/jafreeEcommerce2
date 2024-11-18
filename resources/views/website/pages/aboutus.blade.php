@@ -1,9 +1,9 @@
 @extends('website.master')
 @section('title')
-Jafree Traders Ecommerce- About Us
+Jafree Ecommerce - About Us
 @endsection
 @section('content')
-<section>
+<div class="site__body">
     <div class="block about-us">
         <div class="about-us__image"></div>
         <div class="container">
@@ -53,5 +53,5 @@ Jafree Traders Ecommerce- About Us
             </div>
         </div>
     </div>
-</section>
+</div>
 @endsection

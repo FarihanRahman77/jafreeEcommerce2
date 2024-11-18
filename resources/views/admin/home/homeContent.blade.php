@@ -1,6 +1,6 @@
 @extends('admin.master')
 @section('title')
-Jafree Ecommerce - Dashboard
+Jaman.Co.Uk Admin Panel
 @endsection
 @section('content')
 <div class="content-wrapper">
