@@ -59,7 +59,7 @@ Admin Product-Edit
                             <div class="form-group col-md-6">
                                 <label for="video_url" class="col-form-label">Video URL(Embaded)</label>
                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" id="video_url" name="video_url">
+                                    <input type="text" class="form-control" id="video_url" name="video_url" value="{{$product->video_url}}">
                                     <span class="text-danger">{{$errors->has('video_url')?$errors->first('video_url'):''}}</span>
                                 </div>
                             </div>

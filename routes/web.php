@@ -143,7 +143,7 @@ Route::middleware('auth')->group(function () {
   Route::post('/products/save', 'App\Http\Controllers\productController@productSave');
   Route::get('/products/edit/{id}', 'App\Http\Controllers\productController@productEdit');
   Route::post('/products/update', 'App\Http\Controllers\productController@productUpdate');
-  Route::post('/products/videoUrl/update', 'App\Http\Controllers\productController@productVideoUrlUpdate');
+  Route::post('products/videoUrl/update', 'App\Http\Controllers\productController@productVideoUrlUpdate');
   Route::get('/products/delete/{id}', 'App\Http\Controllers\productController@productDelete');
   Route::post('/dynamic_dependent/fetch', 'App\Http\Controllers\productController@fetch')->name('dynamicdependent.fetch');
   Route::get('/products/viewProfile/{id}', 'App\Http\Controllers\productController@productViewProfile');
