@@ -1,7 +1,8 @@
 @extends('website.master')
 @section('title')
-Jafree Ecommerce - About Us
+{{$settings->website_name}}-About us
 @endsection
+<link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')
 <div class="site__body">
     <div class="block about-us">
@@ -12,42 +13,18 @@ Jafree Ecommerce - About Us
                     <div class="about-us__body">
                         <h1 class="about-us__title">About Us</h1>
                         <div class="about-us__text typography">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras lacus metus,
-                                convallis ut leo nec, tincidunt eleifend justo. Ut felis orci, hendrerit a
-                                pulvinar et, gravida ac lorem. Sed vitae molestie sapien, at sollicitudin
-                                tortor.</p>
-                            <p>Duis id volutpat libero, id vestibulum purus.Donec euismod accumsan felis,egestas
-                                lobortis velit tempor vitae. Integer eget velit fermentum, dignissim odio non,
-                                bibendum velit.</p>
-                        </div>
-                        <div class="about-us__team">
-                            <h2 class="about-us__team-title">Meat Our Team</h2>
-                            <div class="about-us__team-subtitle text-muted">Want to work in our friendly
-                                team?<br><a href="contact-us.html">Contact us</a> and we will consider your
-                                candidacy.</div>
-                            <div class="about-us__teammates teammates">
-                                <div class="owl-carousel">
-                                    <div class="teammates__item teammate">
-                                        <div class="teammate__avatar"><img src="images/teammates/teammate-1.jpg"
-                                                alt=""></div>
-                                        <div class="teammate__name">Michael Russo</div>
-                                        <div class="teammate__position text-muted">Chief Executive Officer</div>
-                                    </div>
-                                    <div class="teammates__item teammate">
-                                        <div class="teammate__avatar"><img src="images/teammates/teammate-2.jpg"
-                                                alt=""></div>
-                                        <div class="teammate__name">Katherine Miller</div>
-                                        <div class="teammate__position text-muted">Marketing Officer</div>
-                                    </div>
-                                    <div class="teammates__item teammate">
-                                        <div class="teammate__avatar"><img src="images/teammates/teammate-3.jpg"
-                                                alt=""></div>
-                                        <div class="teammate__name">Anthony Harris</div>
-                                        <div class="teammate__position text-muted">Finance Director</div>
-                                    </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="abouutustext"> Established by Mr Mohammed Ali in 1957, Jafree Traders has spread its reach across the country while maintaining the same integrity and ethics as the first day of its opening. Jafree Traders began as a small business dealing in ball bearings, and has grown in more than 60 years since to a big and well-networked enterprise specialising in tools, power tools, welding machines and welding equipment. It stands today as number one in Bangladesh for welding machines, in both variety and quantity
+
+                                        Jafree Traders is the sole agent in Bangladesh for DCA Power Tools, Riland and Rilon brand inverter type welding machine, Mosay brand circular saw blades, and DaHua brand grinding and cutting wheels, among many others. With different, dedicated teams for retail, wholesale, corporate clients, projects and after-sales services, Jafree Traders has more than 1400 buyers from all over Bangladesh. They take great pride in calling themselves ‘a one stop solution for all your machinery and tools needs.”</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <img src="{{asset('website/images/1654599212oldShop.jpg')}}" />
                                 </div>
                             </div>
                         </div>
+                   
                     </div>
                 </div>
             </div>

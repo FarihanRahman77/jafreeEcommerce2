@@ -288,7 +288,16 @@ h6 {
     border-radius: 0 1.5px 1.5px 0;
     background: transparent
 }
+.abouutustext {
+    height: 350px;
+    overflow-y: auto;
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
 
+.abouutustext::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
 .alert-dismissible .close:focus {
     outline: none
 }

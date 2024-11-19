@@ -119,18 +119,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-flat" name="addProduct"><i class="fa fa-save"></i> Update </button>
                                 </div>

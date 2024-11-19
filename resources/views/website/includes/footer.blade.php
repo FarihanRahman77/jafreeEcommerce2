@@ -6,7 +6,7 @@
                             <div class="col-12 col-md-6 col-lg-4">
                                 <div class="site-footer__widget footer-contacts">
                                     <h5 class="footer-contacts__title">Contact Us</h5>
-                                    
+                                    <div><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius ratione accusamus consequuntur non quod voluptas adipisci blanditiis aliquam saepe repellendus modi rem perferendis, numquam tempore ea, nemo alias. Ipsum, cupiditate.</p></div>
                                     <ul class="footer-contacts__contacts">
                                         <li><i class="footer-contacts__icon fas fa-globe-americas"></i> {{$settings->address}}</li>
                                         <li><i class="footer-contacts__icon far fa-envelope"></i> {{$settings->email}}
