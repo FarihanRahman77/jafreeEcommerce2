@@ -30,7 +30,7 @@ Admin Product-Add
                             <div class="col-md-1"></div>
                             <div class="col-md-11">
                                 {!!Form::open(['url'=>'content/update', 'class'=>'form-horizontal' ,'method'=>'POST','enctype'=>'multipart/form-data'])!!}
-                                <div class="col-md-12 row">    
+                                <div class="col-md-12 row">
                                     <div class="col-md-12 form-group">
                                         <label class="col-form-label">Content Title</label>
 
@@ -48,7 +48,7 @@ Admin Product-Add
                                         <label class="col-form-label">Content Description</label>
 
                                         <div class="col-sm-12">
-                                            <textarea class="form-control" id="contentDescriptionCkeditor" name="content_description" placeholder=" Write about product Sort Description " >{{$content->content_description}}</textarea>
+                                            <textarea class="form-control" id="contentDescriptionCkeditor" name="content_description" placeholder=" Write about product Sort Description ">{{$content->content_description}}</textarea>
                                         </div>
                                     </div>
 
@@ -59,12 +59,12 @@ Admin Product-Add
                                         <label class="col-form-label">Status</label>
 
                                         <div class="col-sm-12">
-                                            <select id="contentStatus" class="form-control dynamic" data-dependent="" name="status" >
+                                            <select id="contentStatus" class="form-control dynamic" data-dependent="" name="status">
                                                 <option value="" selected>~~ Select Status ~~</option>
-                                                
+
                                                 <option value="On">On</option>
                                                 <option value="Off">Off</option>
-                                                
+
                                             </select>
 
                                             <span class="text-danger">{{$errors->has('status')?$errors->first('status'):''}}</span>
@@ -78,20 +78,33 @@ Admin Product-Add
                                             <span class="text-danger">{{$errors->has('alias')?$errors->first('alias'):''}}</span>
                                         </div>
                                     </div>
-                                
+
+
+                                </div>
+
+                                <div class="col-md-12 d-md-flex">
                                     <div class="col-md-4 form-group">
                                         <label class="col-form-label">Sequence</label>
 
                                         <div class="col-sm-12">
-                                            <input type="number" class="form-control"  name="sequence" placeholder=" Sequence" value="{{$content->sequence}}">
+                                            <input type="number" class="form-control" name="sequence" placeholder=" Sequence" value="{{$content->sequence}}">
                                             <span class="text-danger">{{$errors->has('sequence')?$errors->first('sequence'):''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label class="col-form-label">Content Image</label>
+
+                                        <div class="col-sm-12">
+                                            <input type="file" class="form-control" id="content_image" name="content_image" accept="image/*">
+                                            <img id="Showcontent_image"
+                                            src="{{ !empty($content->content_image) ? url('website/images/blog/'.$content->content_image) : url('website/images/blog/no_image.png') }}"
+                                            style="width: 100px;height: 80px; border:1px solid #000000"/>
+                                            <span class="text-danger">{{$errors->has('content_image')?$errors->first('content_image'):''}}</span>
                                         </div>
                                     </div>
                                 </div>
 
 
-                                
-                                
 
                                 <div class="form-group save_button">
                                     <button type="submit" class="btn btn-primary btn-flat" name="addProduct"><i class="fa fa-save"></i> Update </button>
@@ -107,10 +120,20 @@ Admin Product-Add
     </section>
 </div>
 <script>
-
     document.getElementById("contentStatus").value = "{{$content->status}}";
-
 </script>
 @endsection
-
-
+@section('contentJavaScripts')
+<script>
+     $(document).ready(function(){
+        $('#content_image').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#Showcontent_image').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        });
+    });
+ 
+</script>
+@endsection
