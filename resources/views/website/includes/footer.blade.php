@@ -6,16 +6,15 @@
                             <div class="col-12 col-md-6 col-lg-4">
                                 <div class="site-footer__widget footer-contacts">
                                     <h5 class="footer-contacts__title">Contact Us</h5>
-                                    <div class="footer-contacts__text">Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit. Integer in feugiat lorem. Pellentque ac placerat tellus.</div>
+                                    
                                     <ul class="footer-contacts__contacts">
-                                        <li><i class="footer-contacts__icon fas fa-globe-americas"></i> 715 Fake Street,
-                                            New York 10021 USA</li>
-                                        <li><i class="footer-contacts__icon far fa-envelope"></i> stroyka@example.com
+                                        <li><i class="footer-contacts__icon fas fa-globe-americas"></i> {{$settings->address}}</li>
+                                        <li><i class="footer-contacts__icon far fa-envelope"></i> {{$settings->email}}
                                         </li>
-                                        <li><i class="footer-contacts__icon fas fa-mobile-alt"></i> (800) 060-0730,
-                                            (800) 060-0730</li>
-                                        <li><i class="footer-contacts__icon far fa-clock"></i> Mon-Sat 10:00pm - 7:00pm
+                                        <li><i class="footer-contacts__icon fas fa-mobile-alt"></i>  {{$settings->phone}}</li>
+                                        <li><i class="footer-contacts__icon far fa-clock"></i>{{$settings->opening_hour}}
+                                        </li>
+                                        <li><i class="footer-contacts__icon far fa-clock"></i>{{$settings->opening_day}}
                                         </li>
                                     </ul>
                                 </div>
@@ -78,23 +77,23 @@
                                     <ul class="footer-newsletter__social-links">
                                         <li
                                             class="footer-newsletter__social-link footer-newsletter__social-link--facebook">
-                                            <a href="https://themeforest.net/user/kos9" target="_blank"><i
+                                            <a href="{{$settings->facebook}}" target="_blank"><i
                                                     class="fab fa-facebook-f"></i></a></li>
                                         <li
                                             class="footer-newsletter__social-link footer-newsletter__social-link--twitter">
-                                            <a href="https://themeforest.net/user/kos9" target="_blank"><i
-                                                    class="fab fa-twitter"></i></a></li>
+                                            <a href="{{$settings->linkedin}}" target="_blank"><i
+                                                    class="fab fa-linkedin"></i></a></li>
                                         <li
                                             class="footer-newsletter__social-link footer-newsletter__social-link--youtube">
-                                            <a href="https://themeforest.net/user/kos9" target="_blank"><i
+                                            <a href="{{$settings->youtube}}" target="_blank"><i
                                                     class="fab fa-youtube"></i></a></li>
                                         <li
                                             class="footer-newsletter__social-link footer-newsletter__social-link--instagram">
-                                            <a href="https://themeforest.net/user/kos9" target="_blank"><i
+                                            <a href="{{$settings->instagram}}" target="_blank"><i
                                                     class="fab fa-instagram"></i></a></li>
-                                        <li class="footer-newsletter__social-link footer-newsletter__social-link--rss">
+                                        <!-- <li class="footer-newsletter__social-link footer-newsletter__social-link--rss">
                                             <a href="https://themeforest.net/user/kos9" target="_blank"><i
-                                                    class="fas fa-rss"></i></a></li>
+                                                    class="fas fa-rss"></i></a></li> -->
                                     </ul>
                                 </div>
                             </div>

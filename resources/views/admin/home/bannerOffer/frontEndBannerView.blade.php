@@ -1,7 +1,8 @@
 @extends('admin.master')
 @section('title')
-Admin Front End Banner -View
+{{$settings->website_name}}-FrontEnd Banner View
 @endsection
+<link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')
 <div class="content-wrapper">
     <section class="content-header" style="padding: 0px 1.0rem;">
@@ -57,7 +58,7 @@ Admin Front End Banner -View
                                     <tr>
 
                                         <td>{{$banner->id}}</td>
-                                        <td><img src = "{{ asset('/bannerImage/'.$banner->bannerImage) }}" width="350" height="150" /></td>
+                                        <td><img src = "{{ asset('website/images/banners/'.$banner->bannerImage) }}" width="350" height="150" /></td>
                                         <td>{{$banner->sorting}}</td>
                                         <td>{{$banner->created_at}}<br>{{$banner->carousal_caption_offer}}<br>{{$banner->carousal_caption_description}}</td>
                                         <td>{{$banner->status}}</td>
@@ -69,7 +70,7 @@ Admin Front End Banner -View
                                                     <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
                                                         <li class="action"><a href="{{url('/banner/change-status/'.$banner->id)}}" class="btn" onclick="return confirm('Are you sure you want to change status of this banner?');"><i class="fas fa-edit"></i> Change Status </a></li>
                                                         </li>
-                                                        <li class="action"><a href="{{url('/banner/frontEndDelete/'.$banner->id)}}" class="btn"  onclick="return confirm('Are you sure you want to delete this item?');"><i class="fas fa-trash"></i> Delete </a></li>
+                                                        <li class="d-none action"><a href="{{url('/banner/frontEndDelete/'.$banner->id)}}" class="btn"  onclick="return confirm('Are you sure you want to delete this item?');"><i class="fas fa-trash"></i> Delete </a></li>
 
                                                     </ul>
                                                 </div>

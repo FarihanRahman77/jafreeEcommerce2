@@ -1,6 +1,6 @@
 @extends('admin.master')
 @section('title')
-{{$settings->website_name}} Brand List
+{{$settings->website_name}}-Brand List
 @endsection
 <link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')

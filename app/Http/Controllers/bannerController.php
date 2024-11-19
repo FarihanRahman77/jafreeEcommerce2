@@ -13,7 +13,8 @@ class bannerController extends Controller
         return view('admin.home.bannerOffer.frontEndBannerView',['banners'=>$banners]);
     }
     public function forntEndBannerAdd(){
-        return view('admin.home.bannerOffer.createfrontEndBanner');
+        $banners = banner::all();
+        return view('admin.home.bannerOffer.createfrontEndBanner',['banners'=>$banners]);
     }
     public function forntEndBannerSave(Request $request){
 
@@ -25,7 +26,7 @@ class bannerController extends Controller
         
         $Bannerimage = $request->file('Bannerimage');
         $name = $Bannerimage->getClientOriginalName();
-        $uploadPath = 'bannerImage/';
+        $uploadPath = 'website/images/banners/';
 		$bannerName = time().$name;
         $Bannerimage->move($uploadPath, $bannerName);
         

@@ -152,7 +152,9 @@
                         </div>
                     </div>
                     <div class="site-header__phone">
+
                         <div class="site-header__phone-title">Hot Line</div>
+
                         <div class="site-header__phone-number">{{$settings->phone}}</div>
                     </div>
                 </div>

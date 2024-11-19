@@ -1,6 +1,6 @@
 @extends('admin.master')
 @section('title')
-{{$settings->website_name}}-category edit
+{{$settings->website_name}}-Category edit
 @endsection
 <link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')

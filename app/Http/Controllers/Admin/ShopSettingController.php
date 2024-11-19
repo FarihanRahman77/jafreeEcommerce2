@@ -40,10 +40,23 @@ class ShopSettingController extends Controller
 	}
 
 	public function updateSetting(Request $request){
+		  
+
+
+		$Landscapeimage = $request->file('landscape_image');
+        $name = $Landscapeimage->getClientOriginalName();
+        $uploadPath = 'website/images/setting/';
+		$landscapeName = time().$name;
+        $Landscapeimage->move($uploadPath, $landscapeName);
 			$setting = ShopSetting::first();
 
 			$setting->website_name = $request->name;
 			$setting->currency = $request->currency;
+			$setting->facebook = $request->facebook;
+			$setting->youtube = $request->youtube;
+			$setting->instagram = $request->instagram;
+			$setting->linkedin = $request->linkedin;
+			$setting->landscape_image = $landscapeName;
 			$setting->erp_baseurl = $request->erp_baseurl;
 
 			$setting->updated_by = auth()->user()->id;
