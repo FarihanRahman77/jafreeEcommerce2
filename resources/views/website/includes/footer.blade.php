@@ -1,6 +1,6 @@
 <footer class="site__footer">
             <div class="site-footer">
-                <div class="container">
+                <div class="custom-container">
                     <div class="site-footer__widgets">
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-4">
@@ -101,7 +101,7 @@
                     </div>
                     <div class="site-footer__bottom">
                         <div class="site-footer__copyright"><a target="_blank"
-                                href="https://www.templateshub.net">Templates Hub</a></div>
+                                href="https://alitechbd.com/">Ali Technology</a></div>
                         <div class="site-footer__payments"><img src="images/payments.png" alt=""></div>
                     </div>
                 </div>

@@ -14,5 +14,6 @@
                 </div>
                 @include('website.includes.footer')
             </div>
+            @include('website.includes.script')
         </body>
     </html>

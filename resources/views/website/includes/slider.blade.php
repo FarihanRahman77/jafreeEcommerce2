@@ -1,6 +1,6 @@
-
+<input type="hidden" id="isSlider" value="slider">
 <div class="block-slideshow block-slideshow--layout--with-departments block">
-                <div class="container">
+                <div class="custom-container">
                     <div class="row">
                         <div class="col-12 col-lg-9 offset-lg-3">
                             <div class="block-slideshow__body">
