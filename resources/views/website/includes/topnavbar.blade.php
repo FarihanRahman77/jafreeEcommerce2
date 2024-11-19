@@ -4,9 +4,9 @@
                     <div class="container">
                         <div class="mobile-header__body"><button class="mobile-header__menu-button"><svg width="18px"
                                     height="14px">
-                                    <use xlink:href="{{asset('website/images/setting/'.$settings->image)}}"></use>
+                                    <use xlink:href="{{asset('website/images/setting/'.$settings->landscape_image)}}"></use>
                                 </svg></button> <a class="mobile-header__logo" href="{{ url('/') }}"><img
-                                  src="{{asset('website/images/setting/'.$settings->image)}}" width="60px" height="60px"/>
+                                  src="{{asset('website/images/setting/'.$settings->landscape_image)}}" width="60px" height="60px"/>
                                  
                                 </a>
                             <div class="mobile-header__search">
@@ -135,8 +135,8 @@
                     </div>
                 </div><!-- .topbar / end -->
                 <div class="site-header__middle container">
-                    <div class="site-header__logo"><a href="{{ url('/') }}"><img src="{{asset('website/images/setting/'.$settings->image)}}"
-                                width="60px" height="60px"/></a></div>
+                    <div class="site-header__logo"><a href="{{ url('/') }}"><img src="{{asset('website/images/setting/'.$settings->landscape_image)}}"
+                                width="280px" height="40px"/></a></div>
                     <div class="site-header__search">
                         <div class="search">
                             <form class="search__form" action="#"><input class="search__input" name="search"
