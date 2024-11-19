@@ -1,5 +1,5 @@
 <div class="block block-features block-features--layout--classic">
-                <div class="container">
+                <div class="custom-container">
                     <div class="block-features__list">
                         <div class="block-features__item">
                             <div class="block-features__icon"><svg width="48px" height="48px">
@@ -44,7 +44,7 @@
                 </div>
             </div><!-- .block-features / end --><!-- .block-products-carousel -->
             <div class="block block-products-carousel" data-layout="grid-4">
-                <div class="container">
+                <div class="custom-container">
                     <div class="block-header">
                         <h3 class="block-header__title">Featured Products</h3>
                         <div class="block-header__divider"></div>
@@ -2308,7 +2308,7 @@
                 </div>
             </div><!-- .block-products-carousel / end --><!-- .block-banner -->
             <div class="block block-banner">
-                <div class="container"><a href="#" class="block-banner__body">
+                <div class="custom-container"><a href="#" class="block-banner__body">
                         <div class="block-banner__image block-banner__image--desktop"
                             style="background-image: url('images/banners/banner-1.jpg')"></div>
                         <div class="block-banner__image block-banner__image--mobile"
@@ -2319,7 +2319,7 @@
                     </a></div>
             </div><!-- .block-banner / end --><!-- .block-products -->
             <div class="block block-products block-products--layout--large-first">
-                <div class="container">
+                <div class="custom-container">
                     <div class="block-header">
                         <h3 class="block-header__title">Bestsellers</h3>
                         <div class="block-header__divider"></div>
@@ -3296,7 +3296,7 @@
                 </div>
             </div><!-- .block-products / end --><!-- .block-categories -->
             <div class="block block--highlighted block-categories block-categories--layout--classic">
-                <div class="container">
+                <div class="custom-container">
                     <div class="block-header">
                         <h3 class="block-header__title">Popular Categories</h3>
                         <div class="block-header__divider"></div>
@@ -3414,7 +3414,7 @@
                 </div>
             </div><!-- .block-categories / end --><!-- .block-products-carousel -->
             <div class="block block-products-carousel" data-layout="horizontal">
-                <div class="container">
+                <div class="custom-container">
                     <div class="block-header">
                         <h3 class="block-header__title">New Arrivals</h3>
                         <div class="block-header__divider"></div>
@@ -5662,7 +5662,7 @@
                 </div>
             </div><!-- .block-products-carousel / end --><!-- .block-posts -->
             <div class="block block-posts block-posts--layout--list-sm" data-layout="list-sm">
-                <div class="container">
+                <div class="custom-container">
                     <div class="block-header">
                         <h3 class="block-header__title">Latest News</h3>
                         <div class="block-header__divider"></div>
@@ -5832,7 +5832,7 @@
                 </div>
             </div><!-- .block-posts / end --><!-- .block-brands -->
             <div class="block block-brands">
-                <div class="container">
+                <div class="custom-container">
                     <div class="block-brands__slider">
                         <div class="owl-carousel">
                             <div class="block-brands__item"><a href="#"><img src="{{asset('website/images/logos/logo-1.png')}}" alt=""></a>
@@ -5854,7 +5854,7 @@
                 </div>
             </div><!-- .block-brands / end --><!-- .block-product-columns -->
             <div class="block block-product-columns d-lg-block d-none">
-                <div class="container">
+                <div class="custom-container">
                     <div class="row">
                         <div class="col-4">
                             <div class="block-header">
