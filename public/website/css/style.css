@@ -3293,7 +3293,7 @@ screen and (-ms-high-contrast:active) {
 .departments__button {
     text-align: left;
     border: none;
-    background: transparent;
+    background: #3d464d;
     color: inherit;
     font-size: 15px;
     position: relative;
@@ -10832,4 +10832,29 @@ screen and (-ms-high-contrast:active) {
     border: 2px solid #f0f0f0;
     border-radius: 2px;
     padding: 28px
+}
+
+.departments__body {
+    max-height: 490px; /* Adjust this height as needed */
+    overflow-y: auto; /* Adds vertical scroll bar */
+    border: 1px solid #ccc; /* Optional: Adds a border for clarity */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    
+}
+
+.departments__body ::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Edge */
+}
+
+.departments__links {
+    margin-top: 15px;
+    padding: 0;
+    list-style: none;
+}
+
+
+.custom-container{
+    margin-left:50px;
+    margin-right:50px;
 }
