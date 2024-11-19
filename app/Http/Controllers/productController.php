@@ -56,7 +56,7 @@ class productController extends Controller {
     ->where('tbl_print_book_product.deleted', 'No')
     ->where('tbl_printbook_category.is_website', 'Yes')
     ->where('tbl_printbook_category.status', 'Active')
-    ->where('tbl_printbook_category.deleted', 'No')
+    ->where('tbl_printbook_category.deleted', 'No') 
     ->where('tbl_printbook.status', 'Active')
     ->where('tbl_printbook.deleted', 'No')
     ->orderBy('tbl_products.id', 'desc')
