@@ -46,8 +46,8 @@
                                         <th>Content Description</th>
                                         <th>Content Image</th>
                                         <th>Status</th>
-                                        <th>Alias</th>
-                                        <th>Sequence</th>
+                                        <!-- <th>Alias</th>
+                                        <th>Sequence</th> -->
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -63,8 +63,8 @@
                                             <img src="{{ asset('website/images/blog/' . $content->content_image) }}" alt="Blog Image" style="max-width: 100%; height: auto;">
                                         </td>
                                         <td>{{$content->status}}</td>
-                                        <td>{{$content->alias}}</td>
-                                        <td>{{$content->sequence}}</td>
+                                        <!-- <td>{{$content->alias}}</td>
+                                        <td>{{$content->sequence}}</td> -->
 
 
                                         <td style="width: 12%;">
