@@ -1,7 +1,8 @@
 @extends('admin.master')
 @section('title')
-Admin Product-Add
+{{$settings->website_name}}-Content Add
 @endsection
+<link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')
 <div class="content-wrapper">
     <section class="content-header" style="padding: 0px 1.0rem;">
@@ -30,7 +31,7 @@ Admin Product-Add
                             <div class="col-md-1"></div>
                             <div class="col-md-11">
                                 {!!Form::open(['url'=>'content/save', 'class'=>'form-horizontal' ,'method'=>'POST','enctype'=>'multipart/form-data'])!!}
-                                <div class="col-md-12 row">    
+                                <div class="col-md-12 row">
                                     <div class="col-md-12 form-group row">
                                         <label class="col-form-label">Content Title</label>
 
@@ -39,7 +40,7 @@ Admin Product-Add
                                             <span class="text-danger">{{$errors->has('content_title')?$errors->first('content_title'):''}}</span>
                                         </div>
                                     </div>
-                                  
+
                                 </div>
                                 <div class="col-md-12 row">
                                     <div class="col-md-12 form-group row">
@@ -57,14 +58,14 @@ Admin Product-Add
                                         <label class="col-form-label">Status</label>
 
                                         <div class="col-sm-12">
-                                            <select required="" class="form-control dynamic category" data-dependent="" name="status" >
+                                            <select required="" class="form-control dynamic category" data-dependent="" name="status">
                                                 <option value="" selected>~~ Select Status ~~</option>
-                                                
+
                                                 <option value="On">On</option>
                                                 <option value="Off">Off</option>
-                                                
+
                                             </select>
-                                           
+
                                             <span class="text-danger">{{$errors->has('status')?$errors->first('status'):''}}</span>
                                         </div>
                                     </div>
@@ -76,22 +77,31 @@ Admin Product-Add
                                             <span class="text-danger">{{$errors->has('alias')?$errors->first('alias'):''}}</span>
                                         </div>
                                     </div>
-                                
+
+
+
+                                </div>
+                                <div class="col-md-12 d-md-flex">
+
                                     <div class="col-md-4 form-group">
                                         <label class="col-form-label">Sequence</label>
 
                                         <div class="col-sm-12">
-                                            <input required="" type="number" class="form-control"  name="sequence" placeholder=" Sequence">
+                                            <input required="" type="number" class="form-control" name="sequence" placeholder=" Sequence">
                                             <span class="text-danger">{{$errors->has('sequence')?$errors->first('sequence'):''}}</span>
                                         </div>
                                     </div>
-                                  
-                                </div>
-                                                               
-                                 
-                                
-                                
+                                    <div class="col-md-4 form-group">
+                                        <label class="col-form-label">Content Image</label>
 
+                                        <div class="col-sm-12">
+                                            <input type="file" name="content_image" id="content_image"
+                                                class="form-control form-group-sm"/>
+                                            <img id="showcontent_image" src="{{ asset('website/images/blog/no_image.png') }}"
+                                                style="width: 100px;height: 110px; border:1px solid #000000;margin-top: 1%;">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group save_button">
                                     <button type="submit" class="btn btn-primary btn-flat" name="addProduct"><i class="fa fa-save"></i> Save </button>
                                 </div>
@@ -108,3 +118,16 @@ Admin Product-Add
 @endsection
 
 
+@section('contentJavaScripts')
+<script>
+        $(document).ready(function(){
+        $('#content_image').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#showcontent_image').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        });
+    });
+</script>
+@endsection
