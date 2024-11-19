@@ -54,33 +54,33 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4 form-group">
-                                    <label class="col-form-label">Currency</label>
+                                        <label class="col-form-label">Currency</label>
 
-                                    <div class="col-sm-12">
-                                        <input required="" class="form-control" type="text" name="currency" value="{{$setting->currency}}" placeholder="Currency">
-                                        <span class="text-danger">{{$errors->has('currency')?$errors->first('currency'):''}}</span>
+                                        <div class="col-sm-12">
+                                            <input class="form-control" type="text" name="currency" value="{{$setting->currency}}" placeholder="Currency">
+                                            <span class="text-danger">{{$errors->has('currency')?$errors->first('currency'):''}}</span>
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                                 <div class="col-md-12 d-md-flex">
-                                <div class="col-md-4 form-group">
-                                    <label class="col-form-label">Instagram</label>
+                                    <div class="col-md-4 form-group">
+                                        <label class="col-form-label">Instagram</label>
 
-                                    <div class="col-sm-12">
-                                        <input required="" class="form-control" type="text" name="instagram" value="{{$setting->instagram}}" placeholder="Instagram">
-                                        <span class="text-danger">{{$errors->has('instagram')?$errors->first('instagram'):''}}</span>
+                                        <div class="col-sm-12">
+                                            <input  class="form-control" type="text" name="instagram" value="{{$setting->instagram}}" placeholder="Instagram">
+                                            <span class="text-danger">{{$errors->has('instagram')?$errors->first('instagram'):''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label class="col-form-label">Youtube</label>
+
+                                        <div class="col-sm-12">
+                                            <input  class="form-control" type="text" name="youtube" value="{{$setting->youtube}}" placeholder="youtube">
+                                            <span class="text-danger">{{$errors->has('youtube')?$errors->first('youtube'):''}}</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 form-group">
-                                    <label class="col-form-label">Youtube</label>
 
-                                    <div class="col-sm-12">
-                                        <input required="" class="form-control" type="text" name="youtube" value="{{$setting->youtube}}" placeholder="youtube">
-                                        <span class="text-danger">{{$errors->has('youtube')?$errors->first('youtube'):''}}</span>
-                                    </div>
-                                </div>
-                                </div>
-                               
                                 <div class="col-md-12 d-md-flex">
                                     <div class="col-md-4 form-group">
                                         <label class="col-form-label">Facebook</label>
@@ -99,8 +99,18 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-4 form-group">
+                                <div class="col-md-12 d-md-flex">
+                                    <div class="col-md-4 form-group">
+                                        <label class="col-form-label">Landscape Image</label>
+                                        <div class="col-sm-12">
+                                            <input type="file" class="form-control" id="landscape_image" name="landscape_image" accept="image/*">
+                                            <img id="Showlandscape_image"
+                                            src="{{ !empty($setting->landscape_image) ? url('website/images/setting/'. $setting->landscape_image) : url('website/images/setting/no_image.png') }}"
+                                            style="width: 100px;height: 80px; border:1px solid #000000"/>
+                                            <span class="text-danger">{{$errors->has('landscape_image')?$errors->first('landscape_image'):''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
                                         <label class="col-form-label">Base Url</label>
 
                                         <div class="col-sm-12">
@@ -108,6 +118,8 @@
                                             <span class="text-danger">{{$errors->has('erp_baseurl')?$errors->first('erp_baseurl'):''}}</span>
                                         </div>
                                     </div>
+                                </div>
+
 
 
 
@@ -132,7 +144,18 @@
         </div>
     </section>
 </div>
+@endsection
+@section('contentJavaScripts')
 <script>
+     $(document).ready(function(){
+        $('#landscape_image').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#Showlandscape_image').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        });
+    });
     document.getElementById("settingStatus").value = "{{$setting->status}}";
 </script>
 @endsection
