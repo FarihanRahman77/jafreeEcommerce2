@@ -1,7 +1,8 @@
 @extends('admin.master')
 @section('title')
-Admin Products-View
+{{$settings->website_name}}-Product view
 @endsection
+<link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')
 
 <div class="content-wrapper">
@@ -12,7 +13,7 @@ Admin Products-View
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{url('/home')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{url('/products/view')}}">Create Products</a></li>
+                        <li class="breadcrumb-item active"><a href="{{url('/products/view')}}">Product List</a></li>
                     </ol>
                 </div>
             </div>
@@ -28,14 +29,14 @@ Admin Products-View
                         <div class="card-header d-flex justify-content-end">
                             <div class="col-md-3"> <h3>Product List</h3></div>
                             <div class="col-md-6"> <h3 class="text-center text-success">{{Session::get('message')}}</h3></div>
-                            <div class="col-md-3 text-right">
+                            <!-- <div class="col-md-3 text-right">
                                 <a href="{{url('/products/add')}}" class="btn btn-success">
                                     <span class="icon">
                                         <i class="fas fa-plus"></i>
                                     </span>
                                     <span class="text">Add Products</span>
                                 </a>
-                            </div>
+                            </div> -->
                             
                         </div>
                         <!-- /.card-header -->

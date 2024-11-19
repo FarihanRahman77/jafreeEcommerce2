@@ -1,7 +1,8 @@
 @extends('admin.master')
 @section('title')
-Admin Front End Banner
+{{$settings->website_name}}-Banner Add
 @endsection
+<link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')
 <div class="content-wrapper">
     <section class="content-header">
@@ -35,6 +36,9 @@ Admin Front End Banner
     
                                         <div class="col-sm-12">
                                             <input type="file" class="form-control" id="Bannerimage" name="Bannerimage" accept="image/*">
+                                            <img id="ShowbannerImage"
+                                            src="{{ !empty($banners->image) ? url('website/images/banners/' . $banners->image) : url('website/images/banners/no_image.png') }}"
+                                            style="width: 100px;height: 80px; border:1px solid #000000">
                                             <span style="color:gray;">Banner must be 1600*500 Size</span>
                                             <span class="text-danger">{{$errors->has('Bannerimage')?$errors->first('Bannerimage'):''}}</span>
                                         </div>
@@ -95,6 +99,14 @@ Admin Front End Banner
 @section('contentJavaScripts')
 <script>
     $(document).ready(function(){
+        $('#Bannerimage').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#ShowbannerImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        });
+
         $('.dynamic').change(function(){
             if($(this).val() !=''){
                 var value = $(this).val();
