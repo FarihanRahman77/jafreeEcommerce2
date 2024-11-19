@@ -1,7 +1,8 @@
 @extends('admin.master')
 @section('title')
-Admin Category-View
+{{$settings->website_name}}-category edit
 @endsection
+<link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')
 <div class="content-wrapper">
     <section class="content-header">

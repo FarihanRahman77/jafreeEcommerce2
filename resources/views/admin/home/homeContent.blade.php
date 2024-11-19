@@ -1,7 +1,8 @@
 @extends('admin.master')
 @section('title')
-Jaman.Co.Uk Admin Panel
+{{$settings->website_name}}
 @endsection
+<link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->

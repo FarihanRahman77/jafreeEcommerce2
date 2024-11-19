@@ -24,7 +24,6 @@ class productController extends Controller {
   protected $name;
   /* function for admin panel*/
   public function productView() {
-      
     // $products = DB::table('tbl_products')
     // ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
     // ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
@@ -61,13 +60,9 @@ class productController extends Controller {
     ->where('tbl_printbook.deleted', 'No')
     ->orderBy('tbl_products.id', 'desc')
     ->get();
-
-
     return view('admin.home.products.productsView', ['products' => $products]);
   }
-  /* //function for admin panel*/
-
-  
+ 
 
       public function productEdit($id) {
 

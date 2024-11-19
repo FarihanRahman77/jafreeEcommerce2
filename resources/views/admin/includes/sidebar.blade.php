@@ -1,10 +1,10 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{url('/dashboard')}}" class="brand-link">
-        <img src="{{asset(Auth::user()->profile_photo_path)}}" alt="No Logo" class="brand-image img-circle elevation-3"style="opacity: .8">
+        <img src="{{asset('website/images/setting/'.$settings->image)}}" alt="No Logo" class="brand-image img-circle elevation-3"style="opacity: .8">
         <span class="brand-text font-weight-light">{{Auth::user()->name}}</span>
     </a>
-
+<br/>
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar Menu -->

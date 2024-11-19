@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
-use View;
+// use View;
+use Illuminate\Support\Facades\View;
 use App\Category;
 use App\product;
 use App\masterOffer;
