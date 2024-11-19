@@ -1,14 +1,14 @@
 <header class="site__header d-lg-none">
             <div class="mobile-header mobile-header--sticky mobile-header--stuck">
                 <div class="mobile-header__panel">
-                    <div class="container">
-                        <div class="mobile-header__body"><button class="mobile-header__menu-button"><svg width="18px"
-                                    height="14px">
-                                    <use xlink:href="{{asset('website/images/setting/'.$settings->landscape_image)}}"></use>
-                                </svg></button> <a class="mobile-header__logo" href="{{ url('/') }}"><img
+                    <div class="m-3">
+                        <div class="mobile-header__body">
+                            <button class="mobile-header__menu-button">
+                                <img src="{{asset('website/images/setting/'.$settings->image)}}" width="18px" height="14px"/>
+                            </button> 
+                            <a class="mobile-header__logo" href="{{ url('/') }}"><img
                                   src="{{asset('website/images/setting/'.$settings->landscape_image)}}" width="60px" height="60px"/>
-                                 
-                                </a>
+                            </a>
                             <div class="mobile-header__search">
                                 <form class="mobile-header__search-form" action="#"><input
                                         class="mobile-header__search-input" name="search"
@@ -50,7 +50,7 @@
         <header class="site__header d-lg-block d-none">
             <div class="site-header"><!-- .topbar -->
                 <div class="site-header__topbar topbar">
-                    <div class="topbar__container container">
+                    <div class="topbar__container ml-3 mr-3">
                         <div class="topbar__row">
                             <div class="topbar__item topbar__item--link"><a class="topbar-link"
                                     href="{{ url('/aboutus') }}">About Us</a></div>
@@ -71,7 +71,6 @@
                                     <div class="topbar-dropdown__body"><!-- .menu -->
                                         <ul class="menu menu--layout--topbar">
                                             <li><a href="{{ url('/login') }}">Login</a></li>
-                                            <li><a href="{{ url('/login') }}">Register</a></li>
                                             <li><a href="#">Orders</a></li>
                                             <li><a href="#">Addresses</a></li>
                                         </ul><!-- .menu / end -->
@@ -134,9 +133,12 @@
                         </div>
                     </div>
                 </div><!-- .topbar / end -->
-                <div class="site-header__middle container">
-                    <div class="site-header__logo"><a href="{{ url('/') }}"><img src="{{asset('website/images/setting/'.$settings->landscape_image)}}"
-                                width="280px" height="40px"/></a></div>
+                <div class="site-header__middle ml-3 mr-3">
+                    <div class="site-header__logo">
+                        <a class="mobile-header__logo mt-1" href="{{ url('/') }}">
+                            <img src="{{asset('website/images/setting/'.$settings->landscape_image)}}" width="280px" height="40px"/>
+                        </a>
+                    </div>
                     <div class="site-header__search">
                         <div class="search">
                             <form class="search__form" action="#"><input class="search__input" name="search"
@@ -156,7 +158,7 @@
                 </div>
                 <div class="site-header__nav-panel">
                     <div class="nav-panel">
-                        <div class="nav-panel__container container">
+                        <div class="nav-panel__container ml-3 mr-3">
                             <div class="nav-panel__row">
                                 <div class="nav-panel__departments"><!-- .departments -->
                                     <div class="departments" data-departments-fixed-by="">
