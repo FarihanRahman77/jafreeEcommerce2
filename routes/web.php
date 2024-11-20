@@ -38,6 +38,8 @@ Route::POST('/sCatProducts/updateCart', 'App\Http\Controllers\productController@
 Route::POST('/sCatProducts/removeCartProduct', 'App\Http\Controllers\productController@removeCartProduct')->name('removeCartProduct');
 Route::POST('/sCatProducts/clearCart', 'App\Http\Controllers\productController@clearCart')->name('clearCart');
 Route::POST('/sCatProducts/viewCart', 'App\Http\Controllers\productController@viewCart')->name('viewCart');
+Route::get('/categorywiseproduct/{id}', 'App\Http\Controllers\welcomeController@viewcategoryproduct')->name('categorywiseproduct');
+Route::get('/brandwiseproduct/{id}', 'App\Http\Controllers\welcomeController@viewbrandproduct')->name('brandwiseproduct');
 
 
 /* //Corporate Information */
