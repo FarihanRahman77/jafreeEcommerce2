@@ -168,7 +168,7 @@
                                             <div class="departments__links-wrapper">
                                                 <ul class="departments__links">
                                                     @foreach($categories as $category)
-                                                    <li class="departments__item"><a href="#">{{$category->categoryName}}<svg
+                                                    <li class="departments__item"><a href="{{ url('/categorywiseproduct/'.$category->id) }}">{{$category->categoryName}}<svg
                                                                 class="departments__link-arrow" width="6px"
                                                                 height="9px">
                                                                 <use
@@ -508,7 +508,7 @@
                                                                     <ul class="megamenu__links megamenu__links--level--1 row">
                                                                         @foreach($brands as $brand)
                                                                         <li class="megamenu__item col-md-4">
-                                                                            <a href="#">{{$brand->brandName}}</a>
+                                                                            <a href="{{ route('brandwiseproduct',$brand->id) }}">{{$brand->brandName}}</a>
                                                                         </li>
                                                                         @endforeach
                                                                     </ul>
@@ -521,7 +521,7 @@
                                             </div>
                                         </li>
                                         <li class="nav-links__item nav-links__item--with-submenu"><a
-                                                href="{{ url('/shop_grid_3_columns_sidebar') }}"><span>Shop <svg
+                                                href="{{ url('/shop_grid_3_columns_sidebar') }}"><span>Shop Old<svg
                                                         class="nav-links__arrow" width="9px" height="6px">
                                                         <use xlink:href="images/sprite.svg#arrow-rounded-down-9x6">
                                                         </use>
@@ -571,6 +571,8 @@
                                                 </ul><!-- .menu / end -->
                                             </div>
                                         </li>
+                                        <li class="nav-links__item"><a href="{{ url('/shop_grid_3_columns_sidebar') }}"><span>Shop
+                                                    </span></a></li>
                                         <li class="nav-links__item nav-links__item--with-submenu"><a
                                                 href="{{ url('/blog_classic') }}"><span>Blog <svg class="nav-links__arrow"
                                                         width="9px" height="6px">
@@ -831,7 +833,7 @@
                     </li>
                     <li class="mobile-links__item" data-collapse-item>
                         <div class="mobile-links__item-title"><a href="{{ url('/shop_grid_3_columns_sidebar') }}"
-                                class="mobile-links__item-link">Shop</a> <button class="mobile-links__item-toggle"
+                                class="mobile-links__item-link">Shop </a> <button class="mobile-links__item-toggle"
                                 type="button" data-collapse-trigger><svg class="mobile-links__item-arrow" width="12px"
                                     height="7px">
                                     <use xlink:href="images/sprite.svg#arrow-rounded-down-12x7"></use>
@@ -924,6 +926,8 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="nav-links__item"><a href="{{ url('/contactus') }}"><span>Contact
+                                                    Us</span></a></li>
                     <li class="mobile-links__item" data-collapse-item>
                         <div class="mobile-links__item-title"><a href="{{ url('/blog_classic') }}"
                                 class="mobile-links__item-link">Blog</a> <button class="mobile-links__item-toggle"
