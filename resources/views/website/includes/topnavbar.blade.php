@@ -571,6 +571,35 @@
                                                 </ul><!-- .menu / end -->
                                             </div>
                                         </li>
+                                        <li class="nav-links__item nav-links__item--with-submenu"><a
+                                                href="#"><span>Importer <svg class="nav-links__arrow" width="9px"
+                                                        height="6px">
+                                                        <use xlink:href="images/sprite.svg#arrow-rounded-down-9x6">
+                                                        </use>
+                                                    </svg></span></a>
+                                            <div class="nav-links__megamenu nav-links__megamenu--size--nl">
+                                                <!-- .megamenu -->
+                                                <div class="megamenu">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <ul class="megamenu__links megamenu__links--level--0">
+                                                                <li class="megamenu__item megamenu__item--with-submenu">
+                                                                    
+                                                                    <ul class="megamenu__links megamenu__links--level--1 row">
+                                                                        @foreach($importers as $importer)
+                                                                        <li class="megamenu__item col-md-4">
+                                                                            <a href="{{ route('brandwiseproduct',$importer->id) }}">{{$importer->brandName}}</a>
+                                                                        </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div><!-- .megamenu / end -->
+                                            </div>
+                                        </li>
                                         <li class="nav-links__item"><a href="{{ url('/shop_grid_3_columns_sidebar') }}"><span>Shop
                                                     </span></a></li>
                                         <li class="nav-links__item nav-links__item--with-submenu"><a

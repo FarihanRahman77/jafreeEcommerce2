@@ -1,8 +1,9 @@
-<!DOCTYPE html>
-<html>
-@include('frontEnd.includes.header')
-<body>
-    @include('frontEnd.includes.menue')
+@extends('website.master')
+@section('title')
+{{$settings->website_name}} - Shop
+@endsection
+<link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
+@section('content')
 
 
     <!-- //script-for sticky-nav -->
@@ -149,29 +150,19 @@
     </div>
     <div class="clearfix"></div>
 </div>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     $(document).ready(function () {
         var id = {{$product->id}};
         $("#priceSpecification"+id).val({{$minSpec->id}});
         changeSize(id);
     });
-</script>
-<!-- //banner -->
-<!-- brands -->
+</script> -->
+
 
 @include('frontEnd.home.topProducts')
 
 
-<!-- //brands -->
-<!-- newsletter -->
 
-<!-- //newsletter -->
-<!-- footer -->
-
-<!-- //footer -->
-
-<!-- Bootstrap Core JavaScript -->
-{{--<script src="js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
         $(".dropdown").hover(
@@ -224,14 +215,6 @@
         }
     });
 
-</script>--}}
+</script>
 
-@include('frontEnd.home.newsLetter')
-<!-- //newsletter -->
-<!-- footer -->
-@include('frontEnd.includes.footer')
-<!-- //footer -->
-<!-- Core JavaScript -->
-@include('frontEnd.includes.scripts')
-</body>
-</html>
+@endsection

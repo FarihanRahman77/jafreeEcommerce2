@@ -6356,7 +6356,7 @@ screen and (-ms-high-contrast:active) {
     margin: 12px 0 0;
     padding: 12px 0 0;
     display: -ms-flexbox;
-    display: flex;
+    /* display: flex; */
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     color: #999;
@@ -6369,12 +6369,12 @@ screen and (-ms-high-contrast:active) {
 }
 
 .product__meta a {
-    color: inherit;
+    color: #1a66ff;
     transition: color .2s
 }
 
 .product__meta a:hover {
-    color: #1a66ff
+    color: #011f5a;
 }
 
 .product__availability {
