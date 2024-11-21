@@ -52,41 +52,31 @@ class welcomeController  extends Controller
   }
   public function productDetails($id)
   {
-    $product = DB::table('products')
-      //->leftJoin('product_special_offers', 'product_special_offers.tbl_productId', '=', 'products.id')
-      //->leftJoin('product_hot_offers', 'product_hot_offers.tbl_productId', '=', 'products.id')
-      ->where([['products.id', '=', $id], ['products.deleted', '=', 'no']])
-      ->select('products.*'/*,'product_special_offers.offerPrice','product_hot_offers.offerPrice'*/)
+     $product = DB::table('tbl_products')
+    ->select('tbl_products.*')
+      ->where([['tbl_products.id', '=', $id], ['tbl_products.deleted', '=', 'No']])
       ->first();
-    $specifications = DB::table('productspecifications')
-      ->leftJoin('product_special_offers', function ($join) {
-        $join->on('productspecifications.id', '=', 'product_special_offers.product_spec_id');
-        $join->on('product_special_offers.startDate', '<=', DB::raw("'" . date('Y-m-d') . "'"));
-        $join->on('product_special_offers.endDate', '>=', DB::raw("'" . date('Y-m-d') . "'"));
-      })
-      //->whereBetween($today, ['product_special_offers.startDate', 'product_special_offers.endDate'])
-      //->whereRaw('? between product_special_offers.startDate and product_special_offers.endDate', [date('Y-m-d')])
-      ->where('tbl_productsId', '=', $product->id)
-      ->where('productspecifications.deleted', '=', 'No')
-      ->select('productspecifications.*', 'product_special_offers.offerPrice')
-      ->orderBy('productspecifications.specPrice')
-      ->get();
-    //dd($specifications);
-    $product->spec = $specifications;
-    //$product = product::find($id);
-    /*$topProducts = product::where('is_top','on')->get();
-    foreach ($topProducts as $topProduct)
-	{
-		$specifications = productspecification::where('tbl_productsId','=',$topProduct->id)
-					->where('deleted','=','No')
-					->select('*')
-					->get();
-		$topProduct->spec = $specifications;
-	}*/
+
+    // $specifications = DB::table('productspecifications')
+    //   ->leftJoin('product_special_offers', function ($join) {
+    //     $join->on('productspecifications.id', '=', 'product_special_offers.product_spec_id');
+    //     $join->on('product_special_offers.startDate', '<=', DB::raw("'" . date('Y-m-d') . "'"));
+    //     $join->on('product_special_offers.endDate', '>=', DB::raw("'" . date('Y-m-d') . "'"));
+    //   })
+     
+      // ->where('tbl_productsId', '=', $product->id)
+      // ->where('productspecifications.deleted', '=', 'No')
+      // ->select('productspecifications.*', 'product_special_offers.offerPrice')
+      // ->orderBy('productspecifications.specPrice')
+      // ->get();
+
+    // $product->spec = $specifications;
+   
+
     $currencyData = ShopSetting::where('id', 1)->first();
     $currency = $currencyData->currency;
-    //return view('frontEnd.home.product-details',compact('product','topProducts','currency'));
-    return view('frontEnd.home.product-details', compact('product', 'currency'));
+  
+    return view('frontEnd.home.product-details',['product'=>$product,'currency'=>$currency]);
   }
 
   public function fetch(Request $request)
@@ -522,7 +512,7 @@ class welcomeController  extends Controller
         'tbl_brands.brand_logo',
         'tbl_category.categoryName'
       )
-      ->paginate(15);
+      ->paginate(30);
 
 
     return view('website.pages.shop_grid_3_columns_sidebar', ['products' => $products]);
@@ -556,7 +546,7 @@ class welcomeController  extends Controller
         'tbl_brands.brand_logo',
         'tbl_category.categoryName'
       )
-      ->paginate(15);
+      ->paginate(30);
 
 
     return view('website.pages.shop_grid_3_columns_sidebar', ['products' => $products]);

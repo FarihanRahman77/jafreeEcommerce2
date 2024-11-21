@@ -4,7 +4,8 @@ namespace App\Http\Controllers\website;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use DB;
+use App\product;
 class WelcomeController extends Controller
 {
     public function Index(){
@@ -56,8 +57,30 @@ class WelcomeController extends Controller
       public function shop_grid_5_column(){
         return view('website.pages.shop_grid_5_column');
       }
-      public function products(){
-        return view('website.pages.products');
+      public function productDetails($id){
+       $product=product::leftjoin('tbl_brands','tbl_brands.id','=','tbl_products.tbl_brandsId')
+                          ->leftjoin('tbl_category','tbl_category.id','=','tbl_products.categoryId')
+                  ->select('tbl_products.*','tbl_brands.*','tbl_category.*')
+                  ->where('tbl_products.id','=',$id)
+                  ->where('tbl_category.deleted','=','No' )
+                  ->where('tbl_brands.deleted','=','No')
+                  ->where('tbl_products.deleted','=','No')
+                  ->where('tbl_category.status','=','Active' )
+                  ->where('tbl_brands.status','=','Active')
+                  ->where('tbl_products.status','=','Active')
+                  ->first();
+        $productspech = DB::table('tbl_productspecification')
+                  ->select('tbl_productspecification.specificationName','tbl_productspecification.specificationValue')
+                  ->where('tbl_productspecification.tbl_productsId', '=', $id) 
+                  ->where('tbl_productspecification.deleted', '=', 'No')
+                  ->get();
+        $productimages= DB::table('product_images')
+        ->select('product_images.productImage')
+        ->where('product_images.productId', '=', $id) 
+        ->where('product_images.deleted', '=', 'No')
+        ->where('product_images.status', '=', 'Active')
+        ->get();
+        return view('website.pages.products',['product'=>$product,'productspech'=>$productspech,'productimages'=>$productimages]);
       }
       public function shoplist(){
         return view('website.pages.shoplist');
@@ -79,5 +102,76 @@ class WelcomeController extends Controller
       }
       public function compare(){
         return view('website.pages.compare');
+      }
+
+
+   public function viewcategoryproduct($id){
+        
+    $categoryWiseProducts = DB::table('tbl_products')
+    ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+    ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+    ->whereIn('tbl_products.id', function ($query) use ($id) {
+      $query->select('tbl_product_id')
+        ->distinct()
+        ->from('tbl_print_book_product')
+        ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
+        ->where('tbl_printbook_category.is_website', 'Yes')
+        ->where('tbl_printbook_category.tbl_category_id', $id);
+    })
+    ->where('tbl_products.deleted', 'No')
+    ->where('tbl_products.status', 'Active')
+    ->select(
+      'tbl_products.id',
+      'tbl_products.productCode',
+      'tbl_products.productName',
+      'tbl_products.maxSalePrice',
+      'tbl_products.productImage',
+      'tbl_products.modelNo',
+      'tbl_products.productDescriptions',
+      'tbl_brands.brandName',
+      'tbl_brands.brand_logo',
+      'tbl_category.categoryName',
+      DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
+    )
+    ->orderBy('random_number', 'desc')
+    ->paginate(30);
+
+
+  return view('website.pages.shop_grid_3_columns_sidebar', ['categoryWiseProducts' => $categoryWiseProducts]);
+      }
+
+      public function viewbrandproduct($id){
+        $brandWiseProducts = DB::table('tbl_products')
+      
+        ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+        ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+        ->whereIn('tbl_products.id', function ($query) use ($id) {
+          $query->select('tbl_product_id')
+            ->distinct()
+            ->from('tbl_print_book_product')
+            ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
+            ->where('tbl_printbook_category.is_website', 'Yes')
+            ->where('tbl_printbook_category.tbl_brand_id', $id);
+        })
+        ->where('tbl_products.deleted', 'No')
+        ->where('tbl_products.status', 'Active')
+        ->select(
+          'tbl_products.id',
+          'tbl_products.productCode',
+          'tbl_products.productName',
+          'tbl_products.maxSalePrice',
+          'tbl_products.productImage',
+          'tbl_products.modelNo',
+          'tbl_products.productDescriptions',
+          'tbl_brands.brandName',
+          'tbl_brands.brand_logo',
+          'tbl_category.categoryName',
+          DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
+        )
+        ->orderBy('random_number', 'desc')
+        ->paginate(30);
+  
+  
+      return view('website.pages.shop_grid_3_columns_sidebar', ['brandWiseProducts' => $brandWiseProducts]);
       }
 }
