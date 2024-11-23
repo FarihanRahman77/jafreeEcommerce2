@@ -39,9 +39,7 @@
                         <div class="indicator indicator--mobile">
                             <a href="{{ url('/card') }}"  class="indicator__button">
                                 <span class="indicator__area">
-                                    <svg width="20px" height="20px">
-                                        <use xlink:href="{{asset('website/images/sprite.svg#cart-20')}}"></use>
-                                    </svg> 
+                                    <i class="fa fa-cart-arrow-down"></i> 
                                     <span class="indicator__value">3</span>
                                 </span>
                             </a>
@@ -183,6 +181,7 @@
 
                                             </li>
                                             @endforeach
+
                                         </ul>
                                     </div>
                                 </div><button class="departments__button"><svg class="departments__button-icon"
@@ -356,15 +355,21 @@
                             </ul>
                         </div><!-- .nav-links / end -->
                         <div class="nav-panel__indicators">
-                            <div class="indicator"><a href="{{ url('/wishlist') }}" class="indicator__button"><span
-                                        class="indicator__area"><svg width="20px" height="20px">
-                                            <use xlink:href="{{asset('website/images/sprite.svg#heart-20')}}"></use>
-                                        </svg> <span class="indicator__value">0</span></span></a></div>
-                            <div class="indicator indicator--trigger--click"><a href="cart.html"
-                                    class="indicator__button"><span class="indicator__area"><svg width="20px"
-                                            height="20px">
-                                            <use xlink:href="{{asset('website/images/sprite.svg#cart-20')}}"></use>
-                                        </svg> <span class="indicator__value">3</span></span></a>
+                            <div class="indicator">
+                                <a href="{{ url('/wishlist') }}" class="indicator__button">
+                                    <span class="indicator__area">
+                                        <i class="fa fa-heart"></i>
+                                        <span class="indicator__value">0</span>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="indicator indicator--trigger--click">
+                                <a href="{{ url('/card') }}" class="indicator__button">
+                                    <span class="indicator__area">
+                                        <i class="fa fa-cart-arrow-down"></i> 
+                                        <span class="indicator__value">3</span>
+                                    </span>
+                                </a>
                                 <div class="indicator__dropdown"><!-- .dropcart -->
                                     <div class="dropcart">
                                         <div class="dropcart__products-list">

@@ -172,7 +172,7 @@ class WelcomeController extends Controller
       DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
     )
     ->orderBy('random_number', 'desc')
-    ->paginate(30);
+    ->paginate(54);
 
 
   return view('website.pages.shop_grid_3_columns_sidebar', ['categoryWiseProducts' => $categoryWiseProducts]);
@@ -207,7 +207,7 @@ class WelcomeController extends Controller
           DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
         )
         ->orderBy('random_number', 'desc')
-        ->paginate(30);
+        ->paginate(54);
   
   
       return view('website.pages.shop_grid_3_columns_sidebar', ['brandWiseProducts' => $brandWiseProducts]);

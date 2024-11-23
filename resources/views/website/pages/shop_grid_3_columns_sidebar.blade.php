@@ -6,12 +6,12 @@
 @section('content')
 <div class="site__body">
     <div class="page-header">
-        <div class="page-header__container container">
+        <div class="page-header__container custom-container">
            
 
         </div>
     </div>
-    <div class="container">
+    <div class="custom-container">
         <div class="shop-layout shop-layout--sidebar--start">
             <div class="shop-layout__sidebar">
                 <div class="block block-sidebar">

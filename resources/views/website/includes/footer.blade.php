@@ -124,9 +124,7 @@
     <div class="indicator indicator--mobile2"> 
         <a href="{{ url('/card') }}" class="indicator__button2"> 
             <span class="indicator__area2"> 
-                <svg width="20px" height="20px">
-                    <use xlink:href="{{asset('website/images/sprite.svg#cart-20')}}"></use>
-                </svg> 
+                <i class="fa fa-cart-arrow-down"></i> 
                 <span class="indicator__value2">3</span> 
             </span>
         </a>
