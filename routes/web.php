@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\website\WelcomeController;
 use App\Http\Controllers\Brandcontroller;
 /*
 |--------------------------------------------------------------------------
@@ -14,31 +15,58 @@ use App\Http\Controllers\Brandcontroller;
 |
 */
 
+Route::get('/', [WelcomeController::class, 'Index'])->name('/');
+Route::get('/home2', [WelcomeController::class, 'Index2'])->name('/home2');
+Route::get('/aboutus', [WelcomeController::class, 'aboutus'])->name('/aboutus');
+Route::get('/contactus', [WelcomeController::class, 'contactus'])->name('/contactus');
+Route::get('/tractorder', [WelcomeController::class, 'tractorder'])->name('/tractorder');
+Route::get('/blog_classic', [WelcomeController::class, 'blog_classic'])->name('/blog_classic');
+Route::get('/blog_grid', [WelcomeController::class, 'blog_grid'])->name('/blog_grid');
+Route::get('/blog_list', [WelcomeController::class, 'blog_list'])->name('/blog_list');
+Route::get('/blog_left_sidebar', [WelcomeController::class, 'blog_left_sidebar'])->name('/blog_left_sidebar');
+Route::get('/post', [WelcomeController::class, 'post'])->name('/post');
+Route::get('/post_without_sidebar', [WelcomeController::class, 'post_without_sidebar'])->name('/post_without_sidebar');
+Route::get('/termscondition', [WelcomeController::class, 'termscondition'])->name('/termscondition');
+Route::get('/faq', [WelcomeController::class, 'faq'])->name('/faq');
 
+Route::get('/shop_grid_3_columns_sidebar', [WelcomeController::class, 'shop_grid_3_columns_sidebar'])->name('/shop_grid_3_columns_sidebar');
+Route::get('/shop_grid_4_column_full', [WelcomeController::class, 'shop_grid_4_column_full'])->name('/shop_grid_4_column_full');
+Route::get('/shop_grid_5_column', [WelcomeController::class, 'shop_grid_5_column'])->name('/shop_grid_5_column');
+Route::get('/shoplist', [WelcomeController::class, 'shoplist'])->name('/shoplist');
+Route::get('/shop_right_side_bar', [WelcomeController::class, 'shop_right_side_bar'])->name('/shop_right_side_bar');
+Route::get('/product_sidebar', [WelcomeController::class, 'product_sidebar'])->name('/product_sidebar');
+Route::get('/card', [WelcomeController::class, 'card'])->name('/card');
+Route::get('/checkoutcard', [WelcomeController::class, 'checkoutcard'])->name('/checkoutcard');
+Route::get('/products/details/{id}', [WelcomeController::class, 'productDetails'])->name('product.details');
+Route::get('/wishlist', [WelcomeController::class, 'wishlist'])->name('/wishlist');
+Route::get('/compare', [WelcomeController::class, 'compare'])->name('/compare');
+ Route::get('/categorywiseproduct/{id}', [WelcomeController::class, 'viewcategoryproduct'])->name('categorywiseproduct');
+ Route::get('/brandwiseproduct/{id}', [WelcomeController::class, 'viewbrandproduct'])->name('brandwiseproduct');
 
 // Route::get('/', 'App\Http\Controllers\welcomeController@Index')->name('/');
 //old code
 
-Route::get('/aboutUs', 'App\Http\Controllers\welcomeController@aboutUs');
-Route::get('/termsCondition', 'App\Http\Controllers\welcomeController@termsCondition');
-Route::get('/campaign', 'App\Http\Controllers\welcomeController@campaign');
-Route::get('/bestDeals', 'App\Http\Controllers\welcomeController@bestDeals');
-Route::get('/service', 'App\Http\Controllers\welcomeController@service');
-Route::get('/faqs', 'App\Http\Controllers\welcomeController@faqs');
-Route::get('/privacy', 'App\Http\Controllers\welcomeController@privacy');
-Route::get('/contactUs', 'App\Http\Controllers\welcomeController@contactUs');
-Route::post('/contactUs/submit', 'App\Http\Controllers\welcomeController@submitContactUs')->name('submit-contact-us');
-Route::post('/autocomplete/fetch', 'App\Http\Controllers\welcomeController@fetch')->name('autocomplete.fetch');
-Route::post('/searched-products', 'App\Http\Controllers\welcomeController@searchedProducts')->name('search-products');
-Route::get('/search/{searchProduct}', 'App\Http\Controllers\welcomeController@searchGetProducts');
-Route::get('/catProducts/{CatName}', 'App\Http\Controllers\productController@productViewFrontEnd');
-Route::get('/sCatProducts/{sCatName}', 'App\Http\Controllers\productController@sCatProductsFrontEnd');
-Route::POST('/sCatProducts/addToCart', 'App\Http\Controllers\productController@addToCart')->name('addToCart');
-Route::POST('/sCatProducts/updateCart', 'App\Http\Controllers\productController@updateCart')->name('updateCart');
-Route::POST('/sCatProducts/removeCartProduct', 'App\Http\Controllers\productController@removeCartProduct')->name('removeCartProduct');
-Route::POST('/sCatProducts/clearCart', 'App\Http\Controllers\productController@clearCart')->name('clearCart');
-Route::POST('/sCatProducts/viewCart', 'App\Http\Controllers\productController@viewCart')->name('viewCart');
+// Route::get('/aboutUs', 'App\Http\Controllers\welcomeController@aboutUs');
+// Route::get('/termsCondition', 'App\Http\Controllers\welcomeController@termsCondition');
+// Route::get('/campaign', 'App\Http\Controllers\welcomeController@campaign');
+// Route::get('/bestDeals', 'App\Http\Controllers\welcomeController@bestDeals');
+// Route::get('/service', 'App\Http\Controllers\welcomeController@service');
+// Route::get('/faqs', 'App\Http\Controllers\welcomeController@faqs');
+// Route::get('/privacy', 'App\Http\Controllers\welcomeController@privacy');
+// Route::get('/contactUs', 'App\Http\Controllers\welcomeController@contactUs');
+// Route::post('/contactUs/submit', 'App\Http\Controllers\welcomeController@submitContactUs')->name('submit-contact-us');
+// Route::post('/autocomplete/fetch', 'App\Http\Controllers\welcomeController@fetch')->name('autocomplete.fetch');
+// Route::post('/searched-products', 'App\Http\Controllers\welcomeController@searchedProducts')->name('search-products');
+// Route::get('/search/{searchProduct}', 'App\Http\Controllers\welcomeController@searchGetProducts');
+// Route::get('/catProducts/{CatName}', 'App\Http\Controllers\productController@productViewFrontEnd');
+// Route::get('/sCatProducts/{sCatName}', 'App\Http\Controllers\productController@sCatProductsFrontEnd');
+// Route::POST('/sCatProducts/addToCart', 'App\Http\Controllers\productController@addToCart')->name('addToCart');
+// Route::POST('/sCatProducts/updateCart', 'App\Http\Controllers\productController@updateCart')->name('updateCart');
+// Route::POST('/sCatProducts/removeCartProduct', 'App\Http\Controllers\productController@removeCartProduct')->name('removeCartProduct');
+// Route::POST('/sCatProducts/clearCart', 'App\Http\Controllers\productController@clearCart')->name('clearCart');
+// Route::POST('/sCatProducts/viewCart', 'App\Http\Controllers\productController@viewCart')->name('viewCart');
 
+// Route::get('/product/details/{id}', 'App\Http\Controllers\welcomeController@productDetails')->name('product-details');
 
 /* //Corporate Information */
 
@@ -53,7 +81,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-  Route::get('/product/{id}', 'App\Http\Controllers\welcomeController@productDetails')->name('product-details');
+  
 
 
   /* Corporate Information*/
