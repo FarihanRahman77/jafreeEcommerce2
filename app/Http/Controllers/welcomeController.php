@@ -512,7 +512,7 @@ class welcomeController  extends Controller
         'tbl_brands.brand_logo',
         'tbl_category.categoryName'
       )
-      ->paginate(30);
+      ->paginate(54);
 
 
     return view('website.pages.shop_grid_3_columns_sidebar', ['products' => $products]);
@@ -546,7 +546,7 @@ class welcomeController  extends Controller
         'tbl_brands.brand_logo',
         'tbl_category.categoryName'
       )
-      ->paginate(30);
+      ->paginate(54);
 
 
     return view('website.pages.shop_grid_3_columns_sidebar', ['products' => $products]);
