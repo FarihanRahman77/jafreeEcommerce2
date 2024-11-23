@@ -7099,6 +7099,10 @@ screen and (max-width:1199px) and (min-width:480px) and (-ms-high-contrast:activ
         display: -ms-flexbox;
         display: flex
     }
+    .products-list[data-layout=grid-3-sidebar] .products-list__item {
+        width: calc(20% - 12px);
+        margin: 8px 6px
+    }
 }
 
 @media (max-width:991px) and (min-width:768px) {
