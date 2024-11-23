@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\banner;
+use Image;
 use DB;
 
 class bannerController extends Controller
@@ -28,6 +29,7 @@ class bannerController extends Controller
         $name = $Bannerimage->getClientOriginalName();
         $uploadPath = 'website/images/banners/';
 		$bannerName = time().$name;
+        Image::make($Bannerimage)->resize(1110,480)->save($bannerName);
         $Bannerimage->move($uploadPath, $bannerName);
         
         /*Eloquent ORM process*/
