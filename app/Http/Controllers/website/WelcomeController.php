@@ -6,10 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\product;
+use App\banner;
 class WelcomeController extends Controller
 {
     public function Index(){
-        return view('website.pages.home');
+      $banners = banner::where('banners.deleted', '=', 'No')
+                ->where('banners.status', '=', 'Active')
+                ->get();
+        return view('website.pages.home',['banners'=>$banners]);
       }
     
       public function aboutus(){
@@ -36,6 +40,7 @@ class WelcomeController extends Controller
       public function post(){
         return view('website.pages.post');
       }
+
       public function post_without_sidebar(){
         return view('website.pages.post_without_sidebar');
       }
