@@ -70,17 +70,50 @@ class WelcomeController extends Controller
                   ->where('tbl_products.status','=','Active')
                   ->first();
         $productspech = DB::table('tbl_productspecification')
-                  ->select('tbl_productspecification.specificationName','tbl_productspecification.specificationValue')
+                  ->select(columns: 'tbl_productspecification.*')
                   ->where('tbl_productspecification.tbl_productsId', '=', $id) 
                   ->where('tbl_productspecification.deleted', '=', 'No')
                   ->get();
+
         $productimages= DB::table('product_images')
         ->select('product_images.productImage')
         ->where('product_images.productId', '=', $id) 
         ->where('product_images.deleted', '=', 'No')
         ->where('product_images.status', '=', 'Active')
         ->get();
-        return view('website.pages.products',['product'=>$product,'productspech'=>$productspech,'productimages'=>$productimages]);
+        $categoryId=$product->categoryId;
+    
+        $categoryWiseProducts = DB::table('tbl_products')
+              ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+              ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+              ->whereIn('tbl_products.id', function ($query) use ($categoryId) {
+                $query->select('tbl_product_id')
+                  ->distinct()
+                  ->from('tbl_print_book_product')
+                  ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
+                  ->where('tbl_printbook_category.is_website', 'Yes')
+                  ->where('tbl_printbook_category.tbl_category_id',$categoryId);
+              })
+              ->where('tbl_products.deleted', 'No')
+              ->where('tbl_products.status', 'Active')
+              ->select(
+                'tbl_products.id',
+                'tbl_products.productCode',
+                'tbl_products.productName',
+                'tbl_products.maxSalePrice',
+                'tbl_products.productImage',
+                'tbl_products.modelNo',
+                'tbl_products.productDescriptions',
+                'tbl_brands.brandName',
+                'tbl_brands.brand_logo',
+                'tbl_category.categoryName',
+                DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
+              )
+              ->orderBy('random_number', 'desc')
+              ->take(30)
+              ->get();
+
+        return view('website.pages.products',['product'=>$product,'productspech'=>$productspech,'productimages'=>$productimages,'categoryWiseProducts'=>$categoryWiseProducts]);
       }
       public function shoplist(){
         return view('website.pages.shoplist');
