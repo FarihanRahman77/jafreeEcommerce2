@@ -91,7 +91,7 @@ class AppServiceProvider extends ServiceProvider
                 ->where('tbl_printbook.status', 'Active')
                 ->where('tbl_printbook.deleted', 'No')
                 ->orderBy('random_number', 'desc')
-                ->paginate(30);
+                ->paginate(54);
             $importers = DB::table('tbl_printbook_category')
                 ->join('tbl_brands', 'tbl_printbook_category.tbl_brand_id', '=', 'tbl_brands.id')
                 ->select('tbl_brands.id', 'tbl_brands.brandName', 'tbl_brands.brand_logo', 'tbl_brands.is_importer')
