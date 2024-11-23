@@ -227,7 +227,7 @@
                                         </div><!-- .megamenu / end -->
                                     </div>
                                 </li>
-                                <li class="nav-links__item nav-links__item--with-submenu"><a
+                                <li class="d-none nav-links__item nav-links__item--with-submenu"><a
                                         href="{{ url('/shop_grid_3_columns_sidebar') }}"><span>Shop Old<svg
                                                 class="nav-links__arrow" width="9px" height="6px">
                                                 <use xlink:href="images/sprite.svg#arrow-rounded-down-9x6">
