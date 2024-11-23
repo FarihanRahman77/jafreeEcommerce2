@@ -181,7 +181,7 @@
 
                                             </li>
                                             @endforeach
-                                            
+
                                         </ul>
                                     </div>
                                 </div><button class="departments__button"><svg class="departments__button-icon"

@@ -1,5 +1,6 @@
 <script>
     showDepartments();
+
     function showDepartments() {
         var isSlider=$('#isSlider').val();
         if(isSlider == 'slider'){
@@ -9,4 +10,11 @@
         }
        
     }
+
+    function shopLink() {
+        window.open("{{ url('/shop_grid_3_columns_sidebar')}}"); 
+}
+
+
+    
 </script>
