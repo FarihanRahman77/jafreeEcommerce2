@@ -6776,6 +6776,60 @@ screen and (min-width:992px) and (-ms-high-contrast:active) {
 .product-gallery__carousel-item--active {
     box-shadow: inset 0 0 0 2px #ffd333
 }
+/* Set the width to 100% for full responsiveness */
+.product-video__carousel-item {
+    width: 100%;
+    height:15%;
+    /* Adjust height based on padding for flexibility */
+    
+}
+
+
+/* Container that maintains the aspect ratio */
+.iframe-container {
+    position: relative;
+    width: 100%;          /* Full width of the parent container */
+    padding-bottom: 56.25%; /* 16:9 aspect ratio (9/16 = 0.5625 = 56.25%) */
+    height: 0;
+    overflow: hidden;
+    background: #000;    /* Optional background for the iframe container */
+}
+
+/* Responsive iframe */
+.product-video-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.mstprtn {
+    margin-right: -100px;
+    float: right;
+  }
+  .msgprtnsub {
+    position: fixed;
+    bottom:-40px;
+    right: 5px;
+    border-radius: 25px;
+    width: 50px;
+  }
+/* Optional: You can add responsiveness for modal size if you like */
+@media (max-width: 767px) {
+    .modal-dialog {
+        max-width: 90%;
+        margin: 10px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .modal-dialog {
+        max-width: 80%;
+    }
+}
+
+
+
 
 .product-tabs {
     margin-top: 50px
@@ -10857,4 +10911,37 @@ screen and (-ms-high-contrast:active) {
 .custom-container{
     margin-left:50px;
     margin-right:50px;
+}
+
+/* Custom styles to position the indicator at the bottom right */
+.indicator--mobile2 {
+    position: fixed;       /* Fixed positioning relative to the viewport */
+    bottom: 20px;          /* Distance from the bottom */
+    right: 20px;           /* Distance from the right */
+    z-index: 9999;         /* Ensure it stays above other content */
+}
+
+.indicator__button2 {
+    display: flex;         /* Ensure the contents are aligned */
+    align-items: center;   /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    background-color: #fff; /* Optional background color */
+    border-radius: 50%;    /* Round the edges of the button */
+    padding: 10px;         /* Adjust padding as needed */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional shadow effect */
+}
+
+.indicator__value2 {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red; /* Optional badge color */
+    color: white;           /* Text color */
+    font-size: 12px;        /* Font size */
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;     /* Circular badge */
+    display: flex;
+    justify-content: center;
+    align-items: center;    /* Center the number in the badge */
 }
