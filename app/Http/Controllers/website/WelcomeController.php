@@ -230,7 +230,7 @@ class WelcomeController extends Controller
       $productId = null;
       $product_type = '';
       $cartCount=0;
-      //Session::forget('cart_array');
+      //return Session::forget('cart_array');
       if (Session::get("cart_array") != null) {
         
         $is_available = 0;
@@ -247,6 +247,7 @@ class WelcomeController extends Controller
           $item_array = [
             'product_id'               =>     $productInfo->id,
             'product_name'             =>     $productInfo->productName,
+            'product_model'             =>     $productInfo->modelNo,
             'product_image'             =>     $productInfo->productImage,
             'product_quantity'         =>     $request->quantity
             
@@ -259,6 +260,7 @@ class WelcomeController extends Controller
         $item_array = [
           'product_id'               =>     $productInfo->id,
           'product_name'             =>     $productInfo->productName,
+          'product_model'             =>     $productInfo->modelNo,
           'product_image'             =>     $productInfo->productImage,
           'product_quantity'         =>     $request->quantity
         ];
@@ -276,11 +278,11 @@ class WelcomeController extends Controller
         $cart='<table class="cart__table cart-table">
                     <thead class="cart-table__head">
                         <tr class="cart-table__row">
-                            <th class="cart-table__column cart-table__column--image">Sl</th>
-                            <th class="cart-table__column cart-table__column--image">Image</th>
-                            <th class="cart-table__column cart-table__column--product">Product</th>
-                            <th class="cart-table__column cart-table__column--quantity">Quantity</th>
-                            <th class="cart-table__column cart-table__column--remove"></th>
+                            <th class="cart-table__column cart-table__column--image" width="20%">Image</th>
+                            <th class="cart-table__column cart-table__column--product" width="25%">Product</th>
+                            <th class="cart-table__column cart-table__column--product" width="25%">Model</th>
+                            <th class="cart-table__column cart-table__column--quantity" width="15%">Quantity</th>
+                            <th class="cart-table__column cart-table__column--remove"  width="15%"></th>
                         </tr>
                     </thead>
                     <tbody class="cart-table__body">';
@@ -292,40 +294,31 @@ class WelcomeController extends Controller
           foreach (Session::get('cart_array') as $keys => $values) {
             
             $productId = Session::get("cart_array")[$keys]["product_id"];
-            $product_image ='<img src=" '.$settings->erp_baseurl.'/images/products/thumb/'.Session::get("cart_array")[$keys]["product_image"] .'" alt="">';
+            $product_image ='<img class="img-fluid" src=" '.$settings->erp_baseurl.'/images/products/thumb/'.Session::get("cart_array")[$keys]["product_image"] .'" alt="">';
             $product_name=Session::get("cart_array")[$keys]["product_name"];
+            $product_model=Session::get("cart_array")[$keys]["product_model"];
             $product_quantity=Session::get("cart_array")[$keys]["product_quantity"];
             $cart .= '<tr class="cart-table__row">
-                          <td class="cart-table__column cart-table__column--image">
-                            ' . $i++ . '<input type="hidden" name="ids[]" id="id_' . $productId .  '" value="' . $productId . '" />
+                          <td class="p-1" width="15%">
+                            <input type="hidden" name="ids[]" id="id_' . $productId .  '" value="' . $productId . '" />
+                            '.$product_image.'
                           </td>
-                          <td class="cart-table__column cart-table__column--image">
-                            <a href="#">
-                              '.$product_image.'
-                            </a>
+                          <td class="p-1" width="35%">
+                            '.$product_name.' 
                           </td>
-                          <td class="cart-table__column cart-table__column--product"><a href="#"
-                                  class="cart-table__product-name">'.$product_name.'</a>
-                              <ul class="cart-table__options  d-none">
-                                  <li>Color: Yellow</li>
-                                  <li>Material: Aluminium</li>
-                              </ul>
+                          <td class="p-1" width="30%">
+                            '.$product_model.' 
                           </td>
-                          <td class="cart-table__column cart-table__column--quantity" data-title="Quantity">
-                              <div class="input-number">
+                          <td  width="18%">
                               <input type="text" class="form-control text-center" style="width:80%;" id="quantity_' . $productId .  '" name="quantity[]" onkeyup="updateCart(' . $productId .')"  value="' . $product_quantity . '" />
-                                  <div class="input-number__add d-none"></div>
-                                  <div class="input-number__sub d-none"></div>
-                              </div>
                           </td>
-                          <td class="cart-table__column cart-table__column--remove">
+                          <td  width="2%">
                             <button type="button" class="btn btn-light btn-sm btn-svg-icon" onclick="deleteCart(' . $productId  . ')">
                               <i class="fa fa-trash text-danger"> </i>
                             </button></td>
                       </tr>';
-            
-          }
-        }
+              }
+            }
         $cart .='</tbody>
             </table>';
             $cartCount=count(Session::get("cart_array"));
