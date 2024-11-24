@@ -307,7 +307,7 @@
                                         </div><!-- .megamenu / end -->
                                     </div>
                                 </li>
-                                <li class="nav-links__item"><a href="{{ url('/shop_grid_3_columns_sidebar') }}"><span>Shop
+                                <li class="nav-links__item"><a href="{{ url('/shop/data') }}"><span>Shop
                                         </span></a></li>
                                 <li class="nav-links__item nav-links__item--with-submenu"><a
                                         href="{{ url('/blog_classic') }}"><span>Blog <svg class="nav-links__arrow"
@@ -575,7 +575,7 @@
                     </div>
                 </li>
                 <li class="mobile-links__item" data-collapse-item>
-                    <div class="mobile-links__item-title"><a href="{{ url('/shop_grid_3_columns_sidebar') }}"
+                    <div class="mobile-links__item-title"><a href="{{ url('/shop/data') }}"
                             class="mobile-links__item-link">Shop </a> <button class="mobile-links__item-toggle"
                             type="button" data-collapse-trigger><svg class="mobile-links__item-arrow" width="12px"
                                 height="7px">
