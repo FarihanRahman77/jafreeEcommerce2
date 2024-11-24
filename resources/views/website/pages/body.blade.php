@@ -1,10 +1,13 @@
+<br><br><br>
 <div class="block block-features block-features--layout--classic">
                 <div class="custom-container">
                     <div class="block-features__list">
                         <div class="block-features__item">
-                            <div class="block-features__icon"><svg width="48px" height="48px">
+                            <div class="block-features__icon">
+                                <svg width="48px" height="48px">
                                     <use xlink:href="({{asset('images/sprite.svg#fi-free-delivery-48')}})"></use>
-                                </svg></div>
+                                </svg>
+                            </div>
                             <div class="block-features__content">
                                 <div class="block-features__title">Free Shipping</div>
                                 <div class="block-features__subtitle">For orders from $50</div>
@@ -12,9 +15,11 @@
                         </div>
                         <div class="block-features__divider"></div>
                         <div class="block-features__item">
-                            <div class="block-features__icon"><svg width="48px" height="48px">
+                            <div class="block-features__icon">
+                                <svg width="48px" height="48px">
                                     <use xlink:href="images/sprite.svg#fi-24-hours-48"></use>
-                                </svg></div>
+                                </svg>
+                            </div>
                             <div class="block-features__content">
                                 <div class="block-features__title">Support 24/7</div>
                                 <div class="block-features__subtitle">Call us anytime</div>

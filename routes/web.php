@@ -30,7 +30,7 @@ Route::get('/post_without_sidebar', [WelcomeController::class, 'post_without_sid
 Route::get('/termscondition', [WelcomeController::class, 'termscondition'])->name('/termscondition');
 Route::get('/faq', [WelcomeController::class, 'faq'])->name('/faq');
 
-Route::get('/shop_grid_3_columns_sidebar', [WelcomeController::class, 'shop_grid_3_columns_sidebar'])->name('/shop_grid_3_columns_sidebar');
+Route::get('/shop/data', [WelcomeController::class, 'shop_grid_3_columns_sidebar'])->name('/shop_grid_3_columns_sidebar');
 Route::get('/shop_grid_4_column_full', [WelcomeController::class, 'shop_grid_4_column_full'])->name('/shop_grid_4_column_full');
 Route::get('/shop_grid_5_column', [WelcomeController::class, 'shop_grid_5_column'])->name('/shop_grid_5_column');
 Route::get('/shoplist', [WelcomeController::class, 'shoplist'])->name('/shoplist');
@@ -45,6 +45,15 @@ Route::get('/compare', [WelcomeController::class, 'compare'])->name('/compare');
  Route::get('/brandwiseproduct/{id}', [WelcomeController::class, 'viewbrandproduct'])->name('brandwiseproduct');
  Route::post('/message/store', [MessageController::class, 'savemessage'])->name('message.store');
 
+
+
+ //cart data
+ Route::get('/product-addToCart', [WelcomeController::class, 'addToCart'])->name('product.addToCart');
+Route::get('/product-fetchCart', [WelcomeController::class, 'fetchCart'])->name('product.fetchCart');
+Route::get('/product-updateCart', [WelcomeController::class, 'updateCart'])->name('product.updateCart');
+Route::get('/product-deleteCart', [WelcomeController::class, 'deleteCart'])->name('product.deleteCart');
+Route::get('/product-clearCart', [WelcomeController::class, 'clearCart'])->name('product.clearCart');
+Route::post('/product-checkOutCart', [WelcomeController::class, 'checkOutCart'])->name('product.checkOutCart');
 
 // Route::get('/', 'App\Http\Controllers\welcomeController@Index')->name('/');
 //old code
