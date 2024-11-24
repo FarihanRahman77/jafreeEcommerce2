@@ -26,7 +26,13 @@ class WelcomeController extends Controller
         return view('website.pages.tractorder');
       }
       public function blog_classic(){
-        return view('website.pages.blog_classic');
+        $blogs =  DB::table('contents')
+        ->select(columns: 'contents.*')
+        ->where('contents.deleted', '=', 'No')
+        ->where('contents.status', '=', 'On')
+        ->get();
+      
+        return view('website.pages.blog_classic',['blogs'=>$blogs]);
       }
       public function blog_grid(){
         return view('website.pages.blog_grid');
@@ -212,4 +218,5 @@ class WelcomeController extends Controller
   
       return view('website.pages.shop_grid_3_columns_sidebar', ['brandWiseProducts' => $brandWiseProducts]);
       }
+      
 }
