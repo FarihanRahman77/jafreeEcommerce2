@@ -546,22 +546,11 @@
                                             <div class="product-card__availability">Availability: <span
                                                     class="text-success">In Stock</span></div>
                                             <div class="product-card__prices">{{$product->maxSalePrice}}</div>
-                                            <div class="product-card__buttons"><button
-                                                    class="btn btn-primary product-card__addtocart"
-                                                    type="button">Add To Cart</button> <button
-                                                    class="btn btn-secondary product-card__addtocart product-card__addtocart--list"
-                                                    type="button">Add To Cart</button> <button
-                                                    class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
-                                                    type="button"><svg width="16px" height="16px">
-                                                        <use xlink:href="{{asset('website/images/sprite.svg#wishlist-16')}}"></use>
-                                                    </svg> <span
-                                                        class="fake-svg-icon fake-svg-icon--wishlist-16"></span></button>
+                                            <div class="product-card__buttons">
                                                 <button
-                                                    class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare"
-                                                    type="button"><svg width="16px" height="16px">
-                                                        <use xlink:href="{{asset('website/images/sprite.svg#compare-16')}}"></use>
-                                                    </svg> <span
-                                                        class="fake-svg-icon fake-svg-icon--compare-16"></span></button>
+                                                    class="btn btn-primary product-card__addtocart"
+                                                    type="button" onclick="addToCart({{$product->id}})">Add To Cart
+                                                </button> 
                                             </div>
                                         </div>
                                     </div>
@@ -617,22 +606,11 @@
                                             <div class="product-card__availability">Availability: <span
                                                     class="text-success">In Stock</span></div>
                                             <div class="product-card__prices">{{$product->maxSalePrice}}</div>
-                                            <div class="product-card__buttons"><button
-                                                    class="btn btn-primary product-card__addtocart"
-                                                    type="button">Add To Cart</button> <button
-                                                    class="btn btn-secondary product-card__addtocart product-card__addtocart--list"
-                                                    type="button">Add To Cart</button> <button
-                                                    class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
-                                                    type="button"><svg width="16px" height="16px">
-                                                        <use xlink:href="{{asset('website/images/sprite.svg#wishlist-16')}}"></use>
-                                                    </svg> <span
-                                                        class="fake-svg-icon fake-svg-icon--wishlist-16"></span></button>
+                                            <div class="product-card__buttons">
                                                 <button
-                                                    class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare"
-                                                    type="button"><svg width="16px" height="16px">
-                                                        <use xlink:href="{{asset('website/images/sprite.svg#compare-16')}}"></use>
-                                                    </svg> <span
-                                                        class="fake-svg-icon fake-svg-icon--compare-16"></span></button>
+                                                    class="btn btn-primary product-card__addtocart"
+                                                    type="button" onclick="addToCart({{$product->id}})">Add To Cart
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -667,20 +645,17 @@
                                                 </a></div>
                                             @php
                                             $specifications = DB::table('tbl_productspecification')
-                                            ->select(
-                                                'tbl_productspecification.specificationName',
-                                                'tbl_productspecification.specificationValue'
-                                            )
-                                            ->where('tbl_productspecification.deleted', 'No')
-                                            ->where('tbl_productspecification.tbl_productsId', $product->id)
-                                            ->get();
-
+                                                            ->select(
+                                                                'tbl_productspecification.specificationName',
+                                                                'tbl_productspecification.specificationValue'
+                                                            )
+                                                            ->where('tbl_productspecification.deleted', 'No')
+                                                            ->where('tbl_productspecification.tbl_productsId', $product->id)
+                                                            ->get();
                                             @endphp
                                             <ul class="product-card__features-list">
                                             @foreach($specifications as $spec)
                                                 <li>{{$spec->specificationName}} - {{$spec->specificationValue}}</li>
-                                                
-
                                             @endforeach
                                             </ul>
                                         </div>
@@ -688,22 +663,10 @@
                                             <div class="product-card__availability">Availability: <span
                                                     class="text-success">In Stock</span></div>
                                             <div class="product-card__prices">{{$product->maxSalePrice}}</div>
-                                            <div class="product-card__buttons"><button
-                                                    class="btn btn-primary product-card__addtocart"
-                                                    type="button">Add To Cart</button> <button
-                                                    class="btn btn-secondary product-card__addtocart product-card__addtocart--list"
-                                                    type="button">Add To Cart</button> <button
-                                                    class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
-                                                    type="button"><svg width="16px" height="16px">
-                                                        <use xlink:href="{{asset('website/images/sprite.svg#wishlist-16')}}"></use>
-                                                    </svg> <span
-                                                        class="fake-svg-icon fake-svg-icon--wishlist-16"></span></button>
+                                            <div class="product-card__buttons">
                                                 <button
-                                                    class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare"
-                                                    type="button"><svg width="16px" height="16px">
-                                                        <use xlink:href="{{asset('website/images/sprite.svg#compare-16')}}"></use>
-                                                    </svg> <span
-                                                        class="fake-svg-icon fake-svg-icon--compare-16"></span></button>
+                                                    class="btn btn-primary product-card__addtocart" type="button" onclick="addToCart({{$product->id}})">Add To Cart
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

@@ -73,6 +73,7 @@
                                              <input type="number" id="mobile" name="mobile" class="form-control" placeholder="Mobile Number">
                                              <span class="text-danger" id="textError"></span>
                                             </div>
+
                                     </div>
 
                                     <div class="form-group">
