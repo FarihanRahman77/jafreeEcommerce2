@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\website\WelcomeController;
 use App\Http\Controllers\Brandcontroller;
+use App\Http\Controllers\Admin\MessageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,6 +43,8 @@ Route::get('/wishlist', [WelcomeController::class, 'wishlist'])->name('/wishlist
 Route::get('/compare', [WelcomeController::class, 'compare'])->name('/compare');
  Route::get('/categorywiseproduct/{id}', [WelcomeController::class, 'viewcategoryproduct'])->name('categorywiseproduct');
  Route::get('/brandwiseproduct/{id}', [WelcomeController::class, 'viewbrandproduct'])->name('brandwiseproduct');
+ Route::post('/message/store', [MessageController::class, 'savemessage'])->name('message.store');
+
 
 // Route::get('/', 'App\Http\Controllers\welcomeController@Index')->name('/');
 //old code
@@ -276,8 +279,8 @@ Route::middleware('auth')->group(function () {
   /* end  User List */
 
   /* Message Portal Info Admin panel */
-  Route::get('/manage/message-portal', 'App\Http\Controllers\Admin\MessagePortalController@messageList')->name('manage-message-portal');
-  Route::post('/admin/message-reply', 'App\Http\Controllers\Admin\MessagePortalController@messageReply')->name('admin-message-reply');
+  Route::get('/manage/message-portal', 'App\Http\Controllers\Admin\MessageController@messageList')->name('manage-message-portal');
+  Route::post('/admin/message-reply', 'App\Http\Controllers\Admin\MessageController@messageReply')->name('admin-message-reply');
   /* end Message Portal */
 
 
