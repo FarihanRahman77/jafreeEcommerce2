@@ -315,17 +315,7 @@
                                                 <use xlink:href="images/sprite.svg#arrow-rounded-down-9x6">
                                                 </use>
                                             </svg></span></a>
-                                    <div class="nav-links__menu"><!-- .menu -->
-                                        <ul class="menu menu--layout--classic">
-                                            <li><a href="{{ url('/blog_classic') }}">Blog Classic</a></li>
-                                            <li><a href="{{ url('/blog_grid') }}">Blog Grid</a></li>
-                                            <li><a href="{{ url('/blog_list') }}">Blog List</a></li>
-                                            <li><a href="{{ url('/blog_left_sidebar') }}">Blog Left Sidebar</a></li>
-                                            <li><a href="{{ url('/post') }}">Post Page</a></li>
-                                            <li><a href="{{ url('/post_without_sidebar') }}">Post Without Sidebar</a>
-                                            </li>
-                                        </ul><!-- .menu / end -->
-                                    </div>
+                                    
                                 </li>
                                 <li class="nav-links__item nav-links__item--with-submenu"><a
                                         href="#"><span>Pages <svg class="nav-links__arrow" width="9px"

@@ -30,7 +30,13 @@ class WelcomeController extends Controller
         return view('website.pages.tractorder');
       }
       public function blog_classic(){
-        return view('website.pages.blog_classic');
+        $blogs =  DB::table('contents')
+        ->select(columns: 'contents.*')
+        ->where('contents.deleted', '=', 'No')
+        ->where('contents.status', '=', 'On')
+        ->get();
+      
+        return view('website.pages.blog_classic',['blogs'=>$blogs]);
       }
       public function blog_grid(){
         return view('website.pages.blog_grid');
@@ -218,6 +224,7 @@ class WelcomeController extends Controller
       }
 
 
+
       public function addToCart(Request $request){
         $data = '';
       $productId = null;
@@ -365,4 +372,5 @@ class WelcomeController extends Controller
       $data = "Success";
       return response()->json(['data' => $data]);
     }
+
 }

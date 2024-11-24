@@ -92,6 +92,32 @@ class AppServiceProvider extends ServiceProvider
                 ->where('tbl_printbook.deleted', 'No')
                 ->orderBy('random_number', 'desc')
                 ->paginate(54);
+            $latestproducts = DB::table('tbl_print_book_product')
+                ->select(
+                    'tbl_products.*',
+                    'tbl_print_book_product.is_featured',
+                    'tbl_print_book_product.id as book_product_id',
+                    'tbl_brands.brandName',
+                    'tbl_brands.brand_logo',
+                    'tbl_category.categoryName'
+                )
+                ->distinct()
+                ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
+                ->join('tbl_printbook', 'tbl_printbook_category.tbl_printbook_id', '=', 'tbl_printbook.id')
+                ->join('tbl_brands', 'tbl_printbook_category.tbl_brand_id', '=', 'tbl_brands.id')
+                ->join('tbl_category', 'tbl_printbook_category.tbl_category_id', '=', 'tbl_category.id')
+                ->join('tbl_products', 'tbl_print_book_product.tbl_product_id', '=', 'tbl_products.id')
+                ->where('tbl_products.deleted', 'No')
+                ->where('tbl_print_book_product.status', 'Active')
+                ->where('tbl_print_book_product.deleted', 'No')
+                ->where('tbl_printbook_category.is_website', 'Yes')
+                ->where('tbl_printbook_category.status', 'Active')
+                ->where('tbl_printbook_category.deleted', 'No')
+                ->where('tbl_printbook.status', 'Active')
+                ->where('tbl_printbook.deleted', 'No')
+                ->orderBy('tbl_products.id', 'desc')
+                ->take(6)
+                ->get();
             $importers = DB::table('tbl_printbook_category')
                 ->join('tbl_brands', 'tbl_printbook_category.tbl_brand_id', '=', 'tbl_brands.id')
                 ->select('tbl_brands.id', 'tbl_brands.brandName', 'tbl_brands.brand_logo', 'tbl_brands.is_importer')
@@ -100,7 +126,7 @@ class AppServiceProvider extends ServiceProvider
                 ->distinct()
                 ->get();
 
-            $view->with(['settings' => $settings, 'categories' => $categories, 'brands' => $brands, 'products' => $products,'importers'=>$importers]);
+            $view->with(['settings' => $settings, 'categories' => $categories, 'brands' => $brands, 'products' => $products,'importers'=>$importers,'latestproducts'=>$latestproducts]);
         });
     }
 }
