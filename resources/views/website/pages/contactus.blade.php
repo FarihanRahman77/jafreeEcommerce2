@@ -47,7 +47,7 @@
                             <div class="col-12 col-lg-6">
                                 <h4 class="contact-us__header card-title">Leave us a Message</h4>
                                 <form id="messageForm" method="POST" enctype="multipart/form-data" action="#">
-    @csrf
+                                @csrf
                                 
                                 <input type="hidden" name="id">
                                     <div class="form-row">

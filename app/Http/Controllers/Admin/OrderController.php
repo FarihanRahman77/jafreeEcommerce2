@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Orders;
-use App\OrderDetails;
+use App\Models\WebsiteOrder;
+use App\Models\WebsiteOrderDetails;
 use App\Models\paymentVoucher;
 use App\Models\ShopSetting;
 use Carbon\Carbon;
@@ -15,39 +15,13 @@ use PDF;
 class OrderController extends Controller
 {
     public function orderList(){
-
-        //$orders = Orders::all();
-        $orders = DB::table('orders')
-                ->join('users', 'orders.user_id', '=', 'users.id')
-                
-                ->select('orders.*','users.name', 'users.address', 'users.phone')
-                ->orderBy('id','desc')
-                ->get();
-
+        $orders = WebsiteOrder::orderBy('id','desc')->get();
         return view('admin.home.order.order-list',['orders' => $orders]);
     }
 
     public function orderInvoice($id){
 
-        //$invoice = OrderDetails::find($id);
 
-// $user = DB::table('orders')
-// ->join('users', 'orders.user_id', '=', 'users.id')
-// ->join('order_details', 'order_details.order_id', '=', 'orders.id')
-// ->select('orders.*','users.phone', 'users.email')
-// ->where('order_details.order_id','=',$id)
-// ->get();
-
-//return $user;
-
-        /*$invoice = DB::table('order_details')
-        ->join('orders', 'order_details.order_id', '=', 'orders.id')
-        ->join('users', 'orders.user_id', '=', 'users.id')
-        ->join('products', 'order_details.products_id', '=', 'products.id')
-        ->join('location_carring_costs', 'orders.location_carring_cost_id', '=', 'location_carring_costs.id')
-        ->where('order_details.order_id','=',$id)
-        ->select('order_details.*','orders.full_name','orders.status','orders.created_at','orders.grand_total','orders.order_number', 'orders.address', 'orders.city', 'orders.phone_number' ,'users.phone', 'users.email', 'products.productName', 'products.productShortDescription', 'products.productImage','products.amount','location_carring_costs.cost as shipping_cost')
-        ->get();*/
         $invoice = DB::table('order_details')
                     ->join('orders', 'order_details.order_id', '=', 'orders.id')
                     ->join('users', 'orders.user_id', '=', 'users.id')

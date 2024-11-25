@@ -8,6 +8,8 @@ use DB;
 use App\product;
 use App\banner;
 use App\Models\ShopSetting;
+use App\Models\WebsiteOrder;
+use App\Models\WebsiteOrderDetails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -227,21 +229,34 @@ class WelcomeController extends Controller
 
       public function addToCart(Request $request){
         $data = '';
-      $productId = null;
-      $product_type = '';
-      $cartCount=0;
-      //return Session::forget('cart_array');
-      if (Session::get("cart_array") != null) {
-        
-        $is_available = 0;
-        foreach (Session::get("cart_array") as $keys => $values) {
-          if (Session::get("cart_array")[$keys]['product_id'] == $request->id ) {
-            $is_available++;
-            session()->put("cart_array." . $keys . ".product_quantity", Session::get("cart_array")[$keys]['product_quantity'] + $request->quantity);
-            $productId = $request->id;
+        $productId = null;
+        $product_type = '';
+        $cartCount=0;
+        //return Session::forget('cart_array');
+        if (Session::get("cart_array") != null) {
+          
+          $is_available = 0;
+          foreach (Session::get("cart_array") as $keys => $values) {
+            if (Session::get("cart_array")[$keys]['product_id'] == $request->id ) {
+              $is_available++;
+              session()->put("cart_array." . $keys . ".product_quantity", Session::get("cart_array")[$keys]['product_quantity'] + $request->quantity);
+              $productId = $request->id;
+            }
+          }  
+          if ($is_available == 0) {
+            $productInfo = product::where('status','Active')->where('id', $request->id)->first();
+            $productId = $productInfo->id;
+            $item_array = [
+              'product_id'               =>     $productInfo->id,
+              'product_name'             =>     $productInfo->productName,
+              'product_model'             =>     $productInfo->modelNo,
+              'product_image'             =>     $productInfo->productImage,
+              'product_quantity'         =>     $request->quantity
+              
+            ];
+            Session::push('cart_array', $item_array);
           }
-        }  
-        if ($is_available == 0) {
+        } else {
           $productInfo = product::where('status','Active')->where('id', $request->id)->first();
           $productId = $productInfo->id;
           $item_array = [
@@ -250,31 +265,22 @@ class WelcomeController extends Controller
             'product_model'             =>     $productInfo->modelNo,
             'product_image'             =>     $productInfo->productImage,
             'product_quantity'         =>     $request->quantity
-            
           ];
           Session::push('cart_array', $item_array);
         }
-      } else {
-         $productInfo = product::where('status','Active')->where('id', $request->id)->first();
-        $productId = $productInfo->id;
-        $item_array = [
-          'product_id'               =>     $productInfo->id,
-          'product_name'             =>     $productInfo->productName,
-          'product_model'             =>     $productInfo->modelNo,
-          'product_image'             =>     $productInfo->productImage,
-          'product_quantity'         =>     $request->quantity
-        ];
-        Session::push('cart_array', $item_array);
+
+        $data .= "Success";
+        return response()->json(['data' => $data]);
       }
-    
-      $data .= "Success";
-      return response()->json(['data' => $data]);
-    }
     
     public function fetchCart(){
         $grandTotal = 0;
         $cart = '';
         $settings = ShopSetting::where('status', 'Active')->where('deleted', 'No')->first();
+
+        $cartCount=0;
+        if (Session::get('cart_array') != null) {
+
         $cart='<table class="cart__table cart-table">
                     <thead class="cart-table__head">
                         <tr class="cart-table__row">
@@ -286,13 +292,9 @@ class WelcomeController extends Controller
                         </tr>
                     </thead>
                     <tbody class="cart-table__body">';
-                        
-                      
-        if (Session::get('cart_array') != null) {
           $i = 1;
           $product_image='';
           foreach (Session::get('cart_array') as $keys => $values) {
-            
             $productId = Session::get("cart_array")[$keys]["product_id"];
             $product_image ='<img class="img-fluid" src=" '.$settings->erp_baseurl.'/images/products/thumb/'.Session::get("cart_array")[$keys]["product_image"] .'" alt="">';
             $product_name=Session::get("cart_array")[$keys]["product_name"];
@@ -318,17 +320,22 @@ class WelcomeController extends Controller
                             </button></td>
                       </tr>';
               }
-            }
-        $cart .='</tbody>
-            </table>';
-            $cartCount=count(Session::get("cart_array"));
-        $data = array(
-          'cart' => $cart,
-          'cartCount'=>$cartCount
-        );
+              $cart .='</tbody>
+                </table>';
+                $cartCount=count(Session::get("cart_array"));
+          }else{
+            $cart .= '<h4 class="text-danger">Cart is Empty!</h4>';
+          }
+          $data = array(
+            'cart' => $cart,
+            'cartCount'=>$cartCount
+          );
         return response()->json(['data' => $data]);
     }
     
+
+
+
     public function updateCart(Request $request){
       if (Session::get("cart_array") != null) {
         foreach (Session::get("cart_array") as $keys => $values) {
@@ -360,10 +367,73 @@ class WelcomeController extends Controller
       $data = "Success";
       return response()->json(['data' => $data]);
     }
+
+
+
     public function clearCart(){
       Session::forget('cart_array');
       $data = "Success";
       return response()->json(['data' => $data]);
     }
+
+
+
+    public function checkOutCart(Request $request){
+      //return $request;
+      $request->validate([
+      'name' => 'required|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+      'mobile' =>'required|min:11|max:14|regex:/^([0-9\+]*)$/',
+      'address' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+      'note' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u'
+    ]);
+    
+    if(Session::get("cart_array")){
+        DB::beginTransaction();
+        try {
+          $orderNo = WebsiteOrder::max('order_no');
+          $orderNo++;
+          $orderNo = str_pad($orderNo, 6, '0', STR_PAD_LEFT);
+          $order = new WebsiteOrder();
+          $order->order_no=$orderNo;
+          $order->name=$request->name;
+          $order->mobile=$request->mobile;
+          $order->address=$request->address;
+          $order->note=$request->note;
+          $order->order_datetime=date('Y-m-d h:i:s');
+          $order->status='Pending';
+          $order->deleted='No';
+          $order->save();
+          $orderId=$order->id;
+          
+          foreach (Session::get("cart_array") as $keys => $values) {
+            $product_id = Session::get("cart_array")[$keys]["product_id"];
+            $quantity = Session::get("cart_array")[$keys]["product_quantity"];
+            
+            $orderDetails = new WebsiteOrderDetails();
+            $orderDetails->order_id = $orderId;
+            $orderDetails->product_id = $product_id;
+            $orderDetails->quantity = $quantity;
+            $orderDetails->status = 'Pending';
+            $orderDetails->deleted='No';
+            $orderDetails->order_datetime=date('Y-m-d h:i:s');
+            $orderDetails->save();
+          }
+
+          Session::forget('cart_array');
+          $data = "Success";
+              DB::commit();
+          return response()->json(['data' => $data]);
+        } catch (Exception $e) {
+          DB::rollBack();
+          return response()->json(['error' => 'Order rollBack!']);
+        }
+    }else{
+        $data = "Empty";
+        return response()->json(['data' => $data]);
+    }
+          
+  }
+
+
 
 }

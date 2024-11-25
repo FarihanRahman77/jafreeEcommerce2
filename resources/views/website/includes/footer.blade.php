@@ -113,20 +113,17 @@
             </div>
         </div>
     </div>
-    <div class="mstprtn d-none">
-        <a href="#" style="text-decoration: none;">
-            <svg class="msgprtnsub">
-                <use xlink:href="{{asset('website/images/sprite.svg#cart-20')}}"></use>
-            </svg>
-            <span class="indicator__value">3</span>
-        </a>
-    </div>
+    
     <div class="indicator indicator--mobile2"> 
         <a href="{{ url('/card') }}" class="indicator__button2"> 
             <span class="indicator__area2"> 
                 <i class="fa fa-cart-arrow-down"></i> 
-                <span class="indicator__value2">3</span> 
+                <span class="indicator__value2" id="cartCounterTextFooter">0</span> 
             </span>
         </a>
+    </div>
+    <div class="alert-message"> 
+        <div class="alert alert-success p-3" role="alert" style="display:none;" id="successMessage"></div>
+        <div class="alert alert-danger p-3" role="alert" style="display:none;" id="errorMessage"></div>
     </div>
 </footer><!-- site__footer / end -->

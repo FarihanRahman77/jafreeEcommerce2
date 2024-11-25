@@ -52,12 +52,13 @@ Admin Order-List
                                     <tr>
 
                                         <td>{{$i++}}</td>
+                                        <td>{{$order->order_no}}</td>
                                         <td>
                                             {{$order->name}}<br>
                                             {{$order->address}}<br>
-                                            {{$order->phone}}
+                                            {{$order->mobile}}
                                         </td>
-                                        <td>{{$order->order_number}}</td>
+                                        
                                        
                                         <td>{{$order->address}}</td>
                                         <td>{{$order->grand_total}}</td>
