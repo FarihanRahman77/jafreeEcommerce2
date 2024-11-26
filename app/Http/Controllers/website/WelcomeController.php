@@ -384,6 +384,7 @@ class WelcomeController extends Controller
       'name' => 'required|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
       'mobile' =>'required|min:11|max:14|regex:/^([0-9\+]*)$/',
       'address' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+      'email' => 'nullable|email|max:255|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
       'note' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u'
     ]);
     
@@ -397,6 +398,7 @@ class WelcomeController extends Controller
           $order->order_no=$orderNo;
           $order->name=$request->name;
           $order->mobile=$request->mobile;
+          $order->email=$request->email;
           $order->address=$request->address;
           $order->note=$request->note;
           $order->order_datetime=date('Y-m-d h:i:s');

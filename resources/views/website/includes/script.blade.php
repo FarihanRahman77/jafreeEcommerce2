@@ -169,12 +169,14 @@ $("#checkoutForm").submit(function (e){
     var name=$('#name_cart').val();
     var mobile=$('#mobile_cart').val();
     var address=$('#address_cart').val();
+    var email=$('#email_cart').val();
     var note=$('#note_cart').val();
     var _token = $('input[name="_token"]').val();
     var fd = new FormData();
     fd.append('name', name);
     fd.append('mobile', mobile);
     fd.append('address', address);
+    fd.append('email', email);
     fd.append('note', note);
     fd.append('_token', _token);
     
@@ -221,6 +223,7 @@ $("#checkoutForm").submit(function (e){
             $('#name_cartError').text(response.responseJSON.errors.name);
             $('#mobile_cartError').text(response.responseJSON.errors.mobile);
             $('#address_cartError').text(response.responseJSON.errors.address);
+            $('#email_cartError').text(response.responseJSON.errors.email);
             $('#noteError').text(response.responseJSON.errors.note);
             
         }

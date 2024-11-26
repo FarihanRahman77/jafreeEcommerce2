@@ -36,12 +36,8 @@ Admin Order-Invoice
                 <div class="col-12" style="text-align: center;">
 
                   <h3 class="text-center text-success">{{Session::get('message')}}</h3>
-                  
-                    @foreach($settings as $setting)
-                        <div><img src="{{ asset($setting->shop_logo) }}" width="70" height="55"></div>
-                        <div style="font-size: .9rem;">Phone: {{$setting->phone_no}} {{$setting->mobile_no}} Email:  {{$setting->email}}</div><br>
-                    @endforeach
-                    
+                      <div><img src="{{asset('website/images/setting/'.$settings->landscape_image)}}" width="180" height="55"></div>
+                      <div style="font-size: .9rem;">Phone: {{$settings->phone_no}} {{$settings->mobile_no}} Email:  {{$settings->email}}</div><br>
                 </div>
                 <!-- /.col -->
               </div>
@@ -50,9 +46,9 @@ Admin Order-Invoice
                 <div class="col-sm-7 invoice-col" style="font-size: .9rem;">
                     @foreach($invoice as $user)
                         <address>
-                            <div><strong>Name : </strong>{{$user->full_name}}</div>
-                            <div><strong>Phone: </strong>{{$user->phone_number}} <strong>Email: </strong>{{$user->email}}</div>
-                            <div><strong>Address: </strong>{{$user->address}} , {{$user->city}}</div>
+                            <div><strong>Name : </strong>{{$user->name}}</div>
+                            <div><strong>Phone: </strong>{{$user->mobile}} <strong><br>Email: </strong>{{$user->email}}</div>
+                            <div><strong>Address: </strong>{{$user->address}} </div>
                         </address>
                         @break
                     @endforeach
@@ -61,9 +57,9 @@ Admin Order-Invoice
                 <!-- /.col -->
                 <div class="col-sm-5 invoice-col" style="font-size: .9rem;">
                     @foreach($invoice as $info)
-                        <div><strong>Invoice #{{$info->order_number}}</strong></div>
-                        <div><strong>Order Date: </strong> {{$info->created_at}}</div>
-                        <div><strong>Status: </strong> {{ucfirst(trans($info->status)).', '.ucfirst(trans($info->payment_status))}}</div>
+                        <div><strong>Invoice #{{$info->order_no}}</strong></div>
+                        <div><strong>Order Date: </strong> {{$info->order_datetime}}</div>
+                        <div><strong>Status: </strong> {{$info->status}}</div>
                     @break
                     @endforeach
                 </div>
@@ -79,128 +75,43 @@ Admin Order-Invoice
                     <tr>
                       <th>SL</th>
                       <th>Image</th>
-                      <th>Product</th>
+                      <th>Product Name</th>
+                      <th>Product Model</th>
                       <th>Qty</th>
-                      <th>Unit Price</th>
-                      <th>Total</th>
                     </tr>
                     </thead>
                     <tbody>
-                        @php 
-                            $i = 1;
-                        @endphp
-                        @foreach($invoice as $products)
-                        @php
-                        if($products->real_amount != $products->salesAmount){
-                            $realAmount = '<br>'.Session::get('currency').'<strike>'.$products->real_amount.'</strike>';
-                        }else{
-                            $realAmount = '';
-                        }
-                        @endphp
+                    @php 
+                        $i = 1;
+                    @endphp
+                    @foreach($invoice as $products)
                     <tr>
                       <td>{{$i++}}</td>
-                      <td><img src="{{asset('product-thumbnail-image/'.$products->productImage)}}" width="50" height="40"></td>
-                      <td>{{$products->productName.' - '.$products->specificationName}}</td>
+                      <td><img src="{{$settings->erp_baseurl.'/images/products/thumb/'.$products->productImage}}" width="50" height="40"></td>
+                      <td>{{$products->productName}}</td>
+                      <td>{{$products->modelNo}}</td>
                       <td>{{$products->quantity}}</td>
-                      <td>{!!Session::get('currency').' '.$products->salesAmount.' '.$realAmount!!}</td>
-                      <td>{!!Session::get('currency').' '.$products->totalAmount!!}</td>
                     </tr>
                     @endforeach
                 
                     </tbody>
                   </table>
                 </div>
-                <!-- /.col -->
-              </div>
-              <!-- /.row -->
-
-              <div class="row">
-                <!-- accepted payments column -->
-                <div class="col-md-6">
-                  
+                <div class="col-md-12">
+                  <form action="{{route('order-reply')}}"  method="POST" enctype="multipart/form-data" >
+                    @csrf
+                    <input type="hidden" name="order_id" id="order_id" value="{{$order->id}}">
+                    <div class="form-group">
+                        <label for="form-message">Reply</label>
+                        <textarea name="reply" id="reply" class="form-control" rows="4" placeholder="Reply">{{@$order->reply}}</textarea>
+                        <span id="replyError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary float-right">Reply</button>
+                    </div>
+                  </form>
                 </div>
                 <!-- /.col -->
-                <div class="col-md-6">
-
-                  <div class="table-responsive">
-                    <table class="table">
-                        @foreach ($invoice as $expense)
-                            
-                            @php
-                            $totalCost = floatval($expense->grand_total);
-                            $shippingCost = floatval($expense->shipping_cost);
-                            $subTotal = $totalCost - $shippingCost;
-                            @endphp
-                        
-                      <tr>
-                        <th style="width:70%">Subtotal:</th>
-                        <td>{!!Session::get('currency').' '.$subTotal!!}</td>
-                      </tr>
-                      
-                      <tr>
-                        <th>Shipping:</th>
-                        <td>{!!Session::get('currency').' '.$shippingCost!!}</td>
-                      </tr>
-                      <tr>
-                        <th>Total:</th>
-                        <td><b>{!!Session::get('currency').' '.$totalCost!!}</b></td>
-                      </tr>
-                      @break
-                      @endforeach
-                    </table>
-                  </div>
-                </div>
-                <!-- /.col -->
-              </div>
-              <!-- /.row -->
-
-              <!-- this row will not appear when printing -->
-              @php
-                $status = '';
-                $orderId = '';
-              @endphp
-              <div class="row no-print">
-                <div class="col-12"> 
-                @foreach ($invoice as $item)
-                  <a href="{{route('pdf-invoice',['id'=>$item->order_id])}}" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                  <!--button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> 
-                  </button-->
-                  @if ($item->payment_status != 'paid')
-                    <a href="{{route('admin-order-payment',['id'=>$item->order_id])}}" class="btn btn-primary float-right" style="margin-right: 5px;"  onclick="return confirm('Are you sure to receive payment?');">
-                        <i class="far fa-credit-card"></i> Submit Payment
-                    </a>
-                  @endif
-                  {{-- <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;"> --}}
-                   
-                  
-                    <a href="{{route('pdf-invoice',['id'=>$item->order_id])}}" target="_blank" class="btn btn-primary float-right" style="margin-right: 5px;">
-                        <i class="fas fa-download"></i> Generate PDF
-                    </a>
-                    @php
-                        $status = $item->status;
-                        $orderId = $item->order_id;
-                    @endphp
-                  @break
-                  @endforeach
-                  @if ($status=="processing")
-                  <a href="{{route('admin-order-complete',['id'=>$orderId])}}" class="btn btn-success float-right" style="margin-right: 5px;" onclick="return confirm('Are you sure to complete order?');">
-                    <i class="fas fa-download"></i> Completed
-                  </a>
-                  @endif
-                  @if ($status!="completed")
-                  <a href="{{route('admin-order-cancel',['id'=>$orderId])}}" class="btn btn-danger float-right" style="margin-right: 5px;" onclick="return confirm('Are you sure to cancel order?');">
-                    <i class="fas fa-download"></i> Cancel
-                  </a>
-                  @endif
-                  @if ($status=="pending")
-                      
-                  
-                  <a href="{{route('admin-order-confirm',['id'=>$orderId])}}" class="btn btn-warning float-right" style="margin-right: 5px;" onclick="return confirm('Are you sure to confirm order?');">
-                    <i class="fas fa-download"></i> Processing
-                  </a>
-                  @endif
-                  {{-- </button> --}}
-                </div>
               </div>
             </div>
             <!-- /.invoice -->

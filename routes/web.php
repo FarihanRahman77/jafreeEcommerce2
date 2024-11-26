@@ -244,6 +244,8 @@ Route::middleware('auth')->group(function () {
   /* Order Info Admin panel */
   Route::get('/order-list', 'App\Http\Controllers\Admin\OrderController@orderList')->name('order-list');
   Route::get('/order-invoice/{id}', 'App\Http\Controllers\Admin\OrderController@orderInvoice')->name('order-invoice');
+  Route::get('/order-view/{id}', 'App\Http\Controllers\Admin\OrderController@orderView')->name('order-view');
+  Route::post('/order-reply', 'App\Http\Controllers\Admin\OrderController@orderReply')->name('order-reply');
   //Route::get('/order-invoice/{id}', 'App\Http\Controllers\userController@orderInvoice')->name('order-invoice');
   Route::get('/invoice/pdf/{id}', 'App\Http\Controllers\Admin\OrderController@createPDF')->name('pdf-invoice');
   Route::get('/admin/confirm-order/{id}', 'App\Http\Controllers\Admin\OrderController@confirmOrder')->name('admin-order-confirm');
