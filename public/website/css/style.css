@@ -10986,3 +10986,17 @@ screen and (-ms-high-contrast:active) {
     justify-content: center;
     align-items: center;    /* Center the number in the badge */
 }
+
+
+
+/* Custom styles to position the indicator at the bottom right */
+.alert-message {
+    position: fixed;       /* Fixed positioning relative to the viewport */
+    bottom: 50px;          /* Distance from the bottom */
+    right: 20px;           /* Distance from the right */
+    z-index: 9999;         /* Ensure it stays above other content */
+}
+
+
+
+

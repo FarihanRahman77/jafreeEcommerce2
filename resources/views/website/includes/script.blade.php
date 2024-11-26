@@ -29,9 +29,9 @@ function addToCart(id){
         datatype: "json",
         success: function(result) {
            // alert(JSON.stringify(result));
-            $('#cartSuccessMessage').text('Success! Added to cart item.').show();
+            $('#successMessage').text('Success! Added to cart item.').show();
             setTimeout(function() {
-                $('#cartSuccessMessage').fadeOut(); // Using fadeOut for smooth transition
+                $('#successMessage').fadeOut(); // Using fadeOut for smooth transition
             }, 5000);
             fetchCart();
             calculateTotal();
@@ -59,13 +59,13 @@ function fetchCart(){
         success: function(result) {
             //alert(JSON.stringify(result));
             $('#cartTable').html(result.data.cart);
-             $('#nav-cart-count').text(result.data.cartCount);
-             $('#footer-cart-count').text(result.data.cartCount);
+             $('#cartCounterText').text(result.data.cartCount);
+             $('#cartCounterTextFooter').text(result.data.cartCount);
              calculateTotal();
              $('#district_cart').val().trigger("change");
         },
         error: function(response) {
-          //  alert(JSON.stringify(response));
+           //alert(JSON.stringify(response));
         },
         beforeSend: function() {
             $('#loading').show();
@@ -143,6 +143,11 @@ function clearCart() {
         success: function(result) {
            // alert(JSON.stringify(result));
             if (result.data == "Success") {
+                $('#successMessage').text('Success! Cart data cleared successfully.').show();
+                setTimeout(function() {
+                    $('#successMessage').fadeOut(); // Using fadeOut for smooth transition
+                }, 5000);
+                fetchCart();
                 fetchCart();
                 calculateTotal();
                 
@@ -158,21 +163,22 @@ function clearCart() {
 
 
 
-function checkOutCart() {
-   
+$("#checkoutForm").submit(function (e){
+    e.preventDefault();
+    clearCartMessages();
     var name=$('#name_cart').val();
     var mobile=$('#mobile_cart').val();
     var address=$('#address_cart').val();
-    var note=$('#note_id').val();
+    var email=$('#email_cart').val();
+    var note=$('#note_cart').val();
     var _token = $('input[name="_token"]').val();
-
     var fd = new FormData();
     fd.append('name', name);
     fd.append('mobile', mobile);
     fd.append('address', address);
+    fd.append('email', email);
     fd.append('note', note);
     fd.append('_token', _token);
-
     
     $.ajax({
         url: "{{ route('product.checkOutCart') }}",
@@ -181,12 +187,15 @@ function checkOutCart() {
         contentType: false,
         processData: false,
         datatype: "json",
+        beforeSend: function() {
+            $('#loading').show();
+        },
         success: function(result) {
-            alert(JSON.stringify(result));
+            //alert(JSON.stringify(result));
             if (result.data == "Success") {
-                $('#cartSuccessMessage').text('Success! Your Order successfully saved.').show();
+                $('#successMessage').text('Success! Your Order successfully sent.').show();
                 setTimeout(function() {
-                    $('#cartSuccessMessage').fadeOut(); // Using fadeOut for smooth transition
+                    $('#successMessage').fadeOut(); // Using fadeOut for smooth transition
                 }, 5000);
                 fetchCart();
                 
@@ -197,37 +206,43 @@ function checkOutCart() {
                 }, 5000);
             }
             else {
-                $('#errorMessage').text('Error To delete cart item.').show();
+                $('#errorMessage').text('Error To save cart item.').show();
                 setTimeout(function() {
                     $('#errorMessage').fadeOut(); // Using fadeOut for smooth transition
                 }, 5000);
             }
             reset();
+            clearCartMessages();
             fetchCart();
-        },
-        beforeSend: function() {
-            $('#loading').show();
         },
         complete: function() {
             $('#loading').hide();
         },
         error: function(response) {
-            alert(JSON.stringify(response));
+           // alert(JSON.stringify(response));
             $('#name_cartError').text(response.responseJSON.errors.name);
             $('#mobile_cartError').text(response.responseJSON.errors.mobile);
             $('#address_cartError').text(response.responseJSON.errors.address);
+            $('#email_cartError').text(response.responseJSON.errors.email);
             $('#noteError').text(response.responseJSON.errors.note);
             
         }
     })
    
-}
+});
 
 function reset(){
     $('#name_cart').val('');
     $('#mobile_cart').val('');
     $('#address_cart').val('');
     $('#note_cart').val('');
+}
+
+function clearCartMessages(){
+    $('#name_cartError').text('');
+    $('#mobile_cartError').text('');
+    $('#address_cartError').text('');
+    $('#noteError').text('');
 }
 
 $("#messageForm").submit(function (e){
@@ -247,7 +262,6 @@ $("#messageForm").submit(function (e){
           fd.append('mobile',mobile);
           fd.append('text',text);
           fd.append('_token',_token);
-   
           $.ajax({
                 url: "{{ route('message.store') }}",
                 method:"POST",
@@ -256,10 +270,9 @@ $("#messageForm").submit(function (e){
                 processData: false,
                 success:function(result){
                     alert(JSON.stringify(result));
-                  table.ajax.reload(null, false);
+                    table.ajax.reload(null, false);
               }, error: function(response) {
-              
-                alert(JSON.stringify(response));
+                    alert(JSON.stringify(response));
               }, beforeSend: function () {
                   $('#loading').show();
               },complete: function () {
@@ -267,7 +280,9 @@ $("#messageForm").submit(function (e){
               }
 
           })
-         })   
+    })   
+
+
          function clearMessages(){
           $('#nameError').text("");
           $('#emailError').text("");
