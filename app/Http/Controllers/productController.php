@@ -26,39 +26,42 @@ class productController extends Controller {
   public function productView() {
   
 
-    $products = DB::table('tbl_print_book_product')
+   
+    $products = DB::table('tbl_products')
     ->select(
         'tbl_products.*',
-        'tbl_print_book_product.is_featured',
-        'tbl_print_book_product.id as book_product_id',
+        // 'tbl_print_book_product.is_featured',
+        // 'tbl_print_book_product.id as book_product_id',
         'tbl_brands.brandName',
         'tbl_brands.brand_logo',
         'tbl_category.categoryName'
     )
     ->distinct()
-    ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
-    ->join('tbl_printbook', 'tbl_printbook_category.tbl_printbook_id', '=', 'tbl_printbook.id')
-    ->join('tbl_brands', 'tbl_printbook_category.tbl_brand_id', '=', 'tbl_brands.id')
-    ->join('tbl_category', 'tbl_printbook_category.tbl_category_id', '=', 'tbl_category.id')
-    ->join('tbl_products', 'tbl_print_book_product.tbl_product_id', '=', 'tbl_products.id')
+    // ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
+    // ->join('tbl_printbook', 'tbl_printbook_category.tbl_printbook_id', '=', 'tbl_printbook.id')
+    ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+    ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+   // ->join('tbl_products', 'tbl_print_book_product.tbl_product_id', '=', 'tbl_products.id')
     ->where('tbl_products.deleted', 'No')
-    ->where('tbl_print_book_product.status', 'Active')
-    ->where('tbl_print_book_product.deleted', 'No')
-    ->where('tbl_printbook_category.is_website', 'Yes')
-    ->where('tbl_printbook_category.status', 'Active')
-    ->where('tbl_printbook_category.deleted', 'No') 
-    ->where('tbl_printbook.status', 'Active')
-    ->where('tbl_printbook.deleted', 'No')
+    ->where('tbl_brands.deleted', 'No')
+    ->where('tbl_category.deleted', 'No')
+    // ->where('tbl_print_book_product.status', 'Active')
+    // ->where('tbl_print_book_product.deleted', 'No')
+    // ->where('tbl_printbook_category.is_website', 'Yes')
+    // ->where('tbl_printbook_category.status', 'Active')
+    // ->where('tbl_printbook_category.deleted', 'No')
+    // ->where('tbl_printbook.status', 'Active')
+    // ->where('tbl_printbook.deleted', 'No')
     ->orderBy('tbl_products.id', 'desc')
     ->get();
-    return view('admin.home.products.productsView', ['products' => $products]);
+    return view('admin.home.products.productsView', ['admin_products' => $products]);
   }
  
 
       public function productEdit($id) {
 
-      $product = Product::find($id);
-      $productImages = ProductImage::where('productId',$id)->get();
+        $product = Product::find($id);
+        $productImages = ProductImage::where('productId',$id)->get();
         return view('admin.home.products.manageProduct', ['product' => $product,'productImages' => $productImages,'id'=>$id]);
       }
 
@@ -90,6 +93,7 @@ class productController extends Controller {
 
      
   public function productVideoUrlUpdate(Request $request){
+    
     $product = Product::find($request->id);
     $product->video_url=$request->video_url;
     $product->save();
@@ -97,6 +101,16 @@ class productController extends Controller {
   }
 
 
+  public function productWebsiteShowUpdate(Request $request){
+    $product = Product::find($request->id);
+    $product->website_featured=$request->featured;
+    $product->website_best_selling=$request->best_selling;
+    $product->website_new_arrival=$request->new_arrival;
+    $product->website_toprated=$request->toprated;
+    $product->website_special_offer=$request->special_offer;
+    $product->save();
+    return back()->with('message', 'Updated successfully.');
+  }
 
   public function toggleStatus($id)
   {

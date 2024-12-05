@@ -45,10 +45,11 @@
                                 <thead>
                                     <tr>
                                         <th>SL.</th>
-                                        <th>Name</th>
                                         <th>Image</th>
-                                        <th>Category Name</th>
-                                        <th>Brand</th>
+                                        <th>Name</th>
+                                        
+                                        <th>Model</th>
+                                        <th>Website Info</th>
                                         <th>Status</th>
                                         <th>Date</th>
                                         <th>Action</th>
@@ -58,13 +59,20 @@
 									$i = 1;
 								@endphp
                                 <tbody>
-                                    @foreach($products as $product)
+                                    @foreach($admin_products as $product)
                                     <tr>
                                         <td>{{$i++}}</td>
-                                        <td>{{$product->productName}}</td>
                                         <td><img src = "{{ $settings->erp_baseurl.'/images/products/thumb/'.$product->productImage }}" width="55" height="55" /></td>
-                                        <td>{{@$product->categoryName}}</td>
-                                        <td>{{@$product->brandName}}</td>
+                                        <td><b>Name: </b>{{$product->productName}} <br> <b>Category: </b> {{@$product->categoryName}} <br> <b>Brand: </b> {{@$product->brandName}}</td>
+                                        
+                                        <td>{{@$product->modelNo}}</td>
+                                        <td>
+                                            <b>Featured: </b>{{@$product->website_featured}} <br>
+                                            <b>Best Selling: </b>{{@$product->website_best_selling}} <br>
+                                            <b>New Arrival: </b>{{@$product->website_new_arrival}} <br>
+                                            <b>Top Rated: </b>{{@$product->website_toprated}} <br>
+                                            <b>Special Offer: </b>{{@$product->website_special_offer}} <br>
+                                        </td>
                                         <td>{{$product->status}}</td>
                                         <td>{{$product->created_at}}</td>
 

@@ -60,7 +60,7 @@
                             <div class="form-group col-md-6">
                                 <label for="video_url" class="col-form-label">Video URL(Embaded)</label>
                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" id="video_url" name="video_url" value="{{$product->video_url}}">
+                                    <input type="text" class="form-control" id="video_url" name="video_url" value="{{$product->video_url}}" placeholder="Emaded Youtube URL">
                                     <span class="text-danger">{{$errors->has('video_url')?$errors->first('video_url'):''}}</span>
                                 </div>
                             </div>
@@ -69,6 +69,66 @@
                                 <label for="Productimage" class="col-form-label text-light">.</label>
                                 <div class="col-sm-12">
                                     <button type="submit" class="btn btn-primary btn-flat" name="editProduct"><i class="fa fa-save"></i> Save </button>
+                                </div>
+                            </div>
+                        </div>
+                        {!!Form::close()!!}
+
+
+                        {!!Form::open(['url'=>'products/website/show/update','class'=>'form-horizontal' ,'method'=>'POST','enctype'=>'multipart/form-data'])!!}
+                        <input type="hidden" value="{{$id}}" name="id">
+                        <div class="col-md-12 row">
+                            <div class="form-group col-md-2">
+                                <label for="itemNote" class="col-form-label">Featured</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="featured" name="featured" >
+                                        <option value="Yes" {{ $product->website_featured == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="No" {{ $product->website_featured == 'No' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="itemNote" class="col-form-label">Best Selling</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="best_selling" name="best_selling" >
+                                        <option value="Yes" {{ $product->website_best_selling == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="No" {{ $product->website_best_selling == 'No' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="itemNote" class="col-form-label">New Arrival</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="new_arrival" name="new_arrival" >
+                                        <option value="Yes" {{ $product->website_new_arrival == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="No" {{ $product->website_new_arrival == 'No' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="itemNote" class="col-form-label">Top Rated</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="toprated" name="toprated" >
+                                        <option value="Yes" {{ $product->website_toprated == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="No" {{ $product->website_toprated == 'No' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="itemNote" class="col-form-label">Special Offer</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="special_offer" name="special_offer" >
+                                        
+                                        <option value="Yes" {{ $product->website_special_offer == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="No" {{ $product->website_special_offer == 'No' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group col-md-2">
+                                <label for="Productimage" class="col-form-label text-light">.</label>
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-primary btn-flat" ><i class="fa fa-save"></i> Save </button>
                                 </div>
                             </div>
                         </div>

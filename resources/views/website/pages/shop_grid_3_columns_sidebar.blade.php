@@ -545,7 +545,8 @@
                                         <div class="product-card__actions">
                                             <div class="product-card__availability">Availability: <span
                                                     class="text-success">In Stock</span></div>
-                                            <div class="product-card__prices">{{$product->maxSalePrice}}</div>
+                                            <div class="product-card__name"> <span class="badge badge-warning">{{$product->brandName}}</span></div>
+                                            <div class="product-card__name">{{$product->categoryName}}</div>
                                             <div class="product-card__buttons">
                                                 <button
                                                     class="btn btn-primary product-card__addtocart"
@@ -605,7 +606,8 @@
                                         <div class="product-card__actions">
                                             <div class="product-card__availability">Availability: <span
                                                     class="text-success">In Stock</span></div>
-                                            <div class="product-card__prices">{{$product->maxSalePrice}}</div>
+                                            <div class="product-card__name"> <span class="badge badge-warning">{{$product->brandName}}</span></div>
+                                            <div class="product-card__name">{{$product->categoryName}}</div>
                                             <div class="product-card__buttons">
                                                 <button
                                                     class="btn btn-primary product-card__addtocart"
@@ -662,7 +664,8 @@
                                         <div class="product-card__actions">
                                             <div class="product-card__availability">Availability: <span
                                                     class="text-success">In Stock</span></div>
-                                            <div class="product-card__prices">{{$product->maxSalePrice}}</div>
+                                            <div class="product-card__name"> <span class="badge badge-warning">{{$product->brandName}}</span></div>
+                                            <div class="product-card__name">{{$product->categoryName}}</div>
                                             <div class="product-card__buttons">
                                                 <button
                                                     class="btn btn-primary product-card__addtocart" type="button" onclick="addToCart({{$product->id}})">Add To Cart
