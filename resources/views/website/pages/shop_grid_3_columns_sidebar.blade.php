@@ -504,7 +504,7 @@
                                         
                                         </div>
                                         <div class="product-card__image"><a href="{{  route('product.details',$product->id) }}">
-                                                <img src="{{ $settings->erp_baseurl.'/images/products/thumb/'.$product->productImage }}" alt="">
+                                                <img src="{{ $settings->erp_baseurl.'/images/products/big_product_img/'.$product->productImage }}" alt="">
 
                                             </a>
                                         </div>
@@ -565,7 +565,7 @@
                                         
                                         </div>
                                         <div class="product-card__image"><a href="{{ route('product.details',$product->id) }}">
-                                                <img src="{{ $settings->erp_baseurl.'/images/products/thumb/'.$product->productImage }}" alt="">
+                                                <img src="{{ $settings->erp_baseurl.'/images/products/big_product_img/'.$product->productImage }}" alt="">
 
                                             </a>
                                         </div>
@@ -626,7 +626,7 @@
                                         
                                         </div>
                                         <div class="product-card__image"><a href="{{  route('product.details',$product->id) }}">
-                                                <img src="{{ $settings->erp_baseurl.'/images/products/thumb/'.$product->productImage }}" alt="">
+                                                <img src="{{ $settings->erp_baseurl.'/images/products/big_product_img/'.$product->productImage }}" alt="">
 
                                             </a>
                                         </div>

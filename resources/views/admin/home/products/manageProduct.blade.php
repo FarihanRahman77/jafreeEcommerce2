@@ -12,7 +12,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{url('/home')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{url('/products/view')}}">Edit Product</a></li>
+                        <li class="breadcrumb-item active"><a href="{{url('/products/view')}}">Edit Product </a></li>
                     </ol>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header d-flex justify-content-start">
-                            <span class="text">Edit Product Image</span>
+                            <span class="text">Edit Product Image for {{$product->productName}}</span>
                         </div>
                         <h3 class="text-center text-success">{{Session::get('message')}}</h3>
 

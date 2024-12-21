@@ -29,19 +29,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
             <div class="product product--layout--standard" data-layout="standard">
                 <div class="product__content"><!-- .product__gallery -->
                     <div class="product__gallery">
@@ -50,7 +37,7 @@
                                 <div class="owl-carousel" id="product-image">
                                     @if ($product->productImage)
                                     <a href="#" target="_blank">
-                                        <img src="{{ $settings->erp_baseurl.'/images/products/thumb/'.$product->productImage }}" alt="">
+                                        <img src="{{ $settings->erp_baseurl.'/images/products/big_product_img/'.$product->productImage }}" alt="">
                                     </a>
                                     @endif
 
@@ -261,25 +248,6 @@
 
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

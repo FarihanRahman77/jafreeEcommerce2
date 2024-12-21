@@ -21,64 +21,127 @@ use Image;
 use function Sodium\increment;
 
 class productController extends Controller {
+
   protected $name;
-  /* function for admin panel*/
-  public function productView() {
   
 
+  public function productView() {
+
    
-    $products = DB::table('tbl_products')
-    ->select(
-        'tbl_products.*',
-        // 'tbl_print_book_product.is_featured',
-        // 'tbl_print_book_product.id as book_product_id',
-        'tbl_brands.brandName',
-        'tbl_brands.brand_logo',
-        'tbl_category.categoryName'
-    )
-    ->distinct()
-    // ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
-    // ->join('tbl_printbook', 'tbl_printbook_category.tbl_printbook_id', '=', 'tbl_printbook.id')
-    ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
-    ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
-   // ->join('tbl_products', 'tbl_print_book_product.tbl_product_id', '=', 'tbl_products.id')
-    ->where('tbl_products.deleted', 'No')
-    ->where('tbl_brands.deleted', 'No')
-    ->where('tbl_category.deleted', 'No')
-    // ->where('tbl_print_book_product.status', 'Active')
-    // ->where('tbl_print_book_product.deleted', 'No')
-    // ->where('tbl_printbook_category.is_website', 'Yes')
-    // ->where('tbl_printbook_category.status', 'Active')
-    // ->where('tbl_printbook_category.deleted', 'No')
-    // ->where('tbl_printbook.status', 'Active')
-    // ->where('tbl_printbook.deleted', 'No')
-    ->orderBy('tbl_products.id', 'desc')
-    ->get();
-    return view('admin.home.products.productsView', ['admin_products' => $products]);
+
+    return view('admin.home.products.productsView');
+
   }
  
 
-      public function productEdit($id) {
+  public function getData(Request $request, $filter)
+{
+    $settings = ShopSetting::where('status', 'Active')->where('deleted', 'No')->first();
+    $filterArray = explode("@", $filter);
+    $filters = [
+        'featured' => $filterArray[0] ?? null,
+        'best_selling' => $filterArray[1] ?? null,
+        'new_arrival' => $filterArray[2] ?? null,
+        'top_rated' => $filterArray[3] ?? null,
+        'special_offer' => $filterArray[4] ?? null,
+    ];
 
-        $product = Product::find($id);
-        $productImages = ProductImage::where('productId',$id)->get();
-        return view('admin.home.products.manageProduct', ['product' => $product,'productImages' => $productImages,'id'=>$id]);
-      }
+    $products = DB::table('tbl_products')
+        ->select(
+            'tbl_products.*',
+            'tbl_brands.brandName',
+            'tbl_brands.brand_logo',
+            'tbl_category.categoryName'
+        )
+        ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+        ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+        ->where('tbl_products.deleted', 'No')
+        ->where('tbl_brands.deleted', 'No')
+        ->where('tbl_category.deleted', 'No')
+        ->when($filters['featured'], function ($query) use ($filters) {
+            $query->where('tbl_products.website_featured', '=', $filters['featured']);
+        })
+        ->when($filters['best_selling'], function ($query) use ($filters) {
+            $query->where('tbl_products.website_best_selling', '=', $filters['best_selling']);
+        })
+        ->when($filters['new_arrival'], function ($query) use ($filters) {
+            $query->where('tbl_products.website_new_arrival', '=', $filters['new_arrival']);
+        })
+        ->when($filters['top_rated'], function ($query) use ($filters) {
+            $query->where('tbl_products.website_toprated', '=', $filters['top_rated']);
+        })
+        ->when($filters['special_offer'], function ($query) use ($filters) {
+            $query->where('tbl_products.website_special_offer', '=', $filters['special_offer']);
+        })
+        ->orderBy('tbl_products.id', 'desc')
+        ->get();
+
+        $output = array('data' => array());
+		    $i = 1;
+        $imageUrl='';
+        foreach($products as $product){
+          $button = ' <td style="width: 12%;">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <i class="fas fa-cog"></i>  <span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
+                              <li class="action"><a href="#" class="btn" onclick="edit('.$product->id.')"><i class="fas fa-edit"></i> Edit </a></li>
+                            </ul>
+                        </div>
+                      </td>';
+          $imageUrl=$settings->erp_baseurl.'/images/products/thumb/'.$product->productImage;
+          
+          $output['data'][] = array(
+            $i++ . '<input type="hidden" name="id" id="id" value="' . $product->id . '" />',
+            '<img src = "'.$imageUrl.'" width="55" height="55" />',
+            '<b>Name: </b>'.$product->productName.' <br> <b>Category: </b> '.$product->categoryName.' <br> <b>Brand: </b> '.$product->brandName,
+            $product->modelNo,
+            '<b>Featured: </b>'.$product->website_featured.' <br>
+            <b>Best Selling: </b>'.$product->website_best_selling.' <br>
+            <b>New Arrival: </b>'.$product->website_new_arrival.' <br>
+            <b>Top Rated: </b>'.$product->website_toprated.' <br>
+            <b>Special Offer: </b>'.$product->website_special_offer,
+            $product->status,
+            $product->created_at,
+            $button
+          );
+        }
+        return $output;
+}
+
+
+
+
+    public function productEdit($id) {
+      $product = Product::find($id);
+      $productImages = ProductImage::where('productId',$id)->get();
+      return view('admin.home.products.manageProduct', ['product' => $product,'productImages' => $productImages,'id'=>$id]);
+    }
 
       
       
 
     public function productUpdate(Request $request) {
       
-      if($request->hasFile('productImage')){
+      if ($request->hasFile('productImage')) {
         $productimg = $request->file('productImage');
-       $name = $productimg->getClientOriginalName();
-       $uploadPath = 'website\images\products';
-       $imageUrl = $uploadPath.$name;
-       $imageName = time().$name;
-       Image::make($productimg)->resize(360,360)->save($imageUrl);
-        $productimg->move($uploadPath, $imageName);
-      }
+        $name = $productimg->getClientOriginalName();
+    
+        // Define upload path and generate a unique image name
+        $uploadPath = 'website/images/products/';
+        $imageName = time() . '_' . $name; // Unique image name
+        $imageUrl = $uploadPath . $imageName;
+    
+        // Resize the image and save to the specified path
+        Image::make($productimg)
+            ->resize(360, 360)
+            ->save(public_path($imageUrl)); // Use public_path() to resolve correctly
+    
+        // Optional: Move the original image if needed
+        // $productimg->move($uploadPath, $imageName);
+    
+        // Image path is now stored in $imageUrl
+    }
     
       $image = new ProductImage();
       $image->productImage=$imageName;
@@ -87,13 +150,13 @@ class productController extends Controller {
       $image->created_date = date('Y-m-d');
       $image->save();
 
-    return back()->with('message', 'Product updated successfully');
+      return back()->with('message', 'Product updated successfully');
 
-  }
+    }
 
      
-  public function productVideoUrlUpdate(Request $request){
-    
+  public function productVideoUrlUpdate(Request $request)
+  {
     $product = Product::find($request->id);
     $product->video_url=$request->video_url;
     $product->save();
@@ -125,4 +188,4 @@ class productController extends Controller {
   }
 
 
-    }
+}

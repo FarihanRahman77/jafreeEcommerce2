@@ -180,6 +180,7 @@ Route::middleware('auth')->group(function () {
   /* Products Info Admin panel */
   Route::get('/products/view', 'App\Http\Controllers\productController@productView');
   Route::get('/products/add', 'App\Http\Controllers\productController@productAdd')->name('dynamicValue.fetch');
+  Route::get('/products/get/data/{filter}', 'App\Http\Controllers\productController@getData')->name('products.getData');
   Route::post('/products/save', 'App\Http\Controllers\productController@productSave');
   Route::get('/products/edit/{id}', 'App\Http\Controllers\productController@productEdit');
   Route::post('/products/update', 'App\Http\Controllers\productController@productUpdate');
