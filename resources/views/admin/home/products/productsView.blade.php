@@ -26,60 +26,68 @@
                 <div class="col-md-12">
                     <div class="card">
                         
-                        <div class="card-header d-flex justify-content-end">
+                        <div class="card-header row">
                             <div class="col-md-3"> <h3>Product List</h3></div>
-                            <div class="col-md-6"> <h3 class="text-center text-success">{{Session::get('message')}}</h3></div>
-                            <!-- <div class="col-md-3 text-right">
-                                <a href="{{url('/products/add')}}" class="btn btn-success">
-                                    <span class="icon">
-                                        <i class="fas fa-plus"></i>
-                                    </span>
-                                    <span class="text">Add Products</span>
-                                </a>
-                            </div> -->
                             
+                            <div class="form-group float-right col-md-1">
+                                <label class="col-form-label">Featured</label>
+                                <select class="form-control"  id="featured" name="featured" style="width:100%;" onchange="loadFilterDatatable('featured')">
+                                    <option value='' selected>Featured</option>
+                                    <option value='Yes'> Yes </option>
+                                    <option value='No'> No </option>
+                                </select>
+                            </div>
+                            <div class="form-group float-right col-md-1">
+                                <label class="col-form-label">Best Selling</label>
+                                <select  class="form-control" id="best_selling" name="best_selling" style="width:100%;" onchange="loadFilterDatatable('best_selling')">
+                                    <option value='' selected>Best Selling</option>
+                                    <option value='Yes'> Yes </option>
+                                    <option value='No'> No </option>
+                                </select>
+                            </div>
+                            <div class="form-group float-right col-md-1">
+                                <label class="col-form-label">New Arrival</label>
+                                <select  class="form-control" id="new_arrival" name="new_arrival" style="width:100%;" onchange="loadFilterDatatable('new_arrival')">
+                                    <option value='' selected>New Arrival</option>
+                                    <option value='Yes'> Yes </option>
+                                    <option value='No'> No </option>
+                                </select>
+                            </div>
+                            <div class="form-group float-right col-md-1">
+                                <label class="col-form-label">Top Rated</label>
+                                <select  class="form-control" id="top_rated" name="top_rated" style="width:100%;" onchange="loadFilterDatatable('top_rated')">
+                                    <option value='' selected>Top Rated</option>
+                                    <option value='Yes'> Yes </option>
+                                    <option value='No'> No </option>
+                                </select>
+                            </div>
+                            <div class="form-group float-right col-md-1">
+                                <label class="col-form-label">Special Offer</label>
+                                <select  class="form-control" id="special_offer" name="special_offer" style="width:100%;" onchange="loadFilterDatatable('special_offer')">
+                                    <option value='' selected>Special Offer</option>
+                                    <option value='Yes'> Yes </option>
+                                    <option value='No'> No </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4"> <h3 class="text-center text-success">{{Session::get('message')}}</h3></div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="tbl_category" class="table table-bordered table-striped dt_view">
+                            <table id="tbl_product" class="table table-bordered table-striped dt_view">
                                 <thead>
                                     <tr>
                                         <th>SL.</th>
-                                        <th>Name</th>
                                         <th>Image</th>
-                                        <th>Category Name</th>
-                                        <th>Brand</th>
+                                        <th>Name</th>
+                                        <th>Model</th>
+                                        <th>Website Info</th>
                                         <th>Status</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                @php
-									$i = 1;
-								@endphp
                                 <tbody>
-                                    @foreach($products as $product)
-                                    <tr>
-                                        <td>{{$i++}}</td>
-                                        <td>{{$product->productName}}</td>
-                                        <td><img src = "{{ $settings->erp_baseurl.'/images/products/thumb/'.$product->productImage }}" width="55" height="55" /></td>
-                                        <td>{{@$product->categoryName}}</td>
-                                        <td>{{@$product->brandName}}</td>
-                                        <td>{{$product->status}}</td>
-                                        <td>{{$product->created_at}}</td>
-
-                                        
-                                        <td style="width: 12%;">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                                                <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-                                                <li class="action"><a href="{{url('/products/edit/'.$product->id)}}" class="btn" ><i class="fas fa-edit"></i> Edit </a></li>
-                                            </ul>
-                                                </div>
-                                        </td>
-
-                                    </tr>@endforeach
+                                   
                                 </tbody>
                             </table>
                         </div>
@@ -91,3 +99,71 @@
 </div>
 @endsection
 
+@section('contentJavaScripts')
+  <script>
+
+        $("#featured").val('Yes');
+        
+
+        var table;
+        $(document).ready(function() {
+
+            loadFilterDatatable();
+
+        });
+
+    function loadFilterDatatable(filterBy = '') {
+        //alert(filterBy);
+        if(filterBy === 'featured'){
+            $('#best_selling').val('');
+            $('#top_rated').val('');
+            $('#new_arrival').val('');
+            $('#special_offer').val('');
+        }
+        if(filterBy === 'best_selling'){
+            $('#featured').val('');
+            $('#top_rated').val('');
+            $('#new_arrival').val('');
+            $('#special_offer').val('');
+        }
+        if(filterBy === 'top_rated'){
+            $('#featured').val('');
+            $('#best_selling').val('');
+            $('#new_arrival').val('');
+            $('#special_offer').val('');
+        }
+        if(filterBy === 'new_arrival'){
+            $('#featured').val('');
+            $('#best_selling').val('');
+            $('#top_rated').val('');
+            $('#special_offer').val('');
+        }
+        if(filterBy === 'special_offer'){
+            $('#featured').val('');
+            $('#best_selling').val('');
+            $('#top_rated').val('');
+            $('#new_arrival').val('');
+        }
+
+        const featured = $("#featured").val();
+        const best_selling = $("#best_selling").val();
+        const top_rated = $("#top_rated").val();
+        const new_arrival = $("#new_arrival").val();
+        const special_offer = $("#special_offer").val();
+
+        var filter = featured + "@" + best_selling +  "@" + new_arrival + "@" + top_rated + "@" + special_offer;
+       // alert(filter);
+        
+        table = $('#tbl_product').DataTable({
+                'ajax': `{{ url('/products/get/data/${filter}') }}`,
+                processing: true,
+                destroy: true,
+            });
+        }
+
+
+        function edit(id){
+            window.open("{{url('/products/edit/')}}"+"/"+id);
+        }
+  </script>
+@endsection

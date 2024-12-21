@@ -116,10 +116,10 @@
     
     <div class="indicator indicator--mobile2"> 
         <a href="{{ url('/card') }}" class="indicator__button2"> 
-            <span class="indicator__area2"> 
+            <div class="indicator__area2"> 
                 <i class="fa fa-cart-arrow-down"></i> 
-                <span class="indicator__value2" id="cartCounterTextFooter">0</span> 
-            </span>
+                <div class="indicator__value2" id="cartCounterTextFooter">0</div> 
+            </div>
         </a>
     </div>
     <div class="alert-message"> 

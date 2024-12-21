@@ -220,8 +220,7 @@ class WelcomeController extends Controller
         )
         ->orderBy('random_number', 'desc')
         ->paginate(54);
-  
-  
+        
       return view('website.pages.shop_grid_3_columns_sidebar', ['brandWiseProducts' => $brandWiseProducts]);
       }
 

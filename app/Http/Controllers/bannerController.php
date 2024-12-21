@@ -10,7 +10,7 @@ use DB;
 class bannerController extends Controller
 {
     public function forntEndBannerView(){
-        $banners = banner::all();
+        $banners = banner::orderby('id','DESC')->get();
         return view('admin.home.bannerOffer.frontEndBannerView',['banners'=>$banners]);
     }
     public function forntEndBannerAdd(){
@@ -25,12 +25,25 @@ class bannerController extends Controller
             'Bannerstatus'=>'required',
         ]);
         
-        $Bannerimage = $request->file('Bannerimage');
-        $name = $Bannerimage->getClientOriginalName();
-        $uploadPath = 'website/images/banners/';
-		$bannerName = time().$name;
-        Image::make($Bannerimage)->resize(1110,480)->save($bannerName);
-        $Bannerimage->move($uploadPath, $bannerName);
+        if ($request->hasFile('Bannerimage')) {
+            $Bannerimage = $request->file('Bannerimage');
+            $name = $Bannerimage->getClientOriginalName();
+        
+            // Define the upload path and unique image name
+            $uploadPath = 'website/images/banners/'; // Path relative to public folder
+            $bannerName = time() . '_' . $name; // Unique name for the file
+            $imagePath = public_path($uploadPath . $bannerName); // Full path to save the image
+        
+            // Resize the image and save it
+            Image::make($Bannerimage)
+                ->resize(1420, 390)
+                ->save($imagePath);
+        
+            // (Optional) Move the original image if you need to keep it
+            // $Bannerimage->move(public_path($uploadPath), $bannerName);
+        
+            // Image is successfully resized and saved
+        }
         
         /*Eloquent ORM process*/
         $banner= new banner();

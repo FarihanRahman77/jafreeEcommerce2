@@ -59,12 +59,16 @@
                             href="{{ url('/aboutus') }}">About Us</a></div>
                     <div class="topbar__item topbar__item--link"><a class="topbar-link"
                             href="{{ url('/contactus') }}">Contacts</a></div>
-                    <div class="topbar__item topbar__item--link"><a class="topbar-link" href="#">Store
+                    <div class="topbar__item topbar__item--link d-none"><a class="topbar-link" href="#">Store
                             Location</a></div>
-                    <div class="topbar__item topbar__item--link"><a class="topbar-link"
+                    <div class="topbar__item topbar__item--link d-none"><a class="topbar-link"
                             href="{{ url('/tractorder') }}">Track Order</a></div>
                     <div class="topbar__item topbar__item--link"><a class="topbar-link"
                             href="{{ url('/blog_classic') }}">Blog</a></div>
+
+                    <div class="topbar__item topbar__item--link"><a class="topbar-link" href="{{ url('/termscondition') }}">Terms And Conditions</a></div>
+                    <div class="topbar__item topbar__item--link"><a class="topbar-link" href="{{ url('/faq') }}">FAQ</a></div>
+
                     <div class="topbar__spring"></div>
                     <div class="topbar__item">
                         <div class="topbar-dropdown"><button class="topbar-dropdown__btn" type="button">My
@@ -96,7 +100,7 @@
                                     </div> -->
                         </div>
                     </div>
-                    <div class="topbar__item">
+                    <div class="topbar__item d-none">
                         <div class="topbar-dropdown"><button class="topbar-dropdown__btn"
                                 type="button">Language: <span class="topbar__item-value">EN</span> <svg
                                     width="7px" height="5px">
@@ -157,8 +161,10 @@
             <div class="site-header__phone">
 
                 <div class="site-header__phone-title">Hot Line</div>
-
-                <div class="site-header__phone-number">{{$settings->phone}}</div>
+                <div class="d-flex">
+                    <i class="fa fa-phone m-1"></i> <div class="site-header__phone-number">{{$settings->phone}}</div>
+                </div>
+                
             </div>
         </div>
         <div class="site-header__nav-panel">
@@ -171,14 +177,14 @@
                                     <div class="departments__links-wrapper">
                                         <ul class="departments__links">
                                             @foreach($categories as $category)
-                                            <li class="departments__item"><a href="{{ url('/categorywiseproduct/'.$category->id) }}">{{$category->categoryName}}<svg
-                                                        class="departments__link-arrow" width="6px"
+                                            <li class="departments__item">
+                                                <a href="{{ url('/categorywiseproduct/'.$category->id) }}">
+                                                    {{$category->categoryName}}
+                                                    <svg class="departments__link-arrow" width="6px"
                                                         height="9px">
-                                                        <use
-                                                            xlink:href="images/sprite.svg#arrow-rounded-right-6x9">
-                                                        </use>
-                                                    </svg></a>
-
+                                                        <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9"></use>
+                                                    </svg>
+                                                </a>
                                             </li>
                                             @endforeach
 
@@ -317,7 +323,7 @@
                                             </svg></span></a>
                                     
                                 </li>
-                                <li class="nav-links__item nav-links__item--with-submenu"><a
+                                <li class="nav-links__item nav-links__item--with-submenu d-none"><a
                                         href="#"><span>Pages <svg class="nav-links__arrow" width="9px"
                                                 height="6px">
                                                 <use xlink:href="images/sprite.svg#arrow-rounded-down-9x6">
@@ -337,9 +343,9 @@
                                         </ul><!-- .menu / end -->
                                     </div>
                                 </li>
-                                <li class="nav-links__item"><a href="{{ url('/contactus') }}"><span>Contact
+                                <li class="nav-links__item d-none"><a href="{{ url('/contactus') }}"><span>Contact
                                             Us</span></a></li>
-                                <li class="nav-links__item"><a
+                                <li class="nav-links__item d-none"><a
                                         href="https://themeforest.net/user/kos9/portfolio"><span>Buy
                                             Theme</span></a></li>
                             </ul>

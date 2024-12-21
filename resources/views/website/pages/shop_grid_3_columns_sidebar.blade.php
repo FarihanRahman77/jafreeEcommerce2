@@ -47,7 +47,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="widget-filters__item">
+                                <div class="widget-filters__item d-none">
                                     <div class="filter filter--opened" data-collapse-item><button type="button"
                                             class="filter__title" data-collapse-trigger>Price <svg
                                                 class="filter__arrow" width="12px" height="7px">
@@ -79,18 +79,9 @@
                                                 <div class="filter-list">
                                                     <div class="filter-list__list">
                                                         @foreach($brands as $brand)
-                                                        <label class="filter-list__item"><span
-                                                                class="filter-list__input input-check"><span
-                                                                    class="input-check__body"><input
-                                                                        class="input-check__input"
-                                                                        type="checkbox"> <span
-                                                                        class="input-check__box"></span> <svg
-                                                                        class="input-check__icon" width="9px"
-                                                                        height="7px">
-                                                                        <use
-                                                                            xlink:href="images/sprite.svg#check-9x7">
-                                                                        </use>
-                                                                    </svg> </span></span> <a style="color:gray" href="{{ route('brandwiseproduct',$brand->id) }}">{{$brand->brandName}}</a></label>
+                                                        <label class="filter-list__item">
+                                                         <a style="color:gray" href="{{ route('brandwiseproduct',$brand->id) }}">{{$brand->brandName}}</a>
+                                                        </label>
 
                                                         @endforeach
 
@@ -102,7 +93,7 @@
                                     </div>
                                 </div>
 
-                                <div class="widget-filters__item">
+                                <div class="widget-filters__item d-none">
                                     <div class="filter filter--opened" data-collapse-item><button type="button"
                                             class="filter__title" data-collapse-trigger>Color <svg
                                                 class="filter__arrow" width="12px" height="7px">
@@ -400,9 +391,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="widget-filters__actions d-flex"><button
-                                    class="btn btn-primary btn-sm">Filter</button> <button
-                                    class="btn btn-secondary btn-sm ml-2">Reset</button></div>
+                            
                         </div>
                     </div>
                     <div class="block-sidebar__item d-none d-lg-block">
@@ -515,7 +504,7 @@
                                         
                                         </div>
                                         <div class="product-card__image"><a href="{{  route('product.details',$product->id) }}">
-                                                <img src="{{ $settings->erp_baseurl.'/images/products/thumb/'.$product->productImage }}" alt="">
+                                                <img src="{{ $settings->erp_baseurl.'/images/products/big_product_img/'.$product->productImage }}" alt="">
 
                                             </a>
                                         </div>
@@ -545,7 +534,8 @@
                                         <div class="product-card__actions">
                                             <div class="product-card__availability">Availability: <span
                                                     class="text-success">In Stock</span></div>
-                                            <div class="product-card__prices">{{$product->maxSalePrice}}</div>
+                                            <div class="product-card__name"> <span class="badge badge-warning">{{$product->brandName}}</span></div>
+                                            <div class="product-card__name">{{$product->categoryName}}</div>
                                             <div class="product-card__buttons">
                                                 <button
                                                     class="btn btn-primary product-card__addtocart"
@@ -575,7 +565,7 @@
                                         
                                         </div>
                                         <div class="product-card__image"><a href="{{ route('product.details',$product->id) }}">
-                                                <img src="{{ $settings->erp_baseurl.'/images/products/thumb/'.$product->productImage }}" alt="">
+                                                <img src="{{ $settings->erp_baseurl.'/images/products/big_product_img/'.$product->productImage }}" alt="">
 
                                             </a>
                                         </div>
@@ -605,7 +595,8 @@
                                         <div class="product-card__actions">
                                             <div class="product-card__availability">Availability: <span
                                                     class="text-success">In Stock</span></div>
-                                            <div class="product-card__prices">{{$product->maxSalePrice}}</div>
+                                            <div class="product-card__name"> <span class="badge badge-warning">{{$product->brandName}}</span></div>
+                                            <div class="product-card__name">{{$product->categoryName}}</div>
                                             <div class="product-card__buttons">
                                                 <button
                                                     class="btn btn-primary product-card__addtocart"
@@ -635,7 +626,7 @@
                                         
                                         </div>
                                         <div class="product-card__image"><a href="{{  route('product.details',$product->id) }}">
-                                                <img src="{{ $settings->erp_baseurl.'/images/products/thumb/'.$product->productImage }}" alt="">
+                                                <img src="{{ $settings->erp_baseurl.'/images/products/big_product_img/'.$product->productImage }}" alt="">
 
                                             </a>
                                         </div>
@@ -662,7 +653,8 @@
                                         <div class="product-card__actions">
                                             <div class="product-card__availability">Availability: <span
                                                     class="text-success">In Stock</span></div>
-                                            <div class="product-card__prices">{{$product->maxSalePrice}}</div>
+                                            <div class="product-card__name"> <span class="badge badge-warning">{{$product->brandName}}</span></div>
+                                            <div class="product-card__name">{{$product->categoryName}}</div>
                                             <div class="product-card__buttons">
                                                 <button
                                                     class="btn btn-primary product-card__addtocart" type="button" onclick="addToCart({{$product->id}})">Add To Cart

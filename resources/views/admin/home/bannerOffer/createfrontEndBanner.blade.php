@@ -39,7 +39,7 @@
                                             <img id="ShowbannerImage"
                                             src="{{ !empty($banners->image) ? url('website/images/banners/' . $banners->image) : url('website/images/banners/no_image.png') }}"
                                             style="width: 100px;height: 80px; border:1px solid #000000">
-                                            <span style="color:gray;">Banner must be 1600*500 Size</span>
+                                            <span style="color:gray;">Banner must be 1420*390 Size</span>
                                             <span class="text-danger">{{$errors->has('Bannerimage')?$errors->first('Bannerimage'):''}}</span>
                                         </div>
                                     </div>
@@ -65,7 +65,7 @@
                                     <label for="Bannersorting" class="col-form-label">Banner Sorting</label>
 
                                     <div class="col-sm-12">
-                                        <input type="number" class="form-control" id="Bannersorting" name="Bannersorting" placeholder=" Product name">
+                                        <input type="number" class="form-control" id="Bannersorting" name="Bannersorting" placeholder="Sort No">
                                         <span class="text-danger">{{$errors->has('Bannersorting')?$errors->first('Bannersorting'):''}}</span>
                                     </div>
                                 </div>
