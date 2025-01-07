@@ -18,7 +18,6 @@ Admin Sub-Category-View
                 </div>
             </div>
         </div><!-- /.container-fluid -->
-
     </section>
     <section class="content">
         <div class="container-fluid">
@@ -74,41 +73,41 @@ Admin Sub-Category-View
           $("#modal").modal('show');
           //$(".btnSave").show();
       }
-	$('#modal').on('shown.bs.modal', function() {
-		$('#name').focus();
-	})
-	$('#editModal').on('shown.bs.modal', function() {
-		$('#editName').focus();
-	})
-	var table;
-	$(document).ready(function() {
-		table = $('#manageSubCategoryTable').DataTable({
-			'ajax': "{{url('/sub-category/getData')}}",
-			processing:true,
-		});
-        // $.ajax({
-        //         url:"{{url('/sub-category/getData')}}",
-        //         method:"GET",
-        //         contentType: false,
-        //         processData: false,
-        //         success:function(result){
-        //             alert(JSON.stringify(result));
-                  
-        //       }, error: function(response) {
-                
-        //            alert(JSON.stringify(response));
-                
-        //       }, beforeSend: function () {
-        //           $('#loading').show();
-        //       },complete: function () {
-        //           $('#loading').hide();
-        //       }
+      $('#modal').on('shown.bs.modal', function() {
+        $('#name').focus();
+      })
+      $('#editModal').on('shown.bs.modal', function() {
+        $('#editName').focus();
+      })
 
-        //   })
+      var table;
+      // $(document).ready(function() {
+      //   table = $('#manageSubCategoryTable').DataTable({
+      //     'ajax': "{{url('/sub-category/getData')}}",
+      //     processing:true,
+      // });
+        $.ajax({
+                url:"{{url('/sub-category/getData')}}",
+                method:"GET",
+                contentType: false,
+                processData: false,
+                success:function(result){
+                    alert(JSON.stringify(result));
+                  
+              }, error: function(response) {
+                
+                   alert(JSON.stringify(response));
+                
+              }, beforeSend: function () {
+                  $('#loading').show();
+              },complete: function () {
+                  $('#loading').hide();
+              }
+
+          })
 	});
 		
         $("#brandForm").submit(function (e){
-           // alert("calling");
           e.preventDefault();
           clearMessages();
           var brandName = $("#brandName").val();
