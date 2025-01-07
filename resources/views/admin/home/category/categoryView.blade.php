@@ -45,11 +45,12 @@
                                 <thead>
                                     <tr>
                                         <th>SL.</th>
+                                        <th>Date</th>
                                         <th>Logo</th>
                                         <th>Image</th>
                                         <th>Name</th>
                                         <th>Status</th>
-                                        <th>Date</th>
+                                        <th>Is Website</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -57,15 +58,16 @@
 									@php
 										$i = 1;
 									@endphp
-                                    @foreach($categories as $category)
+                                    @foreach($adminCategories as $category)
                                     <tr>
 
                                         <td>{{$i++}}</td>
-                                        <td><img src="{{asset('website/images/categories/'.$category->logo)}}" alt="" style="height:50px;"></td>
-                                        <td><img src="{{asset('website/images/categories/'.$category->image)}}" alt='' style="height:50px;"></td>
+                                        <td>{{$category->createdDate}}</td>
+                                        <td><img src="{{asset('ecomas/images/category/'.$category->logo)}}" alt="" style="height:50px;"></td>
+                                        <td><img src="{{asset('ecomas/images/category/'.$category->image)}}" alt='' style="height:50px;"></td>
                                         <td>{{$category->categoryName}}</td>
                                         <td>{{$category->status}}</td>
-                                        <td>{{$category->createdDate}}</td>
+                                        <td>{{$category->is_website}}</td>
                                         <td style="width: 12%;">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">

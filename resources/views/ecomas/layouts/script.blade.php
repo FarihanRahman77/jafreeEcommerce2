@@ -1,0 +1,13 @@
+<!-- Javascript -->
+    <script type="text/javascript" src="{{asset('ecomas/js/bootstrap.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ecomas/js/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ecomas/js/swiper-bundle.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ecomas/js/carousel.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ecomas/js/bootstrap-select.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ecomas/js/lazysize.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ecomas/js/count-down.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ecomas/js/wow.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ecomas/js/multiple-modal.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ecomas/js/nouislider.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ecomas/js/main.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ecomas/js/shop.js')}}"></script>

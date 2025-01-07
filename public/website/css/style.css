@@ -11025,3 +11025,28 @@ screen and (-ms-high-contrast:active) {
 
 
 
+.block-product-columns__column {
+    max-height: 370px; /* Adjust the height as needed */
+    overflow-y: scroll;
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.block-product-columns__column::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+
+
+.search__suggestions {
+    margin: 0;
+    padding: 10px 0;
+}
+
+.search__suggestions li {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.search__suggestions li:hover {
+    background-color: #f5f5f5;
+}

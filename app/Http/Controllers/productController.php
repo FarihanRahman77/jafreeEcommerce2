@@ -39,11 +39,12 @@ class productController extends Controller {
     $settings = ShopSetting::where('status', 'Active')->where('deleted', 'No')->first();
     $filterArray = explode("@", $filter);
     $filters = [
-        'featured' => $filterArray[0] ?? null,
-        'best_selling' => $filterArray[1] ?? null,
-        'new_arrival' => $filterArray[2] ?? null,
-        'top_rated' => $filterArray[3] ?? null,
-        'special_offer' => $filterArray[4] ?? null,
+        'is_website' => $filterArray[0] ?? null,
+        'featured' => $filterArray[1] ?? null,
+        'best_selling' => $filterArray[2] ?? null,
+        'new_arrival' => $filterArray[3] ?? null,
+        'top_rated' => $filterArray[4] ?? null,
+        'special_offer' => $filterArray[5] ?? null,
     ];
 
     $products = DB::table('tbl_products')
@@ -58,6 +59,9 @@ class productController extends Controller {
         ->where('tbl_products.deleted', 'No')
         ->where('tbl_brands.deleted', 'No')
         ->where('tbl_category.deleted', 'No')
+        ->when($filters['is_website'], function ($query) use ($filters) {
+            $query->where('tbl_products.is_website', '=', $filters['is_website']);
+        })
         ->when($filters['featured'], function ($query) use ($filters) {
             $query->where('tbl_products.website_featured', '=', $filters['featured']);
         })
@@ -100,7 +104,8 @@ class productController extends Controller {
             <b>Best Selling: </b>'.$product->website_best_selling.' <br>
             <b>New Arrival: </b>'.$product->website_new_arrival.' <br>
             <b>Top Rated: </b>'.$product->website_toprated.' <br>
-            <b>Special Offer: </b>'.$product->website_special_offer,
+            <b>Special Offer: </b>'.$product->website_special_offer.' <br>
+            <b>Is Website: </b>'.$product->is_website,
             $product->status,
             $product->created_at,
             $button
@@ -171,6 +176,7 @@ class productController extends Controller {
     $product->website_new_arrival=$request->new_arrival;
     $product->website_toprated=$request->toprated;
     $product->website_special_offer=$request->special_offer;
+    $product->is_website=$request->is_website;
     $product->save();
     return back()->with('message', 'Updated successfully.');
   }

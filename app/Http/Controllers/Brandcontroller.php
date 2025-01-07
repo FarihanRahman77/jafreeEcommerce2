@@ -20,7 +20,8 @@ class Brandcontroller extends Controller
 		$data = "";
 		$brands = DB::table('tbl_printbook_category')
                     ->join('tbl_brands', 'tbl_printbook_category.tbl_brand_id', '=', 'tbl_brands.id')
-                    ->select('tbl_brands.id', 'tbl_brands.brandName', 'tbl_brands.brand_logo', 'tbl_brands.is_agent','tbl_brands.status')
+                    ->select('tbl_brands.id', 'tbl_brands.brandName', 'tbl_brands.brand_logo', 'tbl_brands.is_agent',
+                    'tbl_brands.status','brand_image','tbl_brands.is_website','tbl_brands.is_top','tbl_brands.top_priority')
                     ->where('tbl_printbook_category.is_website', 'Yes')
                     ->where('tbl_printbook_category.deleted', 'No')
                     ->where('tbl_brands.deleted', 'No')
@@ -30,6 +31,15 @@ class Brandcontroller extends Controller
 		$output = array('data' => array());
 		$i=1;
 		foreach ($brands as $brand) {
+            $button = ' <td style="width: 12%;">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <i class="fas fa-cog"></i>  <span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
+                              <li class="action"><a href="#" class="btn" onclick="editBrand('.$brand->id.')"><i class="fas fa-edit"></i> Edit </a></li>
+                            </ul>
+                        </div>
+                      </td>';
             $status = "";
             if($brand->status == 'Active'){
                 $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="'.$brand->status.'"></i></center>';
@@ -37,13 +47,19 @@ class Brandcontroller extends Controller
                 $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="'.$brand->status.'"></i></center>';
             }
             
-            $imageUrl = url($settings->erp_baseurl.'/images/brand/'.$brand->brand_logo);
+            $logoUrl = asset('ecomas/images/brand/'.$brand->brand_logo);
+            $imageUrl = asset('ecomas/images/brand/'.$brand->brand_image);
 		
 			$output['data'][] = array(
 				$i++. '<input type="hidden" name="id" id="id" value="'.$brand->id.'" />',
+                '<img style="width:40px;" src="'.$logoUrl.'" alt="'.$brand->brandName.'" />',
                 '<img style="width:40px;" src="'.$imageUrl.'" alt="'.$brand->brandName.'" />',
 				$brand->brandName,
-				$status
+				$brand->is_website,
+				$brand->is_top,
+				$brand->top_priority,
+				$status,
+                $button
 			);               
 		}	
 		return $output;
@@ -125,29 +141,34 @@ class Brandcontroller extends Controller
     
     public function update(Request $request)
       {
-        $request->validate([
-            'brandName' => 'required|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u|unique:tbl_brands,brandName,'.$request->id
-        ]);
         $brand =Brand::find($request->id);
-        $brand->brandName = $request->brandName;
-
-        if ($request->removeImage == "1"){
-			$brand->brand_logo = "no_image.png";
-		}
-        else if($request->hasFile('brand_logo')){
+        if($request->hasFile('brand_image')){
             $request->validate([
-                'brand_logo'=> 'mimes:jpeg,jpg,png,gif|max:1000',
+                'brand_image'=> 'mimes:jpeg,jpg,png,gif,webp',
               ]);
-            $brandImage = $request->file('brand_logo');
+            $brandImage = $request->file('brand_image');
             $name = $brandImage->getClientOriginalName();
-            $uploadPath = 'brandLogo/';
+            $uploadPath = 'ecomas/images/brand/';
             $imageUrl = $uploadPath.$name;
             $imageName = time().$name;
             $brandImage->move($uploadPath, $imageName);
-            $brand->brand_logo = $imageName;
+            $brand->brand_image = $imageName;
         }
-
-		$brand->status = $request->status;
+        if($request->hasFile('brand_logo')){
+            $request->validate([
+                'brand_logo'=> 'mimes:jpeg,jpg,png,gif,webp',
+              ]);
+            $brandLogo = $request->file('brand_logo');
+            $name = $brandLogo->getClientOriginalName();
+            $uploadPath = 'ecomas/images/brand/';
+            $logoUrl = $uploadPath.$name;
+            $logoName = time().$name;
+            $brandLogo->move($uploadPath, $logoName);
+            $brand->brand_logo = $logoName;
+        }
+		$brand->is_website = $request->is_website;
+		$brand->is_top = $request->is_top;
+		$brand->top_priority = $request->top_priority;
 		$brand->lastUpdatedBy = auth()->user()->id;
 		$brand->lastUpdatedDate = date('Y-m-d H:i:s');
 		$brand->save();

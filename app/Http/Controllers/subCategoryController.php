@@ -5,21 +5,57 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Category;
 use App\subCategory;
+use App\Models\ShopSetting;
 use DB;
 
 
 class subCategoryController extends Controller
 {
     public function subCategoryView(){
-        //$subCategory = subCategory::all();
+        
+        return view('admin.home.subCategory.subCategoryView');
+    }
+
+    public function getData(){
+        $data = "";
         $subCategory = DB::table('sub_categories')
-                ->leftjoin('categories','categories.id','=','sub_categories.tbl_CategoryID')
-                ->select('sub_categories.id','sub_categories.subCategoryName','categories.categoryName','sub_categories.comments','sub_categories.status','sub_categories.created_at')
+                ->leftjoin('tbl_category','tbl_category.id','=','sub_categories.category_id')
+                ->select('sub_categories.*','tbl_category.categoryName')
                 ->where('sub_categories.deleted','No')
                 ->get();
-                //->toSql();
-                //return $subCategory;
-        return view('admin.home.subCategory.subCategoryView',['subCategories'=>$subCategory]);
+        $settings=ShopSetting::where('status', 'Active')->first();
+        $output = array('data' => array());
+        $i=1;
+        foreach ($subCategory as $sub) {
+            $button = ' <td style="width: 12%;">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <i class="fas fa-cog"></i>  <span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
+                                <li class="action"><a href="#" class="btn" onclick="editBrand('.$sub->id.')"><i class="fas fa-edit"></i> Edit </a></li>
+                            </ul>
+                        </div>
+                        </td>';
+            $status = "";
+            if($sub->status == 'Active'){
+                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="'.$sub->status.'"></i></center>';
+            }else{
+                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="'.$sub->status.'"></i></center>';
+            }
+            
+            $imageUrl = asset('ecomas/images/brand/'.$sub->brand_image);
+        
+            $output['data'][] = array(
+                $i++. '<input type="hidden" name="id" id="id" value="'.$sub->id.'" />',
+                '<img style="width:40px;" src="'.$imageUrl.'" alt="'.$sub->brandName.'" />',
+                $sub->name,
+                $sub->categoryName,
+                $sub->is_website,
+                $status,
+                $button
+            );               
+        }	
+        return $output;
     }
     public function subCategoryAdd(){
         

@@ -124,6 +124,16 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group col-md-2">
+                                <label for="itemNote" class="col-form-label">Is Website</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="is_website" name="is_website" >
+                                        
+                                        <option value="Yes" {{ $product->is_website == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="No" {{ $product->is_website == 'No' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                </div>
+                            </div>
                             
                             <div class="form-group col-md-2">
                                 <label for="Productimage" class="col-form-label text-light">.</label>

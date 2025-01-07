@@ -269,10 +269,10 @@ $("#messageForm").submit(function (e){
                 contentType: false,
                 processData: false,
                 success:function(result){
-                    alert(JSON.stringify(result));
+                    //alert(JSON.stringify(result));
                     table.ajax.reload(null, false);
               }, error: function(response) {
-                    alert(JSON.stringify(response));
+                   // alert(JSON.stringify(response));
               }, beforeSend: function () {
                   $('#loading').show();
               },complete: function () {
@@ -293,5 +293,27 @@ $("#messageForm").submit(function (e){
         }
 
 
+
+    $('#searchBar').on('keyup', function () {
+            const query = $(this).val();
+            $.ajax({
+                url: "{{ route('search.suggestions') }}",
+                method: "GET",
+                data: { search: query },
+                success: function (result) {
+                    //alert(JSON.stringify(result));
+                    $('#searchSuggestions').html(result).show();
+                },
+                error: function (response) {
+                   // alert(JSON.stringify(response));
+                    $('#searchSuggestions').html('<li>Loading...</li>').show();
+                }
+            });
+        });
+
+        function productDetails(id){
+            window.open("{{url('/products/details')}}/"+id);
+        }
+    
     
 </script>

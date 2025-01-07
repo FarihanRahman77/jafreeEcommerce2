@@ -56,19 +56,19 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
+                        <li class="nav-item d-none">
                             <a href="{{url('/master/masterOfferView')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Manage Master offer</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item d-none">
                             <a href="{{route('specialOfferView',['status'=>'Active'])}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Manage Special offer</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item d-none">
                             <a href="{{url('/bestDeals/view')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Best Deals</p>
@@ -86,16 +86,22 @@
                                 <p>Manage Special Deals</p>
                             </a>
                         </li>-->
-                        <li class="nav-item">
+                        <li class="nav-item d-none">
                             <a href="{{url('/coupon/view/coupon')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Coupon</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item d-none">
                             <a href="{{url('/coupon/view/voucher')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Voucher</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('brand.offer')}}" class="nav-link">
+                                <i class="fas fa-th-list nav-icon"></i>
+                                <p>Brand Offers</p>
                             </a>
                         </li>
                     </ul>
@@ -212,7 +218,7 @@
                                 <p>Manage Category</p>
                             </a>
                         </li>
-                        <li class="d-none nav-item">
+                        <li class="nav-item">
                             <a href="{{url('/sub-category/view')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Manage Sub-Category</p>

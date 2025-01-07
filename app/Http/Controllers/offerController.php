@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\productSpecialOffer;
 use App\Models\ProductHotOffer;
 use App\Models\Coupon;
+use App\Brand;
 use App\Models\User;
+use App\Models\BrandOffer;
 use App\product;
 use App\productspecification;
 use App\masterOffer;
@@ -474,5 +476,120 @@ class offerController extends Controller
             ->select('products.*')
             ->get();
         return view('admin.home.bannerOffer.bestDealsView', ['deals' => $deals]);
+    }
+
+
+
+    public function brandOfferIndex(){
+       $allBrands=Brand::where('deleted','No')->where('status','Active')->get();
+        return view('admin.home.Offer.brand.index',['allBrands'=>$allBrands]);
+    }
+
+    public function brandOfferStore(Request $request){
+        $request->validate([
+            'title' => 'nullable|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'text' => 'nullable|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'brand_id' => 'required|numeric'
+          ]);
+        if($request->hasFile('image')){
+            $request->validate([
+                'image'=> 'mimes:jpeg,jpg,png,gif,webp',
+              ]);
+            $image = $request->file('image');
+            $name = $image->getClientOriginalName();
+            $uploadPath = 'ecomas/images/offer/';
+            $imageUrl = $uploadPath.$name;
+            $imageName = time().$name;
+            $image->move($uploadPath, $imageName);
+        }else{
+            $imageName = "no_image.png";
+        }
+        $offer = new BrandOffer();
+        $offer->title = $request->title;
+        $offer->image = $imageName;
+        $offer->text = $request->text;
+        $offer->priority = $request->priority;
+        $offer->brand_id = $request->brand_id;
+        $offer->created_by = auth()->user()->id;
+        $offer->created_date= date('Y-m-d H:i:s');
+        $offer->deleted = 'No';
+        $offer->save();
+        return response()->json(['success'=>'Offer saved successfully']);
+    }
+
+    public function brandOfferGetOffer(){
+        $offers = BrandOffer::leftjoin('tbl_brands','tbl_brands.id','=','brand_offers.brand_id')
+        ->select('brand_offers.id','brand_offers.title','brand_offers.text','brand_offers.priority','brand_offers.status','brand_offers.image','tbl_brands.brandName')
+        ->where('brand_offers.deleted','No')->where('tbl_brands.deleted','No')->get();
+        $output = array('data' => array());
+		$i=1;
+		foreach ($offers as $offer) {
+            $button = ' <td style="width: 12%;">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <i class="fas fa-cog"></i>  <span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
+                              <li class="action"><a href="#" class="btn" onclick="editBrand('.$offer->id.')"><i class="fas fa-edit"></i> Edit </a></li>
+                            </ul>
+                        </div>
+                      </td>';
+            $status = "";
+            if($offer->status == 'Active'){
+                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="'.$offer->status.'"></i></center>';
+            }else{
+                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="'.$offer->status.'"></i></center>';
+            }
+            
+           
+            $imageUrl = asset('ecomas/images/offer/'.$offer->image);
+		
+			$output['data'][] = array(
+				$i++. '<input type="hidden" name="id" id="id" value="'.$offer->id.'" />',
+                '<img style="width:40px;" src="'.$imageUrl.'" alt="'.$offer->title.'" />',
+				$offer->brandName,
+				$offer->title,
+				$offer->text,
+				$offer->priority,
+				$status,
+                $button
+			);               
+		}	
+		return $output;
+    }
+
+
+    public function brandOfferEdit(Request $request){
+        
+        $offer = BrandOffer::find($request->id);
+        return $offer;
+    }
+
+    public function brandOfferUpdate(Request $request){
+        $request->validate([
+            'title' => 'nullable|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'text' => 'nullable|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'brand_id' => 'required|numeric'
+          ]);
+        $offer = BrandOffer::find($request->id);
+        if($request->hasFile('image')){
+            $request->validate([
+                'image'=> 'mimes:jpeg,jpg,png,gif,webp',
+              ]);
+            $image = $request->file('image');
+            $name = $image->getClientOriginalName();
+            $uploadPath = 'ecomas/images/offer/';
+            $imageUrl = $uploadPath.$name;
+            $imageName = time().$name;
+            $image->move($uploadPath, $imageName);
+            $offer->image = $imageName;
+        }
+        $offer->title = $request->title;
+        $offer->text = $request->text;
+        $offer->priority = $request->priority;
+        $offer->brand_id = $request->brand_id;
+        $offer->updated_by = auth()->user()->id;
+        $offer->updated_date= date('Y-m-d H:i:s');
+        $offer->save();
+        return response()->json(['success'=>'Offer updated successfully']);
     }
 }

@@ -70,7 +70,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <img id="editShowImage"
-                                            src="{{ !empty($categoryById->image) ? url('website/images/categories/' . $categoryById->image) : url('website/images/categories/no_image.png') }}"
+                                            src="{{ !empty($categoryById->image) ? url('ecomas/images/category/' . $categoryById->image) : url('ecomas/images/category/no_image.png') }}"
                                             style="width: 100px;height: 80px; border:1px solid #000000">
                                     </div>
                                 </div>
@@ -83,11 +83,19 @@
                                     </div>
                                     <div class="col-md-4">
                                         <img id="editShowlogo"
-                                            src="{{ !empty($categoryById->logo) ? url('website/images/categories/' . $categoryById->logo) : url('website/images/categories/no_image.png') }}"
+                                            src="{{ !empty($categoryById->logo) ? url('ecomas/images/category/' . $categoryById->logo) : url('ecomas/images/category/no_image.png') }}"
                                             style="width: 100px;height: 80px; border:1px solid #000000">
                                     </div>
                                 </div>
-
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label> Is Website</label>
+                                        <select id="is_website" name="is_website" class="form-control input-sm">
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-flat" name="addCategory"><i class="fa fa-save"></i> Update </button>
                                 </div>

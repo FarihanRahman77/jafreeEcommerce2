@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\product;
 use App\banner;
+use App\Models\BrandOffer;
 use App\Models\ShopSetting;
 use App\Models\WebsiteOrder;
 use App\Models\WebsiteOrderDetails;
@@ -15,11 +16,19 @@ use Illuminate\Support\Facades\Session;
 
 class WelcomeController extends Controller
 {
-    public function Index(){
-      $banners = banner::where('banners.deleted', '=', 'No')
+      public function index(){
+        $banners = banner::where('banners.deleted', '=', 'No')
                 ->where('banners.status', '=', 'Active')
+                ->where('banner_type','Homepage')
                 ->get();
-        return view('website.pages.home',['banners'=>$banners]);
+       $topThreeBrands= BrandOffer::leftjoin('tbl_brands','tbl_brands.id','=','brand_offers.brand_id')
+                        ->select('brand_offers.id','brand_offers.brand_id','brand_offers.title','brand_offers.text','brand_offers.priority','brand_offers.status','brand_offers.image','tbl_brands.brandName')
+                        ->where('brand_offers.deleted','No')->where('tbl_brands.deleted','No')
+                        ->where('brand_offers.status','Active')
+                        ->where('tbl_brands.status','Active')
+                        ->orderBy('brand_offers.priority','asc')
+                        ->get();
+        return view('ecomas.pages.homepage',['banners'=>$banners,'topThreeBrands'=>$topThreeBrands]);
       }
     
       public function aboutus(){
@@ -31,6 +40,9 @@ class WelcomeController extends Controller
       public function tractorder(){
         return view('website.pages.tractorder');
       }
+
+
+
       public function blog_classic(){
         $blogs =  DB::table('contents')
         ->select(columns: 'contents.*')
@@ -40,6 +52,15 @@ class WelcomeController extends Controller
       
         return view('website.pages.blog_classic',['blogs'=>$blogs]);
       }
+
+      public function shopData(){
+        $shopBanners=banner::where('banners.status', '=', 'Active')
+                      ->where('banner_type','=','Shop')
+                      ->get();
+        return view('ecomas.pages.shop',['shopBanners'=>$shopBanners]);
+      }
+
+
       public function blog_grid(){
         return view('website.pages.blog_grid');
       }
@@ -74,6 +95,8 @@ class WelcomeController extends Controller
       public function shop_grid_5_column(){
         return view('website.pages.shop_grid_5_column');
       }
+
+
       public function productDetails($id){
        $product=product::leftjoin('tbl_brands','tbl_brands.id','=','tbl_products.tbl_brandsId')
                           ->leftjoin('tbl_category','tbl_category.id','=','tbl_products.categoryId')
@@ -186,13 +209,16 @@ class WelcomeController extends Controller
     ->orderBy('random_number', 'desc')
     ->paginate(54);
 
-
-  return view('website.pages.shop_grid_3_columns_sidebar', ['categoryWiseProducts' => $categoryWiseProducts]);
+      $categoryBanner=banner::where('banners.deleted', '=', 'No')
+                      ->where('banners.status', '=', 'Active')
+                      ->where('banner_type','=','Category')
+                      ->where('category_id',$id)
+                      ->get();
+  return view('website.pages.shop_grid_3_columns_sidebar', ['categoryWiseProducts' => $categoryWiseProducts,'categoryBanner'=>$categoryBanner]);
       }
 
-      public function viewbrandproduct($id){
+    public function viewbrandproduct($id){
         $brandWiseProducts = DB::table('tbl_products')
-      
         ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
         ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
         ->whereIn('tbl_products.id', function ($query) use ($id) {
@@ -221,7 +247,12 @@ class WelcomeController extends Controller
         ->orderBy('random_number', 'desc')
         ->paginate(54);
         
-      return view('website.pages.shop_grid_3_columns_sidebar', ['brandWiseProducts' => $brandWiseProducts]);
+        $brandBanner=banner::where('banners.deleted', '=', 'No')
+                      ->where('banners.status', '=', 'Active')
+                      ->where('banner_type','=','Brand')
+                      ->where('brand_id',$id)
+                      ->get();
+      return view('website.pages.shop_grid_3_columns_sidebar', ['brandWiseProducts' => $brandWiseProducts,'brandBanner'=>$brandBanner]);
       }
 
 
@@ -434,6 +465,80 @@ class WelcomeController extends Controller
     }
           
   }
+
+
+
+
+  public function getSuggestions(Request $request)
+    {
+        $searchTerm = $request->input('search');
+        
+        if ($searchTerm) {
+            $products = DB::table('tbl_products')
+                ->select('tbl_products.*','tbl_brands.brandName','tbl_category.categoryName')
+                ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+                ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+                ->distinct()
+                ->where('tbl_products.deleted', 'No')
+                ->where('tbl_brands.deleted', 'No')
+                ->where('tbl_category.deleted', 'No')
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('tbl_products.productName', 'like', "%$searchTerm%")
+                          ->orWhere('tbl_brands.brandName', 'like', "%$searchTerm%")
+                          ->orWhere('tbl_category.categoryName', 'like', "%$searchTerm%");
+                })
+                ->orderBy('tbl_products.id', 'desc')
+                ->limit(10)
+                ->get();
+                $html='';
+                foreach($products as $product){
+                  $html .='<li><a href="#" onclick="productDetails('.$product->id.')">'.$product->brandName.' - '.$product->productName.' - '.$product->modelNo.'</a></li>';
+                }
+            return $html;
+        }
+    }
+
+
+
+    public function search(Request $request){
+      $searchTerm = $request->input('search');
+        if ($searchTerm) {
+          $products = DB::table('tbl_products')
+              ->select('tbl_products.*','tbl_brands.brandName','tbl_category.categoryName')
+              ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+              ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+              ->distinct()
+              ->where('tbl_products.deleted', 'No')
+              ->where('tbl_brands.deleted', 'No')
+              ->where('tbl_category.deleted', 'No')
+              ->where(function ($query) use ($searchTerm) {
+                  $query->where('tbl_products.productName', 'like', "%$searchTerm%")
+                        ->orWhere('tbl_brands.brandName', 'like', "%$searchTerm%")
+                        ->orWhere('tbl_category.categoryName', 'like', "%$searchTerm%");
+              })
+              ->orderBy('tbl_products.id', 'desc')
+              ->paginate(100);
+        }else{
+          $products = DB::table('tbl_products')
+              ->select('tbl_products.*',
+                        'tbl_brands.brandName',
+                        'tbl_category.categoryName',
+                        DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
+              )
+              ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+              ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+              ->distinct()
+              ->where('tbl_products.deleted', 'No')
+              ->where('tbl_brands.deleted', 'No')
+              ->where('tbl_category.deleted', 'No')
+              ->orderBy('random_number', 'desc')
+              ->paginate(100);
+        }
+        return view('website.pages.searchPage', ['searchProducts' => $products]);
+    }
+
+
+
 
 
 

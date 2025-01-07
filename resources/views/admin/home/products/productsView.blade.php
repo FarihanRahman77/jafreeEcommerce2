@@ -30,6 +30,14 @@
                             <div class="col-md-3"> <h3>Product List</h3></div>
                             
                             <div class="form-group float-right col-md-1">
+                                <label class="col-form-label">Show In Website</label>
+                                <select class="form-control"  id="is_website" name="is_website" style="width:100%;" onchange="loadFilterDatatable('is_website')">
+                                    <option value='' selected>Show In Website</option>
+                                    <option value='Yes'> Yes </option>
+                                    <option value='No'> No </option>
+                                </select>
+                            </div>
+                            <div class="form-group float-right col-md-1">
                                 <label class="col-form-label">Featured</label>
                                 <select class="form-control"  id="featured" name="featured" style="width:100%;" onchange="loadFilterDatatable('featured')">
                                     <option value='' selected>Featured</option>
@@ -102,7 +110,7 @@
 @section('contentJavaScripts')
   <script>
 
-        $("#featured").val('Yes');
+        $("#is_website").val('Yes');
         
 
         var table;
@@ -114,7 +122,15 @@
 
     function loadFilterDatatable(filterBy = '') {
         //alert(filterBy);
+        if(filterBy === 'is_website'){
+            $('#best_selling').val('');
+            $('#top_rated').val('');
+            $('#new_arrival').val('');
+            $('#special_offer').val('');
+            $('#featured').val('');
+        }
         if(filterBy === 'featured'){
+            $('#is_website').val('');
             $('#best_selling').val('');
             $('#top_rated').val('');
             $('#new_arrival').val('');
@@ -125,33 +141,38 @@
             $('#top_rated').val('');
             $('#new_arrival').val('');
             $('#special_offer').val('');
+            $('#is_website').val('');
         }
         if(filterBy === 'top_rated'){
             $('#featured').val('');
             $('#best_selling').val('');
             $('#new_arrival').val('');
             $('#special_offer').val('');
+            $('#is_website').val('');
         }
         if(filterBy === 'new_arrival'){
             $('#featured').val('');
             $('#best_selling').val('');
             $('#top_rated').val('');
             $('#special_offer').val('');
+            $('#is_website').val('');
         }
         if(filterBy === 'special_offer'){
             $('#featured').val('');
             $('#best_selling').val('');
             $('#top_rated').val('');
             $('#new_arrival').val('');
+            $('#is_website').val('');
         }
 
+        const is_website = $("#is_website").val();
         const featured = $("#featured").val();
         const best_selling = $("#best_selling").val();
         const top_rated = $("#top_rated").val();
         const new_arrival = $("#new_arrival").val();
         const special_offer = $("#special_offer").val();
 
-        var filter = featured + "@" + best_selling +  "@" + new_arrival + "@" + top_rated + "@" + special_offer;
+        var filter = is_website + "@" + featured + "@" + best_selling +  "@" + new_arrival + "@" + top_rated + "@" + special_offer;
        // alert(filter);
         
         table = $('#tbl_product').DataTable({

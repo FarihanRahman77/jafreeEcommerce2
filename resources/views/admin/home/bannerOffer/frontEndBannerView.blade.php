@@ -58,8 +58,8 @@
                                     <tr>
 
                                         <td>{{$banner->id}}</td>
-                                        <td><img src = "{{ asset('website/images/banners/'.$banner->bannerImage) }}" width="350" height="150" /></td>
-                                        <td>{{$banner->sorting}}</td>
+                                        <td><img src = "{{ asset('ecomas/images/slider/'.$banner->bannerImage) }}" width="350" height="150" /></td>
+                                        <td>{{$banner->banner_type}} - {{$banner->sorting}}</td>
                                         <td>{{$banner->created_at}}<br>{{$banner->carousal_caption_offer}}<br>{{$banner->carousal_caption_description}}</td>
                                         <td>{{$banner->status}}</td>
                                         <td style="width: 12%;">
