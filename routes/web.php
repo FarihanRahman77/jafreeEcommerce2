@@ -158,8 +158,8 @@ Route::middleware('auth')->group(function () {
   Route::get('/sub-category/view', 'App\Http\Controllers\subCategoryController@subCategoryView');
   Route::get('/sub-category/getData', 'App\Http\Controllers\subCategoryController@getData');
   Route::get('/sub-category/add', 'App\Http\Controllers\subCategoryController@subCategoryAdd');
-  Route::get('/sub-category/edit/{id}', 'App\Http\Controllers\subCategoryController@subCategoryEdit');
-  Route::post('/sub-category/save', 'App\Http\Controllers\subCategoryController@subCategorySave');
+  Route::get('/sub-category/edit/', 'App\Http\Controllers\subCategoryController@subCategoryEdit');
+  Route::post('/sub-category/store', 'App\Http\Controllers\subCategoryController@subCategorySave');
   Route::post('/sub-category/update', 'App\Http\Controllers\subCategoryController@updateSubCategory');
   Route::get('/sub-category/delete/{id}', 'App\Http\Controllers\subCategoryController@deleteSubCategory');
   /* end Sub-Categroy */
