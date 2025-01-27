@@ -27,8 +27,6 @@ class productController extends Controller {
 
   public function productView() {
 
-   
-
     return view('admin.home.products.productsView');
 
   }
@@ -45,6 +43,8 @@ class productController extends Controller {
         'new_arrival' => $filterArray[3] ?? null,
         'top_rated' => $filterArray[4] ?? null,
         'special_offer' => $filterArray[5] ?? null,
+        'category_id' => $filterArray[6] ?? null,
+        'brand_id' => $filterArray[7] ?? null,
     ];
 
     $products = DB::table('tbl_products')
@@ -52,10 +52,12 @@ class productController extends Controller {
             'tbl_products.*',
             'tbl_brands.brandName',
             'tbl_brands.brand_logo',
-            'tbl_category.categoryName'
+            'tbl_category.categoryName',
+            'sub_categories.name as subCategoryName',
         )
-        ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
-        ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+        ->leftjoin('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+        ->leftjoin('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+        ->leftjoin('sub_categories', 'tbl_products.sub_category_id', '=', 'sub_categories.id')
         ->where('tbl_products.deleted', 'No')
         ->where('tbl_brands.deleted', 'No')
         ->where('tbl_category.deleted', 'No')
@@ -76,6 +78,12 @@ class productController extends Controller {
         })
         ->when($filters['special_offer'], function ($query) use ($filters) {
             $query->where('tbl_products.website_special_offer', '=', $filters['special_offer']);
+        })
+        ->when($filters['category_id'], function ($query) use ($filters) {
+            $query->where('tbl_products.categoryId', '=', $filters['category_id']);
+        })
+        ->when($filters['brand_id'], function ($query) use ($filters) {
+            $query->where('tbl_products.tbl_brandsId', '=', $filters['brand_id']);
         })
         ->orderBy('tbl_products.id', 'desc')
         ->get();
@@ -98,7 +106,7 @@ class productController extends Controller {
           $output['data'][] = array(
             $i++ . '<input type="hidden" name="id" id="id" value="' . $product->id . '" />',
             '<img src = "'.$imageUrl.'" width="55" height="55" />',
-            '<b>Name: </b>'.$product->productName.' <br> <b>Category: </b> '.$product->categoryName.' <br> <b>Brand: </b> '.$product->brandName,
+            '<b>Name: </b>'.$product->productName.' <br> <b>Category: </b> '.$product->categoryName.'<br> <b>Sub Category: </b> '.$product->subCategoryName.' <br> <b>Brand: </b> '.$product->brandName,
             $product->modelNo,
             '<b>Featured: </b>'.$product->website_featured.' <br>
             <b>Best Selling: </b>'.$product->website_best_selling.' <br>
@@ -119,8 +127,14 @@ class productController extends Controller {
 
     public function productEdit($id) {
       $product = Product::find($id);
+      $category=Category::find($product->categoryId);
       $productImages = ProductImage::where('productId',$id)->get();
-      return view('admin.home.products.manageProduct', ['product' => $product,'productImages' => $productImages,'id'=>$id]);
+      $subCategories = DB::table('sub_categories')
+                ->where('category_id','=',$product->categoryId)
+                ->where('deleted','No')
+                ->where('status','Active')
+                ->get();
+      return view('admin.home.products.manageProduct', ['product' => $product,'productImages' => $productImages,'id'=>$id,'category'=>$category,'subCategories'=>$subCategories]);
     }
 
       
@@ -166,6 +180,15 @@ class productController extends Controller {
     $product->video_url=$request->video_url;
     $product->save();
     return back()->with('message', 'Product Video Url updated successfully.');
+  }
+
+
+  public function subCatUpdate(Request $request)
+  {
+    $product = Product::find($request->id);
+    $product->sub_category_id=$request->sub_category_id;
+    $product->save();
+    return back()->with('message', 'Product Sub Category updated successfully.');
   }
 
 

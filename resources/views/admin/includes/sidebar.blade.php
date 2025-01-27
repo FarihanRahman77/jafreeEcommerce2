@@ -99,9 +99,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('brand.offer')}}" class="nav-link">
+                            <a href="{{url('/brand/offer/Brand')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Brand Offers</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{url('/brand/offer/Special')}}" class="nav-link">
+                                <i class="fas fa-th-list nav-icon"></i>
+                                <p>Special Offers</p>
                             </a>
                         </li>
                     </ul>

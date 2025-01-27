@@ -60,7 +60,7 @@
                                         <td>{{$content->content_title}}</td>
                                         <td>{!!$content->content_description!!}</td>
                                         <td>
-                                            <img src="{{ asset('website/images/blog/' . $content->content_image) }}" alt="Blog Image" style="max-width: 100%; height: auto;">
+                                            <img src="{{ asset('ecomas/images/blog/' . $content->content_image) }}" alt="Blog Image" style="max-width: 100%; height: auto;">
                                         </td>
                                         <td>{{$content->status}}</td>
                                         <!-- <td>{{$content->alias}}</td>

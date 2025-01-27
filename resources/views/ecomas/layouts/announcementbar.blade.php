@@ -1,5 +1,5 @@
 <!-- Announcement Bar -->
-<div class="announcement-bar bg_primary not-hover">
+<!-- <div class="announcement-bar bg_primary not-hover">
             <div class="wrap-announcement-bar">
                 <div class="box-sw-announcement-bar speed-1">
                     <div class="announcement-bar-item">
@@ -50,5 +50,5 @@
                 </div>
             </div>
             <span class="icon-close close-announcement-bar"></span>
-        </div>   
+        </div>    -->
         <!-- /Announcement Bar -->

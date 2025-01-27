@@ -1930,6 +1930,11 @@ label {
   font-weight: 500;
   color:#fff;
 }
+#header .nav-icon .fa {
+  font-size: 18px;
+  font-weight: 500;
+  color:#fff;
+}
 #header .nav-icon li {
   display: inline-flex;
 }
@@ -1989,7 +1994,7 @@ label {
 }
 
 .logo-header img {
-  width: 200px;
+  width: 400px;
 }
 
 .box-nav-ul .menu-item {
@@ -20893,3 +20898,21 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 }
 
 /*# sourceMappingURL=styles.css.map */
+
+
+
+.custom-container{
+  margin-left:50px;
+  margin-right:50px;
+}
+
+.mega-menu-item .menu-list {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.mega-menu-item:hover .menu-list {
+    display: block !important;
+    opacity: 1;
+}

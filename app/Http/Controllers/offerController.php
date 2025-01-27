@@ -480,16 +480,16 @@ class offerController extends Controller
 
 
 
-    public function brandOfferIndex(){
+    public function brandOfferIndex($type){
        $allBrands=Brand::where('deleted','No')->where('status','Active')->get();
-        return view('admin.home.Offer.brand.index',['allBrands'=>$allBrands]);
+        return view('admin.home.Offer.brand.index',['allBrands'=>$allBrands,'type' => $type]);
     }
 
     public function brandOfferStore(Request $request){
         $request->validate([
             'title' => 'nullable|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
             'text' => 'nullable|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
-            'brand_id' => 'required|numeric'
+            'brand_id' => 'nullable|numeric'
           ]);
         if($request->hasFile('image')){
             $request->validate([
@@ -505,11 +505,17 @@ class offerController extends Controller
             $imageName = "no_image.png";
         }
         $offer = new BrandOffer();
+        $offer->offer_type = $request->offerType;
+        $offer->type = $request->type;
+
         $offer->title = $request->title;
         $offer->image = $imageName;
         $offer->text = $request->text;
         $offer->priority = $request->priority;
         $offer->brand_id = $request->brand_id;
+        $offer->category_id =$request->category_id;
+
+        $offer->status = 'Active';
         $offer->created_by = auth()->user()->id;
         $offer->created_date= date('Y-m-d H:i:s');
         $offer->deleted = 'No';
@@ -517,10 +523,12 @@ class offerController extends Controller
         return response()->json(['success'=>'Offer saved successfully']);
     }
 
-    public function brandOfferGetOffer(){
+    public function brandOfferGetOffer($type){
         $offers = BrandOffer::leftjoin('tbl_brands','tbl_brands.id','=','brand_offers.brand_id')
-        ->select('brand_offers.id','brand_offers.title','brand_offers.text','brand_offers.priority','brand_offers.status','brand_offers.image','tbl_brands.brandName')
-        ->where('brand_offers.deleted','No')->where('tbl_brands.deleted','No')->get();
+                            ->select('brand_offers.id','brand_offers.title','brand_offers.text','brand_offers.priority','brand_offers.status','brand_offers.image','tbl_brands.brandName')
+                            
+                            ->where('brand_offers.offer_type',$type)
+                            ->get();
         $output = array('data' => array());
 		$i=1;
 		foreach ($offers as $offer) {
@@ -558,17 +566,16 @@ class offerController extends Controller
     }
 
 
-    public function brandOfferEdit(Request $request){
-        
+    public function brandOfferEdit(Request $request,$type){
         $offer = BrandOffer::find($request->id);
         return $offer;
     }
 
-    public function brandOfferUpdate(Request $request){
+    public function brandOfferUpdate(Request $request,$type){
         $request->validate([
             'title' => 'nullable|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\\s\,\;\:\/\&\$\%\(\)]+$/u',
             'text' => 'nullable|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\\s\,\;\:\/\&\$\%\(\)]+$/u',
-            'brand_id' => 'required|numeric'
+            
           ]);
         $offer = BrandOffer::find($request->id);
         if($request->hasFile('image')){
@@ -587,6 +594,9 @@ class offerController extends Controller
         $offer->text = $request->text;
         $offer->priority = $request->priority;
         $offer->brand_id = $request->brand_id;
+        $offer->category_id =$request->category_id;
+        $offer->type = $request->type;
+        $offer->status = $request->status;
         $offer->updated_by = auth()->user()->id;
         $offer->updated_date= date('Y-m-d H:i:s');
         $offer->save();

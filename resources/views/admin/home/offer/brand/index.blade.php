@@ -1,6 +1,6 @@
 @extends('admin.master')
 @section('title')
-{{$settings->website_name}}-Brand List
+{{$settings->website_name}}-{{$type}} List
 @endsection
 <link rel="icon" type="image/png" href="{{asset('website/images/setting/'.$settings->image)}}">
 @section('content')
@@ -14,11 +14,11 @@ h3 {
     <section class="content box-border">
         <div class="card">
             <div class="card-header">
-                <h3 style="float:left;"> Brand Offer List </h3>
+                <h3 style="float:left;">{{$type}} Offer List </h3>
                 <br>
                 <h5 class="text-success" id="success-alert"></h5>
                 <a class="btn btn-primary float-right text-light" onclick="create()"><i class="fa fa-plus circle"></i>
-                    Add Brand Offer</a>
+                    Add {{$type}} Offer</a>
                 <!--<a class="btn btn-primary" style="margin-left:20px;" onclick="reloadDt()"><i class="fas fa-sync"></i> Refresh</a> -->
             </div><!-- /.card-header -->
             <div class="card-body">
@@ -31,7 +31,7 @@ h3 {
                             <tr>
                                 <td width="6%">SL#</td>
                                 <td>Image</td>
-                                <td>Brand</td>
+                                <td>Info</td>
                                 <td>Title</td>
                                 <td>Text</td>
                                 <td>Priority</td>
@@ -57,13 +57,14 @@ h3 {
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header float-left">
-                <h4 class="modal-title float-left"> Add Brand Offer</h4>
+                <h4 class="modal-title float-left"> Add {{$type}} Offer</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
                         class="fas fa-window-close"></i></button>
             </div>
             <div class="modal-body">
                 <form id="brandOfferForm" method="POST" enctype="multipart/form-data" action="#">
                     @csrf
+                    <input type="hidden" name="type" value="{{$type}}" id="offerType">
                     <div class="form-group">
                         <label> Title</label>
                         <input class="form-control input-sm" id="title" type="text" name="title" placeholder="Title">
@@ -80,6 +81,15 @@ h3 {
                         <span class="text-danger" id="priorityError"></span>
                     </div>
                     <div class="form-group">
+                        <label> Type</label>
+                        <select id="type" name="type" class="form-control input-sm" onchange="typeChange()">
+                            <option value="">Choose Type</option>
+                            <option value="Category">Category</option>
+                            <option value="Brand">Brand</option>
+                        </select>
+                        <span class="text-danger" id="typeError"></span>
+                    </div>
+                    <div class="form-group d-none" id="brandDiv">
                         <label> Brands</label>
                         <select id="brand_id" name="brand_id" class="form-control input-sm">
                             <option value="">Choose Brand</option>
@@ -88,6 +98,16 @@ h3 {
                             @endforeach
                         </select>
                         <span class="text-danger" id="brand_idError"></span>
+                    </div>
+                    <div class="form-group d-none" id="categoryDiv">
+                        <label> Categories</label>
+                        <select id="category_id" name="category_id" class="form-control input-sm">
+                            <option value="">Choose Category</option>
+                            @foreach($categories as $category)
+                            <option value="{{$category->id}}">{{$category->categoryName}}</option>
+                            @endforeach
+                        </select>
+                        <span class="text-danger" id="category_idError"></span>
                     </div>
                     <div class="form-group">
                         <label for="">Image</label>
@@ -118,7 +138,7 @@ h3 {
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Edit Brand</h4>
+                <h4 class="modal-title">Edit {{$type}} Offer</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
                         class="fas fa-window-close"></i></button>
             </div>
@@ -127,6 +147,7 @@ h3 {
                     @csrf
 
                     <input type="hidden" name="editId" id="editId">
+                    <input type="hidden" name="editType" id="editType" value="{{$type}}">
                         <div class="form-group">
                             <label> Title</label>
                             <input class="form-control input-sm" id="edit_title" type="text" name="title" placeholder="Title">
@@ -143,6 +164,14 @@ h3 {
                             <span class="text-danger" id="edit_priorityError"></span>
                         </div>
                         <div class="form-group">
+                            <label> Type</label>
+                            <select id="edit_type" name="edit_type" class="form-control input-sm" onchange="typeChangeEdit()">
+                                <option value="">Choose Type</option>
+                                <option value="Category">Category</option>
+                                <option value="Brand">Brand</option>
+                            </select>
+                            <span class="text-danger" id="edit_typeError"></span>
+                        <div class="form-group">
                             <label> Brands</label>
                             <select id="edit_brand_id" name="brand_id" class="form-control input-sm">
                                 <option value="">Choose Brand</option>
@@ -153,12 +182,21 @@ h3 {
                             <span class="text-danger" id="edit_brand_idError"></span>
                         </div>
                         <div class="form-group">
+                            <label> Categories</label>
+                            <select id="edit_category_id" name="category_id" class="form-control input-sm">
+                                <option value="">Choose Category</option>
+                                @foreach($categories as $category)
+                                <option value="{{$category->id}}">{{$category->categoryName}}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger" id="edit_category_idError"></span>
+                        <div class="form-group">
                             <label for="">Image</label>
                             <input type="file" name="image" id="edit_image" class="form-control form-control-sm">
                             <span class="text-danger" id="edit_imageError"></span>
                         </div>
                         <div class="form-group">
-                            <img id="edit_imgPreview" src="{{url('brandLogo/no_image.png')}}"
+                            <img id="edit_imagePreview" src="{{url('brandLogo/no_image.png')}}"
                                 style="width: 200px;height: 200px; border:1px solid #000000" /><br>
                             <a href="#" onclick="removeImage()" style="margin-left:20px;"> <i class="fas fa-trash-alt"></i>
                                 Remove Image</a>
@@ -201,32 +239,68 @@ $('#editModal').on('shown.bs.modal', function() {
 var table;
 $(document).ready(function() {
     table = $('#manageBrandOfferTable').DataTable({
-        'ajax': "{{route('brand.offer.getOffer')}}",
+        'ajax': "{{url('/brand/offer/get/offer/' . $type)}}",
         processing: true,
     });
 });
+
 $(document).ready(function() {
     $('#brand_id').select2();
+    $('#category_id').select2();
+    $('#edit_brand_id').select2();
+    $('#edit_category_id').select2();
+
 });
 
+function typeChange() {
+    var type = $("#type").val();
+    if (type == "Brand") {
+        $("#brandDiv").removeClass("d-none");
+        $("#categoryDiv").addClass("d-none");
+    } else if (type == "Category") {
+        $("#categoryDiv").removeClass("d-none");
+        $("#brandDiv").addClass("d-none");
+    } else {
+        $("#categoryDiv").addClass("d-none");
+        $("#brandDiv").addClass("d-none");
+    }
+}
 
-
+function typeChangeEdit() {
+    var type = $("#edit_type").val();
+    if (type == "Brand") {
+        $("#edit_brandDiv").removeClass("d-none");
+        $("#edit_categoryDiv").addClass("d-none");
+    } else if (type == "Category") {
+        $("#edit_categoryDiv").removeClass("d-none");
+        $("#edit_brandDiv").addClass("d-none");
+    } else {
+        $("#edit_categoryDiv").addClass("d-none");
+        $("#edit_brandDiv").addClass("d-none");
+    }
+}
 $("#brandOfferForm").submit(function(e) {
     // alert("calling");
     e.preventDefault();
     clearMessages();
+    var offerType = $("#editType").val();
+    var type = $("#type").val();
     var title = $("#title").val();
     var text = $("#text").val();
     var priority = $("#priority").val();
     var brand_id = $("#brand_id").val();
+    var category_id = $("#category_id").val();
     var image = $('#image')[0].files[0];
     var _token = $('input[name="_token"]').val();
     var fd = new FormData();
+    fd.append('type', type);
+    fd.append('offerType', offerType);
     fd.append('title', title);
     fd.append('image', image);
     fd.append('text', text);
     fd.append('priority', priority);
     fd.append('brand_id', brand_id);
+    fd.append('category_id', category_id);
     fd.append('_token', _token);
     $.ajax({
         url: "{{ route('brand.offer.store')}}",
@@ -236,13 +310,13 @@ $("#brandOfferForm").submit(function(e) {
         processData: false,
         success: function(result) {
 
-            //alert(JSON.stringify(result));
+           // alert(JSON.stringify(result));
             $("#modal").modal('hide');
             $('#success-alert').text(result.success);
             table.ajax.reload(null, false);
         },
         error: function(response) {
-        //    alert(JSON.stringify(response));
+           // alert(JSON.stringify(response));
             $('#titleError').text(response.responseJSON.errors.title);
             $('#textError').text(response.responseJSON.errors.text);
             $('#brand_idError').text(response.responseJSON.errors.brand_id);
@@ -264,6 +338,7 @@ function clearMessages() {
     $("#titleError").text("");
     $("#textError").text("");
     $("#brand_idError").text("");
+    $("#priorityError").text("");
     $("#imageError").text("");
 }
 
@@ -296,10 +371,11 @@ function editReset() {
 }
 
 function editBrand(id) {
+   // alert(id);
     editReset();
     editClearMessages();
     $.ajax({
-        url: "{{route('brand.offer.edit')}}",
+        url: "{{route('brand.offer.edit',$type)}}",
         method: "GET",
         data: {
             "id": id
@@ -314,7 +390,9 @@ function editBrand(id) {
             $("#edit_brand_id").val(result.brand_id);
             var imageString = '{{asset("ecomas/images/offer")}}' + "/" + result.image;
             $('#edit_imgPreview').attr('src', imageString);
-            
+            $("#edit_category_id").val(result.category_id);
+            $("#edit_type").val(result.type);
+            typeChangeEdit();
             $("#editId").val(result.id);
             if (result.status != "") {
                 $("#editStatus").val(result.status);
@@ -324,7 +402,7 @@ function editBrand(id) {
         },
         
         error: function(response) {
-            //alert(JSON.stringify(response));
+           // alert(JSON.stringify(response));
         }
     });
 }
@@ -336,9 +414,11 @@ $("#editBrandOfferForm").submit(function(e) {
     var text = $("#edit_text").val();
     var priority = $("#edit_priority").val();
     var brand_id = $("#edit_brand_id").val();
+    var category_id = $("#edit_category_id").val();
     var image = $('#edit_image')[0].files[0];
     var status = $("#editStatus").val();
     var id = $("#editId").val();
+    var type = $("#edit_type").val();
     var _token = $('input[name="_token"]').val();
     var fd = new FormData();
     fd.append('title', title);
@@ -346,11 +426,14 @@ $("#editBrandOfferForm").submit(function(e) {
     fd.append('text', text);
     fd.append('priority', priority);
     fd.append('brand_id', brand_id);
+    fd.append('category_id', category_id);
     fd.append('status', status);
     fd.append('id', id);
+    fd.append('type', type);
+
     fd.append('_token', _token);
     $.ajax({
-        url: "{{ route('brand.offer.update')}}",
+        url: "{{ route('brand.offer.update',$type)}}",
         method: "POST",
         data: fd,
         contentType: false,
@@ -453,10 +536,10 @@ $('#image').change(function(e) {
     }
     reader.readAsDataURL(e.target.files['0']);
 });
-$('#brand_logo').change(function(e) {
+$('#edit_image').change(function(e) {
     var reader = new FileReader();
     reader.onload = function(e) {
-        $('#logoPreview').attr('src', e.target.result);
+        $('#edit_imagePreview').attr('src', e.target.result);
     }
     reader.readAsDataURL(e.target.files['0']);
 });

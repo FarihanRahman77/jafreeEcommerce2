@@ -387,6 +387,7 @@
     }
 
     function setGridLayout(layoutClass) {
+      alert(layoutClass);
       $("#gridLayout")
         .show()
         .removeClass()

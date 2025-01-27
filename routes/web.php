@@ -29,6 +29,7 @@ Route::get('/blog_left_sidebar', [WelcomeController::class, 'blog_left_sidebar']
 Route::get('/post', [WelcomeController::class, 'post'])->name('/post');
 Route::get('/post_without_sidebar', [WelcomeController::class, 'post_without_sidebar'])->name('/post_without_sidebar');
 Route::get('/termscondition', [WelcomeController::class, 'termscondition'])->name('/termscondition');
+Route::get('/privacyPolicy', [WelcomeController::class, 'privacyPolicy'])->name('privacyPolicy');
 Route::get('/faq', [WelcomeController::class, 'faq'])->name('/faq');
 
 Route::get('/shop/data', [WelcomeController::class, 'shopData'])->name('shop.data');
@@ -42,12 +43,14 @@ Route::get('/checkoutcard', [WelcomeController::class, 'checkoutcard'])->name('/
 Route::get('/products/details/{id}', [WelcomeController::class, 'productDetails'])->name('product.details');
 Route::get('/wishlist', [WelcomeController::class, 'wishlist'])->name('/wishlist');
 Route::get('/compare', [WelcomeController::class, 'compare'])->name('/compare');
- Route::get('/categorywiseproduct/{id}', [WelcomeController::class, 'viewcategoryproduct'])->name('categorywiseproduct');
- Route::get('/brandwiseproduct/{id}', [WelcomeController::class, 'viewbrandproduct'])->name('brandwiseproduct');
- Route::post('/message/store', [MessageController::class, 'savemessage'])->name('message.store');
- 
- Route::get('/search', [WelcomeController::class, 'search'])->name('search');
- Route::get('/search-suggestions', [WelcomeController::class, 'getSuggestions'])->name('search.suggestions');
+
+Route::get('/categorywiseproduct/{id}', [WelcomeController::class, 'viewcategoryproduct'])->name('categorywiseproduct');
+Route::get('/subCategoryWiseProduct/{sub_category_id}/{category_id}', [WelcomeController::class, 'subCategoryWiseProduct'])->name('subCategoryWiseProduct');
+Route::get('/brandwiseproduct/{id}', [WelcomeController::class, 'viewbrandproduct'])->name('brandwiseproduct');
+Route::post('/message/store', [MessageController::class, 'savemessage'])->name('message.store');
+
+Route::get('/search', [WelcomeController::class, 'search'])->name('search');
+Route::get('/search-suggestions', [WelcomeController::class, 'getSuggestions'])->name('search.suggestions');
 
 
 
@@ -191,6 +194,7 @@ Route::middleware('auth')->group(function () {
   Route::post('/products/update', 'App\Http\Controllers\productController@productUpdate');
   Route::post('products/videoUrl/update', 'App\Http\Controllers\productController@productVideoUrlUpdate');
   Route::post('products/website/show/update', 'App\Http\Controllers\productController@productWebsiteShowUpdate');
+  Route::post('products/subCatUpdate', 'App\Http\Controllers\productController@subCatUpdate');
   Route::get('/products/delete/{id}', 'App\Http\Controllers\productController@productDelete');
   Route::post('/dynamic_dependent/fetch', 'App\Http\Controllers\productController@fetch')->name('dynamicdependent.fetch');
   Route::get('/products/viewProfile/{id}', 'App\Http\Controllers\productController@productViewProfile');
@@ -240,11 +244,11 @@ Route::middleware('auth')->group(function () {
 
 
   
-  Route::get('/brand/offer/', [offerController::class, 'brandOfferIndex'])->name('brand.offer');
-  Route::get('/brand/offer/get/offer', [offerController::class, 'brandOfferGetOffer'])->name('brand.offer.getOffer');
+  Route::get('/brand/offer/{type}', [offerController::class, 'brandOfferIndex'])->name('brand.offer');
+  Route::get('/brand/offer/get/offer/{type}', [offerController::class, 'brandOfferGetOffer'])->name('brand.offer.getOffer');
   Route::post('/brand/offer/store', [offerController::class, 'brandOfferStore'])->name('brand.offer.store');
-  Route::get('/brand/offer/Edit', [offerController::class, 'brandOfferEdit'])->name('brand.offer.edit');
-  Route::post('/brand/offer/update', [offerController::class, 'brandOfferUpdate'])->name('brand.offer.update');
+  Route::get('/brand/offer/Edit/{type}', [offerController::class, 'brandOfferEdit'])->name('brand.offer.edit');
+  Route::post('/brand/offer/update/{type}', [offerController::class, 'brandOfferUpdate'])->name('brand.offer.update');
   /* end Products offer */
 
   /* Banner Info Admin panel */
@@ -254,7 +258,6 @@ Route::middleware('auth')->group(function () {
   Route::get('/banner/frontEndDelete/{id}', 'App\Http\Controllers\bannerController@forntEndBannerDelete');
   Route::get('/banner/change-status/{id}', 'App\Http\Controllers\bannerController@changeStatus');
   /* end Banner */
-
 
   /* Order Info Admin panel */
   Route::get('/order-list', 'App\Http\Controllers\Admin\OrderController@orderList')->name('order-list');

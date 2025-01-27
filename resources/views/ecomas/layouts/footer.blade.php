@@ -13,13 +13,13 @@
                                     </div>
                                     <ul>
                                         <li>
-                                            <p>Address: 1234 Fashion Street, Suite 567, <br> New York, NY 10001</p>
+                                            <p>Address: {{$settings->address}}</p>
                                         </li>
                                         <li>
-                                            <p>Email: <a href="#">info@fashionshop.com</a></p>
+                                            <p>Email: {{$settings->email}}</p>
                                         </li>
                                         <li>
-                                            <p>Phone: <a href="#">(212) 555-1234</a></p>
+                                            <p>Phone: {{$settings->phone}}</p>
                                         </li>
                                     </ul>
                                     <a href="contact-1.html" class="tf-btn btn-line">Get direction<i class="icon icon-arrow1-top-left"></i></a>
@@ -41,25 +41,13 @@
                                 </div>
                                 <ul class="footer-menu-list tf-collapse-content">
                                     <li>
-                                        <a href="privacy-policy.html" class="footer-menu_item">Privacy Policy</a>
+                                        <a href="{{url('/privacyPolicy')}}" class="footer-menu_item">Privacy Policy</a>
                                     </li>
                                     <li> 
-                                        <a href="delivery-return.html" class="footer-menu_item">  Returns + Exchanges </a>
+                                        <a href="{{url('/termscondition')}}" class="footer-menu_item">Terms &amp; Conditions</a>
                                     </li>
-                                    <li> 
-                                        <a href="shipping-delivery.html" class="footer-menu_item">Shipping</a>
-                                    </li>
-                                    <li> 
-                                        <a href="terms-conditions.html" class="footer-menu_item">Terms &amp; Conditions</a>
-                                    </li>
-                                    <li> 
-                                        <a href="faq-1.html" class="footer-menu_item">FAQ’s</a>
-                                    </li>
-                                    <li> 
-                                        <a href="compare.html" class="footer-menu_item">Compare</a>
-                                    </li>
-                                    <li> 
-                                        <a href="wishlist.html" class="footer-menu_item">My Wishlist</a>
+                                    <li>
+                                        <a href="{{url('/faq')}}" class="footer-menu_item">FAQ’s</a>
                                     </li>
                                 </ul>
                             </div>
@@ -78,7 +66,7 @@
                                         <a href="our-store.html" class="footer-menu_item">Visit Our Store</a>
                                     </li>
                                     <li> 
-                                        <a href="contact-1.html" class="footer-menu_item">Contact Us</a>
+                                        <a href="{{url('/contactus')}}" class="footer-menu_item">Contact Us</a>
                                     </li>
                                     <li> 
                                         <a href="login.html" class="footer-menu_item">Account</a>
@@ -106,24 +94,6 @@
                                             </div>
                                             <div id="subscribe-msg"></div>
                                         </form>
-                                        <div class="tf-cur">
-                                            <div class="tf-currencies">
-                                                <select class="image-select center style-default type-currencies">
-                                                    <option data-thumbnail="images/country/fr.svg">EUR <span>€ | France</span></option>
-                                                    <option data-thumbnail="images/country/de.svg">EUR <span>€ | Germany</span></option>
-                                                    <option selected data-thumbnail="images/country/us.svg">USD <span>$ | United States</span></option>
-                                                    <option data-thumbnail="images/country/vn.svg">VND <span>₫ | Vietnam</span></option>
-                                                </select>
-                                            </div>
-                                            <div class="tf-languages">
-                                                <select class="image-select center style-default type-languages">
-                                                    <option>English</option>
-                                                    <option>العربية</option>
-                                                    <option>简体中文</option>
-                                                    <option>اردو</option>
-                                                </select>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +105,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="footer-bottom-wrap d-flex gap-20 flex-wrap justify-content-between align-items-center">
-                                    <div class="footer-menu_item">© 2024 Ecomus Store. All Rights Reserved</div>
+                                    <div class="footer-menu_item">© 2025 Ali Technology. All Rights Reserved</div>
                                     <div class="tf-payment">
                                         <img src="images/payments/visa.png" alt="">
                                         <img src="images/payments/img-1.png" alt="">
@@ -148,6 +118,15 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <!-- Floating Cart Button -->
+            <a href="#shoppingCart" class="btn btn-outline-primary cart-button" data-bs-toggle="modal">
+                <i class="fa fa-cart-plus text-primary"></i>
+                <span class="badge badge-danger position-absolute" style="top: -10px; right: -10px;" id="cartCounterTextFooter">0</span>
+            </a>
+            <div class="alert-message"> 
+                <div class="alert alert-success p-3" role="alert" style="display:none;" id="successMessage"></div>
+                <div class="alert alert-danger p-3" role="alert" style="display:none;" id="errorMessage"></div>
             </div>
         </footer>
         <!-- /footer -->

@@ -166,6 +166,13 @@ Admin Sub-Category-View
                                 <option value="No">No</option>
                             </select>
                         </div>
+                        <div class="col-md-6">
+                            <label> Status</label>
+                            <select id="edit_status" name="edit_status" class="form-control input-sm">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
                         <div class="col-md-8">
                             <label for="">Image</label>
                             <input type="file" name="edit_Image" id="edit_image" class="form-control form-control-sm">
@@ -267,7 +274,7 @@ $("#subCategoryForm").submit(function(e) {
         },
         error: function(response) {
             //console.log(response);
-            //alert(JSON.stringify(response));
+            alert(JSON.stringify(response));
             $('#brandNameError').text(response.responseJSON.errors.brandName);
             $('#brand_logoError').text(response.responseJSON.errors.brand_logo);
         },
@@ -334,6 +341,7 @@ function editBrand(id) {
             var imageString = '{{asset("ecomas/images/category")}}' + "/" + result.image;
             $('#edit_imgPreview').attr('src', imageString);
             $("#editId").val(result.id);
+            $("#edit_status").val(result.status);
             if (result.status != "") {
                 $("#editStatus").val(result.status);
             } else {
@@ -360,6 +368,7 @@ $("#editSubCatForm").submit(function(e) {
     var priority =$("#edit_priority").val();
     var _token = $('input[name="_token"]').val();
     var id = $("#editId").val();
+    var status = $("#edit_status").val();
     var image = $('#edit_image')[0].files[0];
 
     var fd = new FormData();
@@ -369,6 +378,7 @@ $("#editSubCatForm").submit(function(e) {
     fd.append('priority', priority);
     fd.append('image', image);
     fd.append('id', id);
+    fd.append('status', status);
     fd.append('_token', _token);
     $.ajax({
         url: "{{url('/sub-category/update/')}}",
@@ -377,13 +387,13 @@ $("#editSubCatForm").submit(function(e) {
         contentType: false,
         processData: false,
         success: function(result) {
-            alert(JSON.stringify(result));
+           // alert(JSON.stringify(result));
             $("#editModal").modal('hide');
             $('#success-alert').text(result.success);
             table.ajax.reload(null, false);
         },
         error: function(response) {
-            alert(JSON.stringify(response));
+           // alert(JSON.stringify(response));
             $('#brand_imageError').text(response.responseJSON.errors.brand_image);
             $('#brand_logoError').text(response.responseJSON.errors.brand_logo);
         },

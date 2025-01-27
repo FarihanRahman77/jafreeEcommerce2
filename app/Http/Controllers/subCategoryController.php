@@ -30,6 +30,9 @@ class subCategoryController extends Controller
         return view('admin.home.subCategory.subCategoryView',['categories'=>$categories]);
     }
 
+
+
+
     public function getData(){
         $data = "";
         $subCategory = DB::table('sub_categories')
@@ -47,6 +50,7 @@ class subCategoryController extends Controller
                             <i class="fas fa-cog"></i>  <span class="caret"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
                                 <li class="action"><a href="#" class="btn" onclick="editBrand('.$sub->id.')"><i class="fas fa-edit"></i> Edit </a></li>
+                                <li class="action"><a href="#" class="btn d-none" onclick="confirmDelete('.$sub->id.')"><i class="fas fa-trash"></i> Delete </a></li>
                             </ul>
                         </div>
                         </td>';
@@ -72,6 +76,10 @@ class subCategoryController extends Controller
         }	
         return $output;
     }
+
+
+
+
     public function subCategoryAdd(){
         
         $categories = Category::where('categoryStatus', 'Available')->where('deleted','no')->get();
@@ -98,6 +106,8 @@ class subCategoryController extends Controller
             $imageName = time() . $name;
             $categoryImage->move($uploadPath, $imageName);
             
+        }else{
+            $imageName='noimage.jpg';
         }
         $subCategory= new SubCategory();
         $subCategory->name =$request->name;
@@ -146,10 +156,11 @@ class subCategoryController extends Controller
         $subCategory = SubCategory:: find($request->id);
         if ($request->hasFile('edit_image')) {
         }
-        $subCategory->name =$request->subCategoryname;
+        $subCategory->name =$request->name;
         $subCategory->category_id =$request->category_id;
         $subCategory->priority =$request->priority;
         $subCategory->is_website =$request->is_website;
+        $subCategory->status =$request->status;
         $subCategory->updated_by = auth()->user()->id;
         $subCategory->updated_date = date('Y-m-d ');
         $subCategory->save();

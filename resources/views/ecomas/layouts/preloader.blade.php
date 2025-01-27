@@ -1,7 +1,7 @@
  <!-- preload -->
-    <!-- <div class="preload preload-container">
+    <div class="preload preload-container" id="loading">
         <div class="preload-logo">
             <div class="spinner"></div>
         </div>
-    </div> -->
+    </div>
 <!-- /preload -->

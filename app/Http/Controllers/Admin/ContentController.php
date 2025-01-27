@@ -26,7 +26,7 @@ class ContentController extends Controller
 
 		$contentimage = $request->file('content_image');
 		$name = $contentimage->getClientOriginalName();
-		$uploadPath = 'website/images/blog/';
+		$uploadPath = 'ecomas/images/blog/';
 		$contentName = time() . $name;
 		$contentimage->move($uploadPath, $contentName);
 
@@ -56,7 +56,7 @@ class ContentController extends Controller
 		$contentimage = $request->file('content_image');
 		if ($contentimage) {
 			$name = $contentimage->getClientOriginalName();
-			$uploadPath = 'website/images/blog/';
+			$uploadPath = 'ecomas/images/blog/';
 			$contentName = time() . $name;
 			$contentimage->move($uploadPath, $contentName);
 			$content->content_image = $contentName;

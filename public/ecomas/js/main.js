@@ -508,7 +508,19 @@
       $(this).addClass('is--active');
     })
   };
+  function reset(){
+    $('#name_cart').val('');
+    $('#mobile_cart').val('');
+    $('#address_cart').val('');
+    $('#note_cart').val('');
+}
 
+function clearCartMessages(){
+    $('#name_cartError').text('');
+    $('#mobile_cartError').text('');
+    $('#address_cartError').text('');
+    $('#noteError').text('');
+}
   /* modal second
   -------------------------------------------------------------------------*/
   var clickModalSecond = function () {
@@ -519,6 +531,8 @@
       $("#quick_view").modal("show");
     });
     $(".btn-add-to-cart").click(function () {
+      reset();
+      clearCartMessages();
       $("#shoppingCart").modal("show");
     });
 
