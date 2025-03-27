@@ -7,39 +7,58 @@ use Illuminate\Http\Request;
 use DB;
 use App\product;
 use App\banner;
+use App\Models\BrandOffer;
 use App\Models\ShopSetting;
 use App\Models\WebsiteOrder;
 use App\Models\WebsiteOrderDetails;
+use App\Models\SubCategory;
+use App\Models\ProductImage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class WelcomeController extends Controller
 {
-    public function Index(){
-      $banners = banner::where('banners.deleted', '=', 'No')
+      public function index(){
+        $banners = banner::where('banners.deleted', '=', 'No')
                 ->where('banners.status', '=', 'Active')
+                ->where('banner_type','Homepage')
                 ->get();
-        return view('website.pages.home',['banners'=>$banners]);
+       $topThreeBrands= BrandOffer::select('brand_offers.*')
+                        ->where('brand_offers.offer_type','Brand')
+                        ->where('brand_offers.deleted','No')
+                        ->where('brand_offers.status','Active')
+                        ->orderBy('brand_offers.priority','asc')
+                        ->get();
+        return view('ecomas.pages.homepage',['banners'=>$banners,'topThreeBrands'=>$topThreeBrands]);
       }
     
       public function aboutus(){
         return view('website.pages.aboutus');
       }
       public function contactus(){
-        return view('website.pages.contactus');
+        return view('ecomas.pages.contactus');
       }
       public function tractorder(){
         return view('website.pages.tractorder');
       }
+
       public function blog_classic(){
         $blogs =  DB::table('contents')
-        ->select(columns: 'contents.*')
-        ->where('contents.deleted', '=', 'No')
-        ->where('contents.status', '=', 'On')
-        ->get();
-      
-        return view('website.pages.blog_classic',['blogs'=>$blogs]);
+                  ->select(columns: 'contents.*')
+                  ->where('contents.deleted', '=', 'No')
+                  ->where('contents.status', '=', 'On')
+                  ->get();
+        return view('ecomas.pages.blog',['blogs'=>$blogs]);
       }
+
+      public function shopData(){
+        $shopBanners=banner::where('banners.status', '=', 'Active')
+                      ->where('banner_type','=','Shop')
+                      ->get();
+        return view('ecomas.pages.shop',['shopBanners'=>$shopBanners]);
+      }
+
+
       public function blog_grid(){
         return view('website.pages.blog_grid');
       }
@@ -47,7 +66,7 @@ class WelcomeController extends Controller
         return view('website.pages.blog_list');
       }
       public function blog_left_sidebar(){
-        return view('website.pages.blog_left_sidebar');
+        return view('ecomas.pages.blog');
       }
       public function post(){
         return view('website.pages.post');
@@ -57,10 +76,13 @@ class WelcomeController extends Controller
         return view('website.pages.post_without_sidebar');
       }
       public function termscondition(){
-        return view('website.pages.termscondition');
+        return view('ecomas.pages.terms-conditions');
+      }
+      public function privacyPolicy(){
+        return view('ecomas.pages.privacy-policy');
       }
       public function faq(){
-        return view('website.pages.faq');
+        return view('ecomas.pages.faq');
       }
       public function login_register(){
         return view('website.pages.account');
@@ -74,64 +96,120 @@ class WelcomeController extends Controller
       public function shop_grid_5_column(){
         return view('website.pages.shop_grid_5_column');
       }
-      public function productDetails($id){
-       $product=product::leftjoin('tbl_brands','tbl_brands.id','=','tbl_products.tbl_brandsId')
-                          ->leftjoin('tbl_category','tbl_category.id','=','tbl_products.categoryId')
-                  ->select('tbl_products.*','tbl_brands.*','tbl_category.*')
-                  ->where('tbl_products.id','=',$id)
-                  ->where('tbl_category.deleted','=','No' )
-                  ->where('tbl_brands.deleted','=','No')
-                  ->where('tbl_products.deleted','=','No')
-                  ->where('tbl_category.status','=','Active' )
-                  ->where('tbl_brands.status','=','Active')
-                  ->where('tbl_products.status','=','Active')
-                  ->first();
-        $productspech = DB::table('tbl_productspecification')
-                  ->select(columns: 'tbl_productspecification.*')
-                  ->where('tbl_productspecification.tbl_productsId', '=', $id) 
-                  ->where('tbl_productspecification.deleted', '=', 'No')
-                  ->get();
 
-        $productimages= DB::table('product_images')
-        ->select('product_images.productImage')
-        ->where('product_images.productId', '=', $id) 
-        ->where('product_images.deleted', '=', 'No')
-        ->where('product_images.status', '=', 'Active')
-        ->get();
-        $categoryId=$product->categoryId;
+
+      // public function productDetails($id){
+      //  $product=product::leftjoin('tbl_brands','tbl_brands.id','=','tbl_products.tbl_brandsId')
+      //                     ->leftjoin('tbl_category','tbl_category.id','=','tbl_products.categoryId')
+      //             ->select('tbl_products.*','tbl_brands.*','tbl_category.*')
+      //             ->where('tbl_products.id','=',$id)
+      //             ->where('tbl_category.deleted','=','No' )
+      //             ->where('tbl_brands.deleted','=','No')
+      //             ->where('tbl_products.deleted','=','No')
+      //             ->where('tbl_category.status','=','Active' )
+      //             ->where('tbl_brands.status','=','Active')
+      //             ->where('tbl_products.status','=','Active')
+      //             ->first();
+                  
+      //   $productspech = DB::table('tbl_productspecification')
+      //             ->select(columns: 'tbl_productspecification.*')
+      //             ->where('tbl_productspecification.tbl_productsId', '=', $id) 
+      //             ->where('tbl_productspecification.deleted', '=', 'No')
+      //             ->get();
+
+      //   $productimages= DB::table('product_images')
+      //   ->select('product_images.productImage')
+      //   ->where('product_images.productId', '=', $id) 
+      //   ->where('product_images.deleted', '=', 'No')
+      //   ->where('product_images.status', '=', 'Active')
+      //   ->get();
+      //   $categoryId=$product->categoryId;
     
-        $categoryWiseProducts = DB::table('tbl_products')
-              ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
-              ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
-              ->whereIn('tbl_products.id', function ($query) use ($categoryId) {
-                $query->select('tbl_product_id')
-                  ->distinct()
-                  ->from('tbl_print_book_product')
-                  ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
-                  ->where('tbl_printbook_category.is_website', 'Yes')
-                  ->where('tbl_printbook_category.tbl_category_id',$categoryId);
+      //   $RelatedProducts = DB::table('tbl_products')
+      //         ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+      //         ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+      //         ->whereIn('tbl_products.id', function ($query) use ($categoryId) {
+      //           $query->select('tbl_product_id')
+      //             ->distinct()
+      //             ->from('tbl_print_book_product')
+      //             ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
+      //             ->where('tbl_printbook_category.is_website', 'Yes')
+      //             ->where('tbl_printbook_category.tbl_category_id',$categoryId);
+      //         })
+      //         ->where('tbl_products.deleted', 'No')
+      //         ->where('tbl_products.status', 'Active')
+      //         ->select(
+      //           'tbl_products.id',
+      //           'tbl_products.productCode',
+      //           'tbl_products.productName',
+      //           'tbl_products.maxSalePrice',
+      //           'tbl_products.productImage',
+      //           'tbl_products.modelNo',
+      //           'tbl_products.productDescriptions',
+      //           'tbl_brands.brandName',
+      //           'tbl_brands.brand_logo',
+      //           'tbl_category.categoryName',
+      //           DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
+      //         )
+      //         ->orderBy('random_number', 'desc')
+      //         ->take(30)
+      //         ->get();
+
+      //   return view('website.pages.products',['product'=>$product,'productspech'=>$productspech,'productimages'=>$productimages,'categoryWiseProducts'=>$categoryWiseProducts]);
+      // }
+
+
+      public function productDetails($id)
+      {
+        $product = Product::with(['brand', 'category', 'specifications', 'images'])
+              ->where('id', $id)
+              ->where('deleted', 'No')
+              ->whereHas('category', function ($query) {
+                  $query->where('deleted', 'No')->where('status', 'Active');
               })
-              ->where('tbl_products.deleted', 'No')
-              ->where('tbl_products.status', 'Active')
+              ->whereHas('brand', function ($query) {
+                  $query->where('deleted', 'No')->where('status', 'Active');
+              })
+              ->where('status', 'Active')
+              ->firstOrFail();
+
+          $categoryId = $product->categoryId;
+
+          $relatedProducts = Product::with(['brand', 'category'])
+              ->whereHas('printBookProduct.printBookCategory', function ($query) use ($categoryId) {
+                  $query->where('tbl_category_id', $categoryId)
+                      ->where('is_website', 'Yes');
+              })
+              ->where('deleted', 'No')
+              ->where('status', 'Active')
               ->select(
-                'tbl_products.id',
-                'tbl_products.productCode',
-                'tbl_products.productName',
-                'tbl_products.maxSalePrice',
-                'tbl_products.productImage',
-                'tbl_products.modelNo',
-                'tbl_products.productDescriptions',
-                'tbl_brands.brandName',
-                'tbl_brands.brand_logo',
-                'tbl_category.categoryName',
-                DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
+                  'id',
+                  'productCode',
+                  'productName',
+                  'maxSalePrice',
+                  'productImage',
+                  'modelNo',
+                  'productDescriptions',
+                  'tbl_brandsId',
+                  'categoryId',
+                  DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
               )
               ->orderBy('random_number', 'desc')
               ->take(30)
               ->get();
 
-        return view('website.pages.products',['product'=>$product,'productspech'=>$productspech,'productimages'=>$productimages,'categoryWiseProducts'=>$categoryWiseProducts]);
+          $data=array(
+              'product' => $product,
+              'productspecs' => $product->specifications,
+              'productimages' => $product->images,
+              'relatedProducts' => $relatedProducts
+          );
+          return $data;
       }
+
+
+
+
       public function shoplist(){
         return view('website.pages.shoplist');
       }
@@ -156,72 +234,88 @@ class WelcomeController extends Controller
 
 
    public function viewcategoryproduct($id){
-        
-    $categoryWiseProducts = DB::table('tbl_products')
-    ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
-    ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
-    ->whereIn('tbl_products.id', function ($query) use ($id) {
-      $query->select('tbl_product_id')
-        ->distinct()
-        ->from('tbl_print_book_product')
-        ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
-        ->where('tbl_printbook_category.is_website', 'Yes')
-        ->where('tbl_printbook_category.tbl_category_id', $id);
-    })
-    ->where('tbl_products.deleted', 'No')
-    ->where('tbl_products.status', 'Active')
-    ->select(
-      'tbl_products.id',
-      'tbl_products.productCode',
-      'tbl_products.productName',
-      'tbl_products.maxSalePrice',
-      'tbl_products.productImage',
-      'tbl_products.modelNo',
-      'tbl_products.productDescriptions',
-      'tbl_brands.brandName',
-      'tbl_brands.brand_logo',
-      'tbl_category.categoryName',
-      DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
-    )
-    ->orderBy('random_number', 'desc')
-    ->paginate(54);
-
-
-  return view('website.pages.shop_grid_3_columns_sidebar', ['categoryWiseProducts' => $categoryWiseProducts]);
+            $categoryWiseProducts = Product::select('tbl_products.*', DB::raw('FLOOR(1 + (RAND() * 100)) as random_number'))
+                                  ->with([
+                                      'brand:id,brandName,brand_logo',
+                                      'category:id,categoryName',
+                                      'printBookProduct.printBookCategory' => function ($query) use ($id) {
+                                          $query->where('is_website', 'Yes')
+                                                ->where('tbl_category_id', $id);
+                                      }
+                                  ])
+                                  ->where('deleted', 'No')
+                                  ->where('status', 'Active')
+                                  ->where('tbl_products.categoryId',$id)
+                                  ->whereHas('printBookProduct.printBookCategory', function ($query) use ($id) {
+                                      $query->where('is_website', 'Yes')
+                                            ->where('tbl_category_id', $id);
+                                  })
+                                  ->orderByRaw('RAND()')
+                                  ->paginate(56);
+              $categoryBanners=banner::where('banners.deleted', '=', 'No')
+                              ->where('banners.status', '=', 'Active')
+                              ->where('banner_type','=','Category')
+                              ->where('category_id',$id)
+                              ->get();
+              $subCategories=SubCategory::where('category_id',$id)->where('deleted','No')->get();
+          return view('ecomas.pages.shop', ['categoryWiseProducts' => $categoryWiseProducts,'categoryBanners'=>$categoryBanners,'subCategories'=>$subCategories]);
       }
 
-      public function viewbrandproduct($id){
-        $brandWiseProducts = DB::table('tbl_products')
-      
-        ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
-        ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
-        ->whereIn('tbl_products.id', function ($query) use ($id) {
-          $query->select('tbl_product_id')
-            ->distinct()
-            ->from('tbl_print_book_product')
-            ->join('tbl_printbook_category', 'tbl_print_book_product.tbl_print_book_category_id', '=', 'tbl_printbook_category.id')
-            ->where('tbl_printbook_category.is_website', 'Yes')
-            ->where('tbl_printbook_category.tbl_brand_id', $id);
-        })
-        ->where('tbl_products.deleted', 'No')
-        ->where('tbl_products.status', 'Active')
-        ->select(
-          'tbl_products.id',
-          'tbl_products.productCode',
-          'tbl_products.productName',
-          'tbl_products.maxSalePrice',
-          'tbl_products.productImage',
-          'tbl_products.modelNo',
-          'tbl_products.productDescriptions',
-          'tbl_brands.brandName',
-          'tbl_brands.brand_logo',
-          'tbl_category.categoryName',
-          DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
-        )
-        ->orderBy('random_number', 'desc')
-        ->paginate(54);
+
+
+
+    public function subCategoryWiseProduct($sub_category_id,$category_id){
+               $categoryWiseProducts =  Product::select('tbl_products.*', DB::raw('FLOOR(1 + (RAND() * 100)) as random_number'))
+                          ->with([
+                              'category', 
+                              'subcategory', 
+                              'brand'
+                          ])->where('categoryId', $category_id)
+                            ->where('sub_category_id', $sub_category_id)
+                            ->where('deleted', 'No')
+                            ->where('status', 'Active')
+                            ->orderBy('random_number', 'desc')
+                            ->paginate(56);
+                          
+              $categoryBanners=banner::where('banners.deleted', '=', 'No')
+                              ->where('banners.status', '=', 'Active')
+                              ->where('banner_type','=','Category')
+                              ->where('category_id',$category_id)
+                              ->get();
+              $subCategories=SubCategory::where('category_id',$category_id)->where('deleted','No')->get();
+          return view('ecomas.pages.shop', ['categoryWiseProducts' => $categoryWiseProducts,'categoryBanners'=>$categoryBanners,'subCategories'=>$subCategories]);
+          
+    }
+
+    public function viewbrandproduct($id){
         
-      return view('website.pages.shop_grid_3_columns_sidebar', ['brandWiseProducts' => $brandWiseProducts]);
+        
+          $brandWiseProducts = Product::select('tbl_products.*', DB::raw('FLOOR(1 + (RAND() * 100)) as random_number'))
+                      ->with([
+                          'brand:id,brandName,brand_logo',
+                          'category:id,categoryName',
+                          'printBookProduct.printBookCategory' => function ($query) use ($id) {
+                              $query->where('is_website', 'Yes')
+                                    ->where('tbl_brand_id', $id);
+                          }
+                      ])
+                      ->where('deleted', 'No')
+                      ->where('status', 'Active')
+                      ->where('tbl_products.tbl_brandsId',$id)
+                      ->whereHas('printBookProduct.printBookCategory', function ($query) use ($id) {
+                          $query->where('is_website', 'Yes')
+                                ->where('tbl_brand_id', $id);
+                      })
+                      ->orderByRaw('RAND()')
+                      ->paginate(56);
+        $brandBanners=banner::where('banners.deleted', '=', 'No')
+                      ->where('banners.status', '=', 'Active')
+                      ->where('banner_type','=','Brand')
+                      ->where('brand_id',$id)
+                      ->get();
+
+      return view('ecomas.pages.shop', ['brandWiseProducts' => $brandWiseProducts,'brandBanners'=>$brandBanners]);
+
       }
 
 
@@ -282,12 +376,11 @@ class WelcomeController extends Controller
 
         $cart='<table class="cart__table cart-table">
                     <thead class="cart-table__head">
-                        <tr class="cart-table__row">
-                            <th class="cart-table__column cart-table__column--image" width="20%">Image</th>
-                            <th class="cart-table__column cart-table__column--product" width="25%">Product</th>
-                            <th class="cart-table__column cart-table__column--product" width="25%">Model</th>
-                            <th class="cart-table__column cart-table__column--quantity" width="15%">Quantity</th>
-                            <th class="cart-table__column cart-table__column--remove"  width="15%"></th>
+                        <tr class="cart-table__row  container">
+                            <th class="text-center" width="30%">Image</th>
+                            <th class="text-center" width="50%">Product</th>
+                            <th class="text-center" width="10%">Quantity</th>
+                            <th  class="text-center" width="10%"></th>
                         </tr>
                     </thead>
                     <tbody class="cart-table__body">';
@@ -305,10 +398,7 @@ class WelcomeController extends Controller
                             '.$product_image.'
                           </td>
                           <td class="p-1" width="35%">
-                            '.$product_name.' 
-                          </td>
-                          <td class="p-1" width="30%">
-                            '.$product_model.' 
+                            '.$product_name.'<br> '.$product_model.' 
                           </td>
                           <td  width="18%">
                               <input type="text" class="form-control text-center" style="width:80%;" id="quantity_' . $productId .  '" name="quantity[]" onkeyup="updateCart(' . $productId .')"  value="' . $product_quantity . '" />
@@ -323,7 +413,7 @@ class WelcomeController extends Controller
                 </table>';
                 $cartCount=count(Session::get("cart_array"));
           }else{
-            $cart .= '<h4 class="text-danger">Cart is Empty!</h4>';
+            $cart .= '<h5 class="text-danger">Cart is Empty!</h5>';
           }
           $data = array(
             'cart' => $cart,
@@ -382,9 +472,9 @@ class WelcomeController extends Controller
       $request->validate([
       'name' => 'required|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
       'mobile' =>'required|min:11|max:14|regex:/^([0-9\+]*)$/',
-      'address' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+      'address' => 'nullable|max:1000|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
       'email' => 'nullable|email|max:255|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
-      'note' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u'
+      'note' => 'nullable|max:1000|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u'
     ]);
     
     if(Session::get("cart_array")){
@@ -434,6 +524,109 @@ class WelcomeController extends Controller
     }
           
   }
+
+
+
+
+  
+
+
+
+  public function getSuggestions(Request $request)
+      {
+          $searchTerm = $request->input('search');
+          $settings = ShopSetting::where('status', 'Active')->where('deleted', 'No')->first();
+
+          if ($searchTerm) {
+              $products = Product::with(['brand', 'category'])
+                  ->where('deleted', 'No')
+                  //->where('is_website','Yes')
+                  ->whereHas('brand', function ($query) {
+                      $query->where('deleted', 'No');
+                  })
+                  ->whereHas('category', function ($query) {
+                      $query->where('deleted', 'No');
+                  })
+                  ->where(function ($query) use ($searchTerm) {
+                      $query->where('productName', 'like', "%$searchTerm%")
+                            ->orWhereHas('brand', function ($q) use ($searchTerm) {
+                                $q->where('brandName', 'like', "%$searchTerm%");
+                            })
+                            ->orWhereHas('category', function ($q) use ($searchTerm) {
+                                $q->where('categoryName', 'like', "%$searchTerm%");
+                            });
+                  })
+                  ->orderBy('id', 'desc')
+                  ->limit(40)
+                  ->get();
+
+              $html = '';
+              foreach ($products as $product) {
+                  // $imgUrl = $settings->erp_baseurl . '/images/products/big_product_img/' . $product->productImage;
+                  $defaultImage = asset('ecomas/images/products/noimage.jpg');
+                  $imgUrl = !empty($product->productImage) ? $settings->erp_baseurl . '/images/products/big_product_img/' . $product->productImage : $defaultImage;
+                  $html .= '<div class="tf-loop-item">
+                              <div class="image">
+                                  <a href="#" onclick="productDetails(' . $product->id . ')">
+                                      <img src="' .  $imgUrl  . '" alt="' . $product->productName . '">
+                                  </a>
+                              </div>
+                              <div class="content">
+                                  <a href="#" onclick="productDetails(' . $product->id . ')">' . $product->productName . ' - ' . $product->modelNo . '</a>
+                                  <div class="tf-product-info-price">
+                                      <div class="price-on-sale fw-6">' . $product->brand->brandName . '</div>
+                                  </div>
+                              </div>
+                          </div>';
+              }
+
+              return response()->json([
+                  'found' => count($products) > 0 ? 'Yes' : 'No',
+                  'html' => $html
+              ]);
+          }
+      }
+
+
+    public function search(Request $request){
+      $searchTerm = $request->input('search');
+        if ($searchTerm) {
+          $products = DB::table('tbl_products')
+              ->select('tbl_products.*','tbl_brands.brandName','tbl_category.categoryName')
+              ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+              ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+              ->distinct()
+              ->where('tbl_products.deleted', 'No')
+              ->where('tbl_brands.deleted', 'No')
+              ->where('tbl_category.deleted', 'No')
+              ->where(function ($query) use ($searchTerm) {
+                  $query->where('tbl_products.productName', 'like', "%$searchTerm%")
+                        ->orWhere('tbl_brands.brandName', 'like', "%$searchTerm%")
+                        ->orWhere('tbl_category.categoryName', 'like', "%$searchTerm%");
+              })
+              ->orderBy('tbl_products.id', 'desc')
+              ->paginate(100);
+        }else{
+          $products = DB::table('tbl_products')
+              ->select('tbl_products.*',
+                        'tbl_brands.brandName',
+                        'tbl_category.categoryName',
+                        DB::raw('FLOOR(1 + (RAND() * 100)) as random_number')
+              )
+              ->join('tbl_brands', 'tbl_products.tbl_brandsId', '=', 'tbl_brands.id')
+              ->join('tbl_category', 'tbl_products.categoryId', '=', 'tbl_category.id')
+              ->distinct()
+              ->where('tbl_products.deleted', 'No')
+              ->where('tbl_brands.deleted', 'No')
+              ->where('tbl_category.deleted', 'No')
+              ->orderBy('random_number', 'desc')
+              ->paginate(100);
+        }
+        return view('website.pages.searchPage', ['searchProducts' => $products]);
+    }
+
+
+
 
 
 

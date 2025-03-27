@@ -30,6 +30,14 @@
                             <div class="col-md-3"> <h3>Product List</h3></div>
                             
                             <div class="form-group float-right col-md-1">
+                                <label class="col-form-label">Show In Website</label>
+                                <select class="form-control"  id="is_website" name="is_website" style="width:100%;" onchange="loadFilterDatatable('is_website')">
+                                    <option value='' selected>Show In Website</option>
+                                    <option value='Yes'> Yes </option>
+                                    <option value='No'> No </option>
+                                </select>
+                            </div>
+                            <div class="form-group float-right col-md-1">
                                 <label class="col-form-label">Featured</label>
                                 <select class="form-control"  id="featured" name="featured" style="width:100%;" onchange="loadFilterDatatable('featured')">
                                     <option value='' selected>Featured</option>
@@ -69,6 +77,25 @@
                                     <option value='No'> No </option>
                                 </select>
                             </div>
+
+                            <div class="form-group float-right col-md-1">
+                                <label class="col-form-label">Category</label>
+                                <select  class="form-control" id="category_id" name="category_id" style="width:100%;" onchange="loadFilterDatatable('category_id')">
+                                    <option value='' selected>Search By Category</option>
+                                    @foreach($categories as $category)
+                                    <option value='{{$category->id}}'>{{$category->categoryName}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group float-right col-md-1">
+                                <label class="col-form-label">Brand</label>
+                                <select  class="form-control" id="brand_id" name="brand_id" style="width:100%;" onchange="loadFilterDatatable('brand_id')">
+                                    <option value='' selected>Search By Brand</option>
+                                    @foreach($brands as $brand)
+                                    <option value='{{$brand->id}}'>{{$brand->brandName}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="col-md-4"> <h3 class="text-center text-success">{{Session::get('message')}}</h3></div>
                         </div>
                         <!-- /.card-header -->
@@ -102,7 +129,7 @@
 @section('contentJavaScripts')
   <script>
 
-        $("#featured").val('Yes');
+        $("#is_website").val('Yes');
         
 
         var table;
@@ -114,44 +141,87 @@
 
     function loadFilterDatatable(filterBy = '') {
         //alert(filterBy);
-        if(filterBy === 'featured'){
+        if(filterBy === 'is_website'){
             $('#best_selling').val('');
             $('#top_rated').val('');
             $('#new_arrival').val('');
             $('#special_offer').val('');
+            $('#featured').val('');
+            $('#category_id').val('');
+            $('#brand_id').val('');
+        }
+        if(filterBy === 'featured'){
+            $('#is_website').val('');
+            $('#best_selling').val('');
+            $('#top_rated').val('');
+            $('#new_arrival').val('');
+            $('#special_offer').val('');
+            $('#category_id').val('');
+            $('#brand_id').val('');
         }
         if(filterBy === 'best_selling'){
             $('#featured').val('');
             $('#top_rated').val('');
             $('#new_arrival').val('');
             $('#special_offer').val('');
+            $('#is_website').val('');
+            $('#category_id').val('');
+            $('#brand_id').val('');
         }
         if(filterBy === 'top_rated'){
             $('#featured').val('');
             $('#best_selling').val('');
             $('#new_arrival').val('');
             $('#special_offer').val('');
+            $('#is_website').val('');
+            $('#category_id').val('');
+            $('#brand_id').val('');
         }
         if(filterBy === 'new_arrival'){
             $('#featured').val('');
             $('#best_selling').val('');
             $('#top_rated').val('');
             $('#special_offer').val('');
+            $('#is_website').val('');
+            $('#category_id').val('');
+            $('#brand_id').val('');
         }
         if(filterBy === 'special_offer'){
             $('#featured').val('');
             $('#best_selling').val('');
             $('#top_rated').val('');
             $('#new_arrival').val('');
+            $('#is_website').val('');
+            $('#category_id').val('');
+            $('#brand_id').val('');
+        }
+        if(filterBy === 'category_id'){
+            $('#featured').val('');
+            $('#best_selling').val('');
+            $('#top_rated').val('');
+            $('#new_arrival').val('');
+            $('#is_website').val('');
+            $('#brand_id').val('');
+        }
+        if(filterBy === 'brand_id'){
+            $('#featured').val('');
+            $('#best_selling').val('');
+            $('#top_rated').val('');
+            $('#new_arrival').val('');
+            $('#is_website').val('');
+            $('#category_id').val('');
         }
 
+        const is_website = $("#is_website").val();
         const featured = $("#featured").val();
         const best_selling = $("#best_selling").val();
         const top_rated = $("#top_rated").val();
         const new_arrival = $("#new_arrival").val();
         const special_offer = $("#special_offer").val();
+        const category_id = $("#category_id").val();
+        const brand_id = $("#brand_id").val();
 
-        var filter = featured + "@" + best_selling +  "@" + new_arrival + "@" + top_rated + "@" + special_offer;
+        var filter = is_website + "@" + featured + "@" + best_selling +  "@" + new_arrival + "@" + top_rated + "@" + special_offer+ "@" + category_id + "@" + brand_id;
        // alert(filter);
         
         table = $('#tbl_product').DataTable({

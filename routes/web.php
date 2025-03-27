@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\website\WelcomeController;
 use App\Http\Controllers\Brandcontroller;
 use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\offerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +17,7 @@ use App\Http\Controllers\Admin\MessageController;
 |
 */
 
-Route::get('/', [WelcomeController::class, 'Index'])->name('/');
+Route::get('/', [WelcomeController::class, 'index'])->name('/');
 Route::get('/home2', [WelcomeController::class, 'Index2'])->name('/home2');
 Route::get('/aboutus', [WelcomeController::class, 'aboutus'])->name('/aboutus');
 Route::get('/contactus', [WelcomeController::class, 'contactus'])->name('/contactus');
@@ -28,9 +29,10 @@ Route::get('/blog_left_sidebar', [WelcomeController::class, 'blog_left_sidebar']
 Route::get('/post', [WelcomeController::class, 'post'])->name('/post');
 Route::get('/post_without_sidebar', [WelcomeController::class, 'post_without_sidebar'])->name('/post_without_sidebar');
 Route::get('/termscondition', [WelcomeController::class, 'termscondition'])->name('/termscondition');
+Route::get('/privacyPolicy', [WelcomeController::class, 'privacyPolicy'])->name('privacyPolicy');
 Route::get('/faq', [WelcomeController::class, 'faq'])->name('/faq');
 
-Route::get('/shop/data', [WelcomeController::class, 'shop_grid_3_columns_sidebar'])->name('/shop_grid_3_columns_sidebar');
+Route::get('/shop/data', [WelcomeController::class, 'shopData'])->name('shop.data');
 Route::get('/shop_grid_4_column_full', [WelcomeController::class, 'shop_grid_4_column_full'])->name('/shop_grid_4_column_full');
 Route::get('/shop_grid_5_column', [WelcomeController::class, 'shop_grid_5_column'])->name('/shop_grid_5_column');
 Route::get('/shoplist', [WelcomeController::class, 'shoplist'])->name('/shoplist');
@@ -41,9 +43,14 @@ Route::get('/checkoutcard', [WelcomeController::class, 'checkoutcard'])->name('/
 Route::get('/products/details/{id}', [WelcomeController::class, 'productDetails'])->name('product.details');
 Route::get('/wishlist', [WelcomeController::class, 'wishlist'])->name('/wishlist');
 Route::get('/compare', [WelcomeController::class, 'compare'])->name('/compare');
- Route::get('/categorywiseproduct/{id}', [WelcomeController::class, 'viewcategoryproduct'])->name('categorywiseproduct');
- Route::get('/brandwiseproduct/{id}', [WelcomeController::class, 'viewbrandproduct'])->name('brandwiseproduct');
- Route::post('/message/store', [MessageController::class, 'savemessage'])->name('message.store');
+
+Route::get('/categorywiseproduct/{id}', [WelcomeController::class, 'viewcategoryproduct'])->name('categorywiseproduct');
+Route::get('/subCategoryWiseProduct/{sub_category_id}/{category_id}', [WelcomeController::class, 'subCategoryWiseProduct'])->name('subCategoryWiseProduct');
+Route::get('/brandwiseproduct/{id}', [WelcomeController::class, 'viewbrandproduct'])->name('brandwiseproduct');
+Route::post('/message/store', [MessageController::class, 'savemessage'])->name('message.store');
+
+Route::get('/search', [WelcomeController::class, 'search'])->name('search');
+Route::get('/search-suggestions', [WelcomeController::class, 'getSuggestions'])->name('search.suggestions');
 
 
 
@@ -152,9 +159,10 @@ Route::middleware('auth')->group(function () {
 	Route::post('brands/categoryWiseView', [BrandController::class, 'categoryWiseBrands'])->name('categoryWiseBrands');
   /* Sub-Category Info Admin panel */
   Route::get('/sub-category/view', 'App\Http\Controllers\subCategoryController@subCategoryView');
+  Route::get('/sub-category/getData', 'App\Http\Controllers\subCategoryController@getData');
   Route::get('/sub-category/add', 'App\Http\Controllers\subCategoryController@subCategoryAdd');
-  Route::get('/sub-category/edit/{id}', 'App\Http\Controllers\subCategoryController@subCategoryEdit');
-  Route::post('/sub-category/save', 'App\Http\Controllers\subCategoryController@subCategorySave');
+  Route::get('/sub-category/edit/', 'App\Http\Controllers\subCategoryController@subCategoryEdit');
+  Route::post('/sub-category/store', 'App\Http\Controllers\subCategoryController@subCategorySave');
   Route::post('/sub-category/update', 'App\Http\Controllers\subCategoryController@updateSubCategory');
   Route::get('/sub-category/delete/{id}', 'App\Http\Controllers\subCategoryController@deleteSubCategory');
   /* end Sub-Categroy */
@@ -186,6 +194,7 @@ Route::middleware('auth')->group(function () {
   Route::post('/products/update', 'App\Http\Controllers\productController@productUpdate');
   Route::post('products/videoUrl/update', 'App\Http\Controllers\productController@productVideoUrlUpdate');
   Route::post('products/website/show/update', 'App\Http\Controllers\productController@productWebsiteShowUpdate');
+  Route::post('products/subCatUpdate', 'App\Http\Controllers\productController@subCatUpdate');
   Route::get('/products/delete/{id}', 'App\Http\Controllers\productController@productDelete');
   Route::post('/dynamic_dependent/fetch', 'App\Http\Controllers\productController@fetch')->name('dynamicdependent.fetch');
   Route::get('/products/viewProfile/{id}', 'App\Http\Controllers\productController@productViewProfile');
@@ -232,6 +241,14 @@ Route::middleware('auth')->group(function () {
   Route::get('/coupon/add/{type}', 'App\Http\Controllers\offerController@couponAdd');
   Route::post('/coupon/generatecouponcode', 'App\Http\Controllers\offerController@generateCouponCode')->name('generateCouponCode');
   Route::post('/coupon/save', 'App\Http\Controllers\offerController@couponSave');
+
+
+  
+  Route::get('/brand/offer/{type}', [offerController::class, 'brandOfferIndex'])->name('brand.offer');
+  Route::get('/brand/offer/get/offer/{type}', [offerController::class, 'brandOfferGetOffer'])->name('brand.offer.getOffer');
+  Route::post('/brand/offer/store', [offerController::class, 'brandOfferStore'])->name('brand.offer.store');
+  Route::get('/brand/offer/Edit/{type}', [offerController::class, 'brandOfferEdit'])->name('brand.offer.edit');
+  Route::post('/brand/offer/update/{type}', [offerController::class, 'brandOfferUpdate'])->name('brand.offer.update');
   /* end Products offer */
 
   /* Banner Info Admin panel */
@@ -241,7 +258,6 @@ Route::middleware('auth')->group(function () {
   Route::get('/banner/frontEndDelete/{id}', 'App\Http\Controllers\bannerController@forntEndBannerDelete');
   Route::get('/banner/change-status/{id}', 'App\Http\Controllers\bannerController@changeStatus');
   /* end Banner */
-
 
   /* Order Info Admin panel */
   Route::get('/order-list', 'App\Http\Controllers\Admin\OrderController@orderList')->name('order-list');

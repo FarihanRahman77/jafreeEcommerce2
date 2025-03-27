@@ -9,9 +9,10 @@ use DB;
 class categoryController extends Controller
 {
     public function categoryView(){
-        $category = Category::select('tbl_category.id', 
+       $category = Category::select('tbl_category.id', 
                                     'tbl_category.categoryName',
                                     'tbl_category.status',
+                                    'tbl_category.is_website',
                                     'tbl_category.createdDate',
                                     'tbl_category.logo',
                                     'tbl_category.image')
@@ -25,7 +26,7 @@ class categoryController extends Controller
                     })
                     ->orderBy('tbl_category.categoryName', 'ASC')
                     ->get();
-        return view('admin.home.category.categoryView',['categories'=>$category]);
+        return view('admin.home.category.categoryView',['adminCategories'=>$category]);
     }
 
     public function categoryAdd(){
@@ -61,12 +62,11 @@ class categoryController extends Controller
               ]);
             $categoryImage = $request->file('image');
             $name = $categoryImage->getClientOriginalName();
-            $uploadPath = 'website/images/categories/';
+            $uploadPath = 'ecomas/images/category/';
             $imageUrl = $uploadPath . $name;
             $imageName = time() . $name;
             $categoryImage->move($uploadPath, $imageName);
             $category->image = $imageName;
-       
         }
 
         if ($request->hasFile('logo')) {
@@ -76,13 +76,13 @@ class categoryController extends Controller
               
             $categorylogo = $request->file('logo');
             $logo = $categorylogo->getClientOriginalName();
-            $uploadPath = 'website/images/categories/';
+            $uploadPath = 'ecomas/images/category/';
             $logoUrl = $uploadPath . $logo;
             $logoName = time() . $logo;
             $categorylogo->move($uploadPath, $logoName);
             $category->logo = $logoName;
         }
-       
+        $category->is_website = $request->is_website;
         
         $category->save();
         return redirect('/category/view')->with('message','Category Updated secessfully');

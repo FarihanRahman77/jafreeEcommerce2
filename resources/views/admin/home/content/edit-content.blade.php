@@ -97,7 +97,7 @@ Admin Product-Add
                                         <div class="col-sm-12">
                                             <input type="file" class="form-control" id="content_image" name="content_image" accept="image/*">
                                             <img id="Showcontent_image"
-                                            src="{{ !empty($content->content_image) ? url('website/images/blog/'.$content->content_image) : url('website/images/blog/no_image.png') }}"
+                                            src="{{ !empty($content->content_image) ? url('ecomas/images/blog/'.$content->content_image) : url('ecomas/images/blog/no_image.png') }}"
                                             style="width: 100px;height: 80px; border:1px solid #000000"/>
                                             <span class="text-danger">{{$errors->has('content_image')?$errors->first('content_image'):''}}</span>
                                         </div>

@@ -16,8 +16,8 @@
                                             <div class="block-slideshow__slide-title">{{$banner->carousal_caption_offer}}
                                             </div>
                                             <div class="block-slideshow__slide-text">{{$banner->carousal_caption_description}}</div>
-                                            <div class="block-slideshow__slide-button" onclick="shopLink()"><span
-                                                    class="btn btn-primary btn-lg">Shop Now</span></div>
+                                            <div class="block-slideshow__slide-button" ><a href="{{ url('/shop/data') }}"
+                                                    class="btn btn-primary btn-lg"><span>Shop Now</span></a></div>
                                         </div>
                                     </a>
                                     @endforeach

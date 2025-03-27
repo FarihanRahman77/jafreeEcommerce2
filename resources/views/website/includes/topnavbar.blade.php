@@ -146,18 +146,22 @@
                     <img src="{{asset('website/images/setting/'.$settings->landscape_image)}}" width="280px" height="40px" />
                 </a>
             </div>
+
+            <!-- search form -->
             <div class="site-header__search">
                 <div class="search">
-                    <form class="search__form" action="#"><input class="search__input" name="search"
-                            placeholder="Search over 10,000 products" aria-label="Site search" type="text"
-                            autocomplete="off"> <button class="search__button" type="submit"><svg width="20px"
-                                height="20px">
-                                <use xlink:href="images/sprite.svg#search-20"></use>
-                            </svg></button>
-                        <div class="search__border"></div>
+                    <form class="search__form" action="{{route('search')}}" method="GET">
+                        <input class="search__input" id="searchBar" name="search" placeholder="Search over 10,000 products" aria-label="Site search" type="text" autocomplete="off">
+                        <button class="search__button" type="submit">
+                                <i class="fa fa-search"></i>
+                        </button>
                     </form>
+                    <ul id="searchSuggestions" class="search__suggestions" style="display: none; position: absolute; background: #fff; list-style: none; width: 100%; z-index: 1000; width: 40%;"></ul>
+                        <div class="search__border"></div>
                 </div>
             </div>
+            <!-- search form / end -->
+
             <div class="site-header__phone">
 
                 <div class="site-header__phone-title">Hot Line</div>

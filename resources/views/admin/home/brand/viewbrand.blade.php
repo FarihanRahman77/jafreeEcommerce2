@@ -16,9 +16,11 @@
             <div class="card">
                 <div class="card-header">
                             <h3 style="float:left;"> Brand List </h3>
+                            <br>
+                            <h5 class="text-success" id="success-alert"></h5>
                             <!-- <a class="btn btn-primary float-right" onclick="create()"><i class="fa fa-plus circle"></i> Add Brand</a>
                             <a class="btn btn-primary" style="margin-left:20px;" onclick="reloadDt()"><i class="fas fa-sync"></i> Refresh</a> -->
-                        </div><!-- /.card-header -->
+                </div><!-- /.card-header -->
                 <div class="card-body">
                             <div class="col-md-12">
 
@@ -28,10 +30,14 @@
                                     <thead>
                                         <tr>
                                             <td width="6%">SL#</td>
+                                            <td>Logo</td>
                                             <td>Image</td>
                                             <td>Brand Name</td>
-                                            <td width="8%">Status</td>
-                                            <!-- <td width="8%">Action</td> -->
+                                            <td>Is Website</td>
+                                            <td>Is Top</td>
+                                            <td>Priority</td>
+                                            <td width="5%">Status</td>
+                                            <td width="5%">Action</td>
                                         </tr>
                                     </thead>
                                 </table>
@@ -67,8 +73,8 @@
                     <div class="form-group row">
                         <div class="col-md-8">
                             <label for="">Brand Logo</label>
-                            <input type="file" name="brand_logo" id="brand_logo" class="form-control form-control-sm">
-                            <span class="text-danger" id="brand_logoError"></span>
+                            <input type="file" name="brand_logo2" id="brand_logo2" class="form-control form-control-sm">
+                            <span class="text-danger" id="brand_logo2Error"></span>
                         </div>
                         <div class="col-md-4">
                             <img id="showImage" src="{{asset('brandLogo/no_image.png')}}" style="width: 70px;height: 80px; border:1px solid #000000">
@@ -98,29 +104,45 @@
 
                     <input type="hidden" name="editId" id="editId">
                     <div class="form-group row">
+                        
                         <div class="col-md-6">
-                            <label>Brand Name <span class="text-danger"> * </span></label>
-                            <input class="form-control input-sm" id="editName" type="text" name="editName" required="">
-                            <span class="text-danger" id="editNameError"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label> Status</label>
-                            <select id="editStatus" name="editStatus" class="form-control input-sm">
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
+                            <label> Is Top</label>
+                            <select id="is_top" name="is_top" class="form-control input-sm">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label>Top Priority <span class="text-danger"> * </span></label>
+                            <input class="form-control input-sm" id="top_priority" type="number" name="top_priority" value="0">
+                            <span class="text-danger" id="top_priorityError"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label> Is Website</label>
+                            <select id="is_website" name="is_website" class="form-control input-sm">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
                         <div class="col-md-8">
-                            <label for="">Edit Logo</label>
-                            <input type="file" name="brand_logo" id="editImage" class="form-control form-control-sm">
-                            <span class="text-danger" id="editImageError"></span>
+                            <label for="">Image</label>
+                            <input type="file" name="brand_Image" id="brand_image" class="form-control form-control-sm">
+                            <span class="text-danger" id="brand_ImageError"></span>
                         </div>
                         <div class="col-md-4" >
-                            <img id="editShowImage" src="{{url('brandLogo/no_image.png')}}"style="width: 70px;height: 80px; border:1px solid #000000" /><br>
+                            <img id="imgPreview" src="{{url('brandLogo/no_image.png')}}"style="width: 70px;height: 80px; border:1px solid #000000" /><br>
                                 <a href="#" onclick="removeImage()" style="margin-left:20px;"> <i class="fas fa-trash-alt"></i> Remove Image</a>
                             <input type="hidden" id="removeImage" name="removeImage" value="" />
+                        </div>
+                        <div class="col-md-8">
+                            <label for="">Logo</label>
+                            <input type="file" name="brand_logo" id="brand_logo" class="form-control form-control-sm">
+                            <span class="text-danger" id="brand_logoError"></span>
+                        </div>
+                        <div class="col-md-4" >
+                            <img id="logoPreview" src="{{url('brandLogo/no_image.png')}}"style="width: 70px;height: 80px; border:1px solid #000000" /><br>
+                                <a href="#" onclick="removeLogo()" style="margin-left:20px;"> <i class="fas fa-trash-alt"></i> Remove Image</a>
+                            <input type="hidden" id="removeLogo" name="removeLogo" value="" />
                         </div>
                     </div>
 
@@ -198,8 +220,11 @@
           $('#brand_logoError').text("");
         }
         function editClearMessages(){
-          $('#editNameError').text("");
-          $('#editImageError').text("");
+          $('#is_topError').text("");
+          $('#is_websiteError').text("");
+          $('#top_priorityError').text("");
+          $('#brand_imgError').text("");
+          $('#brand_logoError').text("");
         }
         function reset(){
           $("#brandName").val("");
@@ -222,9 +247,13 @@
               datatype:"json",
               success:function(result){
                 $("#editModal").modal('show');
-                $("#editName").val(result.brandName);
-                var imageString = '{{asset("brand_logo/")}}'+"/"+result.brand_logo;
-                $('#editShowImage').attr('src',imageString);
+                $("#is_website").val(result.is_website);
+                $("#top_priority").val(result.top_priority);
+                $("#is_top").val(result.is_top);
+                var imageString = '{{asset("ecomas/images/brand")}}'+"/"+result.brand_image;
+                $('#imgPreview').attr('src',imageString);
+                var logoString = '{{asset("ecomas/images/brand")}}'+"/"+result.brand_logo;
+                $('#logoPreview').attr('src',logoString);
                 $("#editId").val(result.id);
                 if(result.status != ""){
                   $("#editStatus").val(result.status);
@@ -241,18 +270,19 @@
 
         $("#editBrandForm").submit(function (e){
           e.preventDefault();
-          editClearMessages();
-          var brandName = $("#editName").val();
-          var Status  =$("#editStatus").val();
-		  var removeImage = $("#removeImage").val();
-          var brandImage = $('#editImage')[0].files[0];
+		  var is_website = $("#is_website").val();
+		  var is_top = $("#is_top").val();
+		  var top_priority = $("#top_priority").val();
+          var brandImage = $('#brand_image')[0].files[0];
+          var brandLogo = $('#brand_logo')[0].files[0];
           var _token = $('input[name="_token"]').val();
           var id = $("#editId").val();
           var fd = new FormData();
-          fd.append('brandName',brandName);
-          fd.append('brand_logo',brandImage);
-		  fd.append('removeImage',removeImage);
-          fd.append('status',Status);
+          fd.append('is_website',is_website);
+          fd.append('is_top',is_top);
+          fd.append('top_priority',top_priority);
+          fd.append('brand_image',brandImage);
+          fd.append('brand_logo',brandLogo);
           fd.append('id',id);
           fd.append('_token',_token);
           $.ajax({
@@ -262,12 +292,14 @@
               contentType: false,
               processData: false,
               success:function(result){
+                //alert(JSON.stringify(result));
                 $("#editModal").modal('hide');
-                  Swal.fire("Updated brand!",result.success,"success");
+                    $('#success-alert').text(result.success);
                   table.ajax.reload(null, false);
               }, error: function(response) {
-                $('#editNameError').text(response.responseJSON.errors.brandName);
-                $('#editImageError').text(response.responseJSON.errors.brand_logo);
+               // alert(JSON.stringify(response));
+                $('#brand_imageError').text(response.responseJSON.errors.brand_image);
+                $('#brand_logoError').text(response.responseJSON.errors.brand_logo);
               }, beforeSend: function () {
                   $('#loading').show();
               },complete: function () {
@@ -334,24 +366,23 @@
         })
 	}
 
-	$(document).ready(function(){
+	
+	  
+	  $('#brand_image').change(function(e){
+		var reader =new FileReader();
+		reader.onload =function(e){  
+		  $('#imgPreview').attr('src',e.target.result);
+		}
+		reader.readAsDataURL(e.target.files['0']);
+	  });
 	  $('#brand_logo').change(function(e){
 		var reader =new FileReader();
 		reader.onload =function(e){  
-		  $('#showImage').attr('src',e.target.result);
+		  $('#logoPreview').attr('src',e.target.result);
 		}
 		reader.readAsDataURL(e.target.files['0']);
 	  });
-	  
-	  $('#editImage').change(function(e){
-		var reader =new FileReader();
-		reader.onload =function(e){  
-		  $('#editShowImage').attr('src',e.target.result);
-		  $("#removeImage").val("");
-		}
-		reader.readAsDataURL(e.target.files['0']);
-	  });
-	});
+	
 
 	Mousetrap.bind('ctrl+shift+n', function(e) {
 		e.preventDefault();

@@ -21,34 +21,30 @@ class bannerController extends Controller
 
         $this->validate($request,[
             'Bannerimage'=>'required',
-            'Bannersorting'=>'required',
-            'Bannerstatus'=>'required',
+            'Bannersorting'=>'nullable',
+            'Bannerstatus'=>'nullable',
+            'banner_type'=>'required',
         ]);
+        
         
         if ($request->hasFile('Bannerimage')) {
             $Bannerimage = $request->file('Bannerimage');
             $name = $Bannerimage->getClientOriginalName();
-        
-            // Define the upload path and unique image name
-            $uploadPath = 'website/images/banners/'; // Path relative to public folder
-            $bannerName = time() . '_' . $name; // Unique name for the file
-            $imagePath = public_path($uploadPath . $bannerName); // Full path to save the image
-        
-            // Resize the image and save it
+            $uploadPath = 'ecomas/images/slider/'; 
+            $bannerName = time() . '_' . $name; 
+            $imagePath = public_path($uploadPath . $bannerName);
             Image::make($Bannerimage)
-                ->resize(1420, 390)
+                //->resize(2000, 390)
                 ->save($imagePath);
-        
-            // (Optional) Move the original image if you need to keep it
-            // $Bannerimage->move(public_path($uploadPath), $bannerName);
-        
-            // Image is successfully resized and saved
         }
         
         /*Eloquent ORM process*/
         $banner= new banner();
         $banner->bannerImage = $bannerName;
         $banner->sorting =$request->Bannersorting;
+        $banner->banner_type =$request->banner_type;
+        $banner->category_id =$request->category_id;
+        $banner->brand_id =$request->brand_id;
         $banner->carousal_caption_offer =$request->carousalCaptionOffer;
         $banner->carousal_caption_description =$request->carousalCaptionOfferDescription;
         $banner->status = 'Active';
@@ -58,6 +54,10 @@ class bannerController extends Controller
         return redirect('/banner/frontEndView')->with('message','Banner'
             . ' save secessfully');
     }
+
+
+
+
     public function forntEndBannerDelete($id) {
         $products = banner:: find($id);
         $products->status = 'Inactive';
